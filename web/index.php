@@ -18,7 +18,7 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -36,7 +36,7 @@
                     <!-- Nested Row within Card Body -->
                     <div class="row">
                         <div class="d-flex justify-content-center align-items-center vh-100 col-lg-6">
-                            <img src="img/Logo.png" alt="Logo" class="img-fluid big-logo">
+                            <img src="img/Logo.png" alt="Logo" class="img-fluid">
                         </div>
                         <div class="col-lg-6" style="padding-top: 100px;">
                             <div class="p-5">
