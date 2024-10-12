@@ -69,7 +69,7 @@
 
             <!-- Nav Item - Surat Izin -->
             <li class="nav-item">
-                <a class="nav-link">
+                <a class="nav-link" href="suratIzin.php">
                     <i class="bi bi-file-earmark-check" style="color: #f48a4e;"></i>
                     <span class="text-secondary">Surat Izin</span>
                 </a>
@@ -83,7 +83,7 @@
 
             <!-- Nav Item - Rekap -->
             <li class="nav-item">
-                <a class="nav-link">
+                <a class="nav-link" href="rekap.php">
                     <i class="bi bi-file-earmark-text" style="color: #f48a4e;"></i>
                     <span class="text-secondary">Rekap</span>
                 </a>
