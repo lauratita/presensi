@@ -64,8 +64,17 @@
 <!-- Page level custom scripts -->
 <script src="../js/demo/datatables-demo.js"></script>
 
-<!-- JS bootstrap 5 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Tab Data Table -->
+<script>
+$(document).ready(function() {
+    $("#dataTable-unVerified").DataTable();
+    $("#dataTable-verified").DataTable();
+    $("#dataTable-disable").DataTable();
+});
+</script>
+
+
 
 </body>
 
