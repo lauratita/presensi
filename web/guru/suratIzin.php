@@ -1,4 +1,4 @@
-<?php include '../template/header.php' ?>
+<?php include '../template/headerGuru.php' ?>
 <div class="container-fluid">
 
     <!-- Page Heading -->
@@ -39,7 +39,8 @@
                                         <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
-                                        <th>Keterangan</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,91 +48,151 @@
                                         <td>1</td>
                                         <td>PPLG1001</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
                                         <td>PPLG1002</td>
                                         <td>Melvina Citra Saqina</td>
-                                        <td>Sakit</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
                                         <td>PPLG1003</td>
                                         <td>Hovivah</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
                                         <td>PPLG1005</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>5</td>
                                         <td>PPLG1006</td>
                                         <td>Dwi Farhan</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>6</td>
                                         <td>PPLG1007</td>
                                         <td>M. Dien Vito</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>7</td>
                                         <td>PPLG1008</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Izin</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>8</td>
                                         <td>PPLG1009</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>9</td>
                                         <td>PPLG10010</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>10</td>
                                         <td>PPLG1004</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>11</td>
                                         <td>PPLG1009</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>12</td>
                                         <td>PPLG10011</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>13</td>
                                         <td>PPLG10015</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>14</td>
                                         <td>PPLG10012</td>
                                         <td>Ita Nurlaili</td>
-                                        <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>15</td>
                                         <td>PPLG10011</td>
                                         <td>Laura Tita A.G</td>
-                                        <td>Alpha</td>
+                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td>
+                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
+                                                    onclick="">Verified</button></form>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -380,4 +441,4 @@
 
 </div>
 
-<!-- <?php include '../template/footer.php' ?> -->
+<!-- <?php include '../template/footerGuru.php' ?> -->

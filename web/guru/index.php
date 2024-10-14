@@ -1,4 +1,4 @@
-<?php include '../template/header.php'; ?>
+<?php include '../template/headerGuru.php'; ?>
 
 <!-- Begin Page Content -->
 <div class="container text-center">
@@ -142,4 +142,4 @@
 </div>
 <!-- /.container-fluid -->
 
-<?php include '../template/footer.php'; ?>
+<?php include '../template/footerGuru.php'; ?>
