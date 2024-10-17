@@ -25,7 +25,7 @@
                                                 <span>Total Siswa</span>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-comments fa-2x text-gray-300"></i>                                
+                                                <i class="bi bi-mortarboard text-gray-300" style="font-size: 5rem"></i>                                
                                             </div>
                                         </div>
                                             <ul class="p-0 m-0 mt-5">
@@ -101,9 +101,11 @@
                                             <div class="col mr-2">
                                                 <div class="h5 font-weight-bold text-warning text-uppercase mb-1 m-0 me-2">Kelas</div>
                                                 <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">24</div>
+                                                <br>
+                                                <span>Total Kelas</span>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                <i class="bi bi-easel fa-2x text-gray-300" style="font-size: 4rem"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -117,9 +119,11 @@
                                                 <div class="col mr-2">
                                                     <div class="h5 font-weight-bold text-warning text-uppercase mb-1 m-0 me-2">Pegawai</div>
                                                     <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">500</div>
+                                                    <br>
+                                                    <span>Total Pegawai</span>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                    <i class="bi bi-person-badge text-gray-300" style="font-size: 4rem"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -138,4 +142,4 @@
 
 </html>
 
-<?php include '../template/footerGuru.php'; ?>
+<?php include '../template/footerAdmin.php'; ?>

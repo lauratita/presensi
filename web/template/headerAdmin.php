@@ -66,18 +66,18 @@
 
             <!-- Nav Item - Data -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                <a class="nav-link collapsed <?php echo ($activeMenu == 'siswa') ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
+                    <i class="bi bi-mortarboard" style="color: #f48a4e"></i>
                     <span class="text-secondary">Siswa</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                <div id="collapseUtilities" class="collapse <?php echo ($activeMenu == 'siswa') ? 'show' : ''; ?>" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
-                    <div class="bg-warning py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">Siswa</a>
-                        <a class="collapse-item" href="utilities-border.html">Kelas</a>
-                        <a class="collapse-item" href="utilities-animation.html">Jadwal</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                    <div class="bg-secondary py-2 collapse-inner rounded">
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'siswa') ? 'active' : ''; ?>" href="siswa.php"  style="color: #f8f9fc">Siswa</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'kelas') ? 'active' : ''; ?>" href="kelas.php" style="color: #f8f9fc">Kelas</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>" href="jadwal.php" style="color: #f8f9fc">Jadwal</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>" href="" style="color: #f8f9fc">Other</a>
                     </div>
                 </div>
             </li>
@@ -94,13 +94,13 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="bi bi-person-badge" style="color : #f48a4e "></i>
                     <span class="text-secondary">Pegawai</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-warning py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Pegawai</a>
-                        <a class="collapse-item" href="">Jabatan</a>
+                    <div class="bg-secondary py-2 collapse-inner rounded">
+                        <a class="collapse-item active" href="pegawai.php" style="color:white">Pegawai</a>
+                        <a class="collapse-item" href="jenisPegawai.php" style="color:white">Jabatan</a>
                     </div>
                 </div>
             </li>
