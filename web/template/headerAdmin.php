@@ -62,37 +62,52 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">SISWA</div>
 
-            <!-- Nav Item -Presensi -->
+            <div class="sidebar-heading">DATA</div>
+
+            <!-- Nav Item - Data -->
             <li class="nav-item">
-                <a class="nav-link" href="presensi.php">
-                    <i class="bi bi-calendar2-check" style="color: #f48a4e;"></i>
-                    <span class="text-secondary">Presensi</span>
+                <a class="nav-link collapsed <?php echo ($activeMenu == 'siswa') ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="bi bi-mortarboard" style="color: #f48a4e"></i>
+                    <span class="text-secondary">Siswa</span>
                 </a>
+                <div id="collapseUtilities" class="collapse <?php echo ($activeMenu == 'siswa') ? 'show' : ''; ?>" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-secondary py-2 collapse-inner rounded">
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'siswa') ? 'active' : ''; ?>" href="siswa.php"  style="color: #f8f9fc">Siswa</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'kelas') ? 'active' : ''; ?>" href="kelas.php" style="color: #f8f9fc">Kelas</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>" href="jadwal.php" style="color: #f8f9fc">Jadwal</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>" href="" style="color: #f8f9fc">Other</a>
+                    </div>
+                </div>
             </li>
 
-            <!-- Nav Item - Surat Izin -->
-            <li class="nav-item">
-                <a class="nav-link" href="suratIzin.php">
-                    <i class="bi bi-file-earmark-check" style="color: #f48a4e;"></i>
-                    <span class="text-secondary">Surat Izin</span>
-                </a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">LAPORAN</div>
 
-            <!-- Nav Item - Rekap -->
+            <div class="sidebar-heading">PEGAWAI</div>
+
+            <!-- Nav Item - Pages Pegawai -->
             <li class="nav-item">
-                <a class="nav-link" href="rekap.php">
-                    <i class="bi bi-file-earmark-text" style="color: #f48a4e;"></i>
-                    <span class="text-secondary">Rekap</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="bi bi-person-badge" style="color : #f48a4e "></i>
+                    <span class="text-secondary">Pegawai</span>
                 </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-secondary py-2 collapse-inner rounded">
+                        <a class="collapse-item active" href="pegawai.php" style="color:white">Pegawai</a>
+                        <a class="collapse-item" href="jenisPegawai.php" style="color:white">Jabatan</a>
+                    </div>
+                </div>
             </li>
+
+            
+
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
