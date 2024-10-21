@@ -72,34 +72,40 @@ include '../template/headerAdmin.php'; ?>
         <div class="tab-pane fade" id="tab-tambahOrtu" role="tabpanel" aria-labelledby="nav-tambahOrtu-tab">
             <div class="card shadow mb-4 mt-4">
                 <div class="card-body">
-                    <form id="formTambahOrtu" >
-                        <div class="form-group">
-                            <label for="namaOrtu">Nama</label>
-                            <input type="text" class="form-control" id="namaOrtu" placeholder="Masukkan Nama Orang Tua" required>
+                    <form id="formTambahOrtu">
+                        <div class="row">
+                            <div class="col md-6 mt-3">
+                                <label for="namaOrtu">Nama</label>
+                                <input type="text" class="form-control" id="namaOrtu" placeholder="Masukkan Nama Orang Tua" required>
+                            </div>
+                            <div class="col md-6 mt-3">
+                                <label for="jkOrtu">Jenis Kelamin</label>
+                                <select class="form-control" id="jkOrtu" name="gender" >
+                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="jkOrtu">Jenis Kelamin</label>
-                            <select class="form-control" id="jkOrtu" name="gender" >
-                                <option value="">Pilih Jenis Kelamin</option>
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
+                        <div class="row">
+                            <div class="col md-6 mt-3">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="email" placeholder="Masukkan Email">
+                            </div>
+                            <div class="col md-6 mt-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password"  placeholder="Masukkan Password" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Masukkan Email">
+                        <div class="row">
+                            <div class="col-12 mt-3">
+                                <label for="alamatOrtu">Alamat</label>
+                                <input type="text" class="form-control" id="alamatOrtu" placeholder="Masukkan Alamat" >
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password"  placeholder="Masukkan Password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="alamatOrtu">Alamat</label>
-                            <input type="text" class="form-control" id="alamatOrtu" placeholder="Masukkan Alamat" >
-                        </div>
-                        <div class="form-group text-right">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        <div class="col md-12 mt-3 d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary me-4" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary ">Simpan</button>
                         </div>
                     </form>
                 </div>    
