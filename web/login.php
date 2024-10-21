@@ -1,3 +1,42 @@
+<?php 
+require ('./config/config.php');
+
+session_start();
+
+if (isset($_POST['submit'])) {
+    $nik = $_POST['txt_nikPegawai'];
+    $pass = $_POST['txt_passPegawai'];
+
+    if (!empty(trim($nik)) && !empty(trim($pass))) {
+        // select data berdasarkan nik dari db
+        $query = "SELECT * FROM tb_pegawai WHERE nik = '$nik'";
+        $result = mysqli_query($koneksi, $query);
+        $num = mysqli_num_rows($result);
+        
+        if ($row = mysqli_fetch_array($result)) {
+            $nikPegawai = $row['nik'];
+            $namaPegawai = $row['nama'];
+            $password = $row['password'];
+            $jenis_kelamin = $row['jenis_kelamin'];
+            $id_jenis = $row['id_jenis'];
+        }
+
+        if ($num != 0) {
+            if ($nikPegawai == $nik && $password == $pass) {
+                header('Location: ./guru/index.php');
+            }else {
+                echo "<script>alert('NIK or Password is Wrong.');window.location.href='login.php'</script>";
+            }
+        }else{
+            echo "<script>alert('User tidak ditemukan.');window.location.href='login.php'</script>";
+        }
+    }else{
+        echo "<script>alert('Data tidak boleh kosong.');window.location.href='login.php'</script>";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +48,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin CekInOut</title>
+    <title>Wali Kelas CekInOut</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -45,25 +84,26 @@
                                             src="./img/logo2.png" alt="">CekInOut
                                     </h1>
                                 </div>
-                                <form class="user">
+                                <form class="user" action="" method="POST">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                            id="exampleInputEmail" aria-describedby="emailHelp"
-                                            placeholder="Enter Email Address...">
+                                        <input type="text" name="txt_nikPegawai" class="form-control form-control-user"
+                                            id="nikPegawai" aria-describedby=""
+                                            placeholder="Nomor Induk Karyawan (NIK)">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
+                                        <input type="password" name="txt_passPegawai"
+                                            class="form-control form-control-user" id="exampleInputPassword"
+                                            placeholder="Password">
                                     </div>
                                     <div class="mb-3 text-right">
                                         <a class="small" href="../forgotPassword/forgot-password.php"
                                             style="color: #f48a4e;">Forgot
                                             Password?</a>
                                     </div>
-                                    <a href="guru/index.php" class="btn text-white btn-user btn-block"
+                                    <button type="sumbit" name="submit" class="btn text-white btn-user btn-block"
                                         style="background-color: #f48a4e;">
                                         Login
-                                    </a>
+                                    </button>
                                 </form>
                             </div>
                         </div>
