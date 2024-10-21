@@ -27,6 +27,7 @@
   --primary: #4e73df;
   --secondary: #858796;
   --success: #1cc88a;
+  --bgnav : #e0e0e0;
   --info: #36b9cc;
   --warning: #f6c23e;
   --danger: #e74a3b;
@@ -175,13 +176,13 @@ sup {
 }
 
 a {
-  color: #4e73df;
+  color: #f48a4e;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #224abe;
+  color: #f48a4e;
   text-decoration: underline;
 }
 
@@ -10766,25 +10767,27 @@ a:focus {
   padding: 0.5rem 1rem;
   margin: 0 0.5rem;
   display: block;
-  color: #3a3b45;
+  color: white;
   text-decoration: none;
   border-radius: 0.35rem;
   white-space: nowrap;
+
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:hover,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item:hover {
-  background-color: #eaecf4;
+  background-color: white;
+  color: #000;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:active,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item:active {
-  background-color: #dddfeb;
+  background-color: white;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item.active,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item.active {
-  color: #4e73df;
+  color: white;
   font-weight: 700;
 }
 

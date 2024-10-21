@@ -53,6 +53,7 @@ include '../template/headerAdmin.php'; ?>
             </div>
         </div>
     </div> 
+    
     <!-- Logout Modal-->
     <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -86,7 +87,7 @@ include '../template/headerAdmin.php'; ?>
           </div>
           <div class="modal-body">
             <!-- Form untuk tambah data kelas -->
-            <form id="formTambahKelas">
+            <form id="formTambahKelas" >
               <div class="form-group">
                 <label for="idKelas">ID Kelas</label>
                 <input type="text" class="form-control" id="idKelas" placeholder="Masukkan ID Kelas">

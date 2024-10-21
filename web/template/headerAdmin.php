@@ -53,7 +53,7 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="index.php">
-                    <i class="bi bi-house" style="color: #f48a4e;"></i>
+                    <i class="bi bi-house"  style="color: #f48a4e;"></i>
                     <span class="text-secondary">Dashboard</span>
                 </a>
             </li>
@@ -74,15 +74,16 @@
                 </a>
                 <div id="collapseUtilities" class="collapse <?php echo ($activeMenu == 'siswa') ? 'show' : ''; ?>" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
-                    <div class="bg-secondary py-2 collapse-inner rounded">
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'siswa') ? 'active' : ''; ?>" href="siswa.php"  style="color: #f8f9fc">Siswa</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'kelas') ? 'active' : ''; ?>" href="kelas.php" style="color: #f8f9fc">Kelas</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>" href="jadwal.php" style="color: #f8f9fc">Jadwal</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>" href="" style="color: #f8f9fc">Other</a>
+                    <div class="py-2 collapse-inner rounded" style="background-color: #ffb347">
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'siswa') ? 'active' : ''; ?>" href="siswa.php" >Siswa</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'kelas') ? 'active' : ''; ?>" href="kelas.php" >Kelas</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>" href="jadwal.php">Jadwal</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>" href="" >Other</a>
                     </div>
                 </div>
             </li>
 
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -93,15 +94,15 @@
 
             <!-- Nav Item - Pages Pegawai -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed <?php echo ($activeMenu == 'pegawai') ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="bi bi-person-badge" style="color : #f48a4e "></i>
                     <span class="text-secondary">Pegawai</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-secondary py-2 collapse-inner rounded">
-                        <a class="collapse-item active" href="pegawai.php" style="color:white">Pegawai</a>
-                        <a class="collapse-item" href="jenisPegawai.php" style="color:white">Jabatan</a>
+                <div id="collapseTwo" class="collapse <?php echo ($activeMenu == 'pegawai') ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded " style="background-color: #ffb347">
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'pegawai') ? 'active' : ''; ?>" href="pegawai.php" >Pegawai</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'jenispegawai') ? 'active' : ''; ?>" href="jenisPegawai.php" >Jabatan</a>
                     </div>
                 </div>
             </li>

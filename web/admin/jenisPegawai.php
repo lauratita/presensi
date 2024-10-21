@@ -1,4 +1,7 @@
-<?php include '../template/headerAdmin.php'; ?>
+<?php 
+$activeMenu = 'pegawai'; 
+$activeSubmenu = 'jenispegawai';
+include '../template/headerAdmin.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 

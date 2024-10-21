@@ -1,4 +1,6 @@
-<?php include '../template/headerAdmin.php'; ?>
+<?php 
+$activeMenu = 'pegawai'; // Tentukan menu 'Siswa' yang aktif
+$activeSubmenu = 'pegawai';include '../template/headerAdmin.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
