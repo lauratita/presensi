@@ -83,7 +83,13 @@
                 </div>
             </li>
 
-            
+            <!-- Nav Item - Orang Tuas -->
+            <li class="nav-item">
+                <a class="nav-link" href="orangTua.php">
+                    <i class="fas fa-user-friends" style="color: #f48a4e;"></i>
+                    <span class="text-secondary <?php echo ($activeSubmenu == 'ortu') ? 'active' : ''; ?>">Wali Murid</span>
+                </a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
