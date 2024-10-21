@@ -4,7 +4,7 @@ $activeSubmenu = 'siswa';
 include '../template/headerAdmin.php'; ?>
 <html lang="en">
 <body>
- <div class="container-fluid">
+<div class="container-fluid">
  <h6 class="m-0 mt-4 mb-4 font-weight-bold text-primary"><span class="text-muted fw-flight">Data Siswa</span></h6>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -22,7 +22,7 @@ include '../template/headerAdmin.php'; ?>
 
     <div class="tab-content" id="TabContent">
         <!-- Tab Data Ortu -->
-        <div class="tab-pane fade show active" id="tab-dataOrtu" role="tabpanel" aria-labelledby="nav-dataOrtu-tab">
+        <div class="tab-pane fade show active" id="tab-dataSiswa" role="tabpanel" aria-labelledby="nav-dataSiswa-tab">
             <div class="card shadow mb-4 mt-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center" >
                     <h6 class="m-0 font-weight-bold text-secondary">Tabel Kelas</h6>
@@ -134,7 +134,7 @@ include '../template/headerAdmin.php'; ?>
             </div> 
     </div>
 
- </div>    
+</div>    
 <!-- Tombol Hapus -->
 <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
