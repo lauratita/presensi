@@ -85,9 +85,7 @@ if (isset($_POST['submit'])) {
 
     <!-- Outer Row -->
     <div class="row justify-content-center">
-
         <div class="col-xl-10 col-lg-12 col-md-9">
-
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
@@ -102,25 +100,35 @@ if (isset($_POST['submit'])) {
                                             src="./img/logo2.png" alt="">CekInOut
                                     </h1>
                                 </div>
+                                <!-- form login -->
                                 <form class="user" action="" method="POST">
-                                    <div class="form-group">
-                                        <input type="text" name="txt_nikPegawai" class="form-control form-control-user"
+                                    <!-- NIK -->
+                                    <div class="form-group has-validation">
+                                        <input type="text" name="txt_nikPegawai"
+                                            class="form-control form-control-user <?php echo !empty($errorNik) ? 'is-invalid' : ''; ?>"
                                             id="nikPegawai" aria-describedby="" placeholder="Nomor Induk Karyawan (NIK)"
                                             value="<?php echo isset($nik) ? htmlspecialchars($nik) : ''; ?>">
                                         <!-- Tampilkan error NIK -->
                                         <?php if (!empty($errorNik)): ?>
-                                        <small class="text-danger"><?php echo $errorNik; ?></small>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errorNik; ?>
+                                        </div>
                                         <?php endif; ?>
                                     </div>
+                                    <!-- end NIK -->
+                                    <!-- password -->
                                     <div class="form-group">
                                         <input type="password" name="txt_passPegawai"
-                                            class="form-control form-control-user" id="exampleInputPassword"
-                                            placeholder="Password">
+                                            class="form-control form-control-user <?php echo !empty($errorPass) ? 'is-invalid' : ''; ?>"
+                                            id="exampleInputPassword" placeholder="Password">
                                         <!-- Tampilkan error password -->
                                         <?php if (!empty($errorPass)): ?>
-                                        <small class="text-danger"><?php echo $errorPass; ?></small>
+                                        <div class="invalid-feedback">
+                                            <?php echo $errorPass; ?>
+                                        </div>
                                         <?php endif; ?>
                                     </div>
+                                    <!-- end password -->
                                     <div class="mb-3 text-right">
                                         <a class="small" href="../forgotPassword/forgot-password.php"
                                             style="color: #f48a4e;">Forgot Password?</a>
@@ -130,6 +138,7 @@ if (isset($_POST['submit'])) {
                                         Login
                                     </button>
                                 </form>
+                                <!-- end form login -->
                             </div>
                         </div>
                     </div>
