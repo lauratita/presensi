@@ -42,6 +42,7 @@ if (isset($_POST['submit'])) {
             if ($nikPegawai == $nik && $password == $pass) {
                 // set session untuk menyimpan pesan suskses login
                 $_SESSION['login_success'] = 'Login Berhasil!';
+                $_SESSION['namaPegawai'] = $namaPegawai; //menyimpan nama pegawai
                 if ($id_jenis == 1) {
                     header('Location: ./admin/index.php');
                 } elseif ($id_jenis == 2) {
