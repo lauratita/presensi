@@ -40,6 +40,8 @@ if (isset($_POST['submit'])) {
             }
 
             if ($nikPegawai == $nik && $password == $pass) {
+                // set session untuk menyimpan pesan suskses login
+                $_SESSION['login_success'] = 'Login Berhasil!';
                 if ($id_jenis == 1) {
                     header('Location: ./admin/index.php');
                 } elseif ($id_jenis == 2) {
@@ -134,7 +136,7 @@ if (isset($_POST['submit'])) {
                                             style="color: #f48a4e;">Forgot Password?</a>
                                     </div>
                                     <button type="submit" name="submit" class="btn text-white btn-user btn-block"
-                                        style="background-color: #f48a4e;">
+                                        style="background-color: #f48a4e;" id="btn-login">
                                         Login
                                     </button>
                                 </form>
@@ -158,6 +160,11 @@ if (isset($_POST['submit'])) {
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- SweetAlert -->
+    <script src="./assets/js/jquery-3.7.1.min.js"></script>
+    <script src="./assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 

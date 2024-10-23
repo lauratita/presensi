@@ -74,6 +74,11 @@ $(document).ready(function() {
 });
 </script>
 
+<!-- SweetAlert -->
+<script src="../assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="../assets/js/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
 </body>
