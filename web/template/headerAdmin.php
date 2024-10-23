@@ -95,7 +95,6 @@
                     <span class="text-secondary <?php echo ($activeSubmenu == 'ortu') ? 'active' : ''; ?>">Wali
                         Murid</span>
                 </a>
-                           
             </li>
 
             <!-- Divider -->
@@ -147,7 +146,7 @@
                     <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <h5 class="m-0" style="color: #f48a4e;">Welcome admin, Have a Nice Day!!!</h5>
+                        <h5 class="m-0" style="color: #f48a4e;">Welcome Admin, Have a Nice Day!!!</h5>
                     </form>
 
                     <!-- Topbar Navbar -->
