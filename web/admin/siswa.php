@@ -109,48 +109,53 @@ include '../template/headerAdmin.php'; ?>
                             <label for="alamat">Alamat</label>
                             <textarea class="form-control" id="alamat" placeholder="Masukkan Alamat"></textarea>
                         </div>
-                        
+
                         <div class="row">
-                            <div class="card m-2 p-2" style="width: 12rem;">
-                                <img id="imgPreview1" src="https://via.placeholder.com/150" class="card-img-top" alt="Preview Gambar 1">
-                                <div class="card-body">
-                                    <span>Foto Sisi Depan</span>
-                                    <label for="fotodepan" class="btn btn-primary">Cari Gambar</label>
-                                    <input type="file" class="form-control-file" id="fotodepan" name="foto" accept="image/*" style="display: none;" required>
+                            <div class="container-upfoto">
+                                <input type="file" id="file1" accept="image/*" hidden>
+                                <div class='img-area' data-img="">
+                                    <i class='bi bi-cloud-arrow-up icon'></i>
+                                    <h3>Upload Image</h3>
+                                    <p>Foto depan</p>
                                 </div>
+                                <button class="select-image">Cari Gambar</button>
                             </div>
-                            <div class="card m-2 p-2" style="width: 12rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <span>Foto Sisi Depan</span>
-                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
-                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            <div class="container-upfoto">
+                                <input type="file" id="file2" accept="image/*" hidden>
+                                <div class='img-area' data-img="">
+                                    <i class='bi bi-cloud-arrow-up icon'></i>
+                                    <h3>Upload Image</h3>
+                                    <p>Foto Kiri</p>
+                                </div>
+                                <button class="select-image">Cari Gambar</button>
                             </div>
-                        </div>
-                        <div class="card m-2 p-2" style="width: 12rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <span>Foto Sisi Depan</span>
-                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
-                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            <div class="container-upfoto">
+                                <input type="file" id="file3" accept="image/*" hidden>
+                                <div class='img-area' data-img="">
+                                    <i class='bi bi-cloud-arrow-up icon'></i>
+                                    <h3>Upload Image</h3>
+                                    <p>Foto Kanan</p>
+                                </div>
+                                <button class="select-image">Cari Gambar</button>
                             </div>
-                        </div>
-                        <div class="card m-2 p-2" style="width: 12rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <span>Foto Sisi Depan</span>
-                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
-                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            <div class="container-upfoto">
+                                <input type="file" id="file4" accept="image/*" hidden>
+                                <div class='img-area' data-img="">
+                                    <i class='bi bi-cloud-arrow-up icon'></i>
+                                    <h3>Upload Image</h3>
+                                    <p>Foto Atas</p>
+                                </div>
+                                <button class="select-image">Cari Gambar</button>
                             </div>
-                        </div>
-                        <div class="card m-2 p-2" style="width: 12rem;">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <span>Foto Sisi Depan</span>
-                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
-                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            <div class="container-upfoto">
+                                <input type="file" id="file5" accept="image/*" hidden>
+                                <div class='img-area' data-img="">
+                                    <i class='bi bi-cloud-arrow-up icon'></i>
+                                    <h3>Upload Image</h3>
+                                    <p>Foto Bawah</p>
+                                </div>
+                                <button class="select-image">Cari Gambar</button>
                             </div>
-                        </div>
                         </div>
                         
                         <div class="form-group text-right">
