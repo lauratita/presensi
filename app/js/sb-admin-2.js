@@ -53,23 +53,4 @@
     e.preventDefault();
   });
 
-  function previewImage(input, imagePreviewId) {
-    const file = input.files[0];
-    if (file) {
-        const reader = new FileReader();
-  
-        reader.onload = function(e) {
-            // Mengubah sumber (src) dari img yang sesuai dengan id
-            document.getElementById(imagePreviewId).src = e.target.result;
-        };
-  
-        // Membaca file sebagai Data URL
-        reader.readAsDataURL(file);
-    }
-  }
-  
-  document.getElementById('fotodepan').addEventListener('change', function() {
-    previewImage(this, 'imgPreview1');
-  });
-
 })(jQuery); // End of use strict
