@@ -33,22 +33,22 @@ include '../template/headerAdmin.php'; ?>
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th>NIK</th>
                                 <th>Nama</th>
                                 <th>Jenis Kelamin</th> 
-                                <th>Password</th> 
                                 <th>Email</th>
+                                <th>No HP</th>
                                 <th>Alamat</th> 
-                                <th>Aksi</th>       
+                                <th>Aksi</th> 
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1</td>
+                                <td>3511096406060003</td>
                                 <td>Barizatul Kamilah</td>
                                 <td>Perempuan</td>
-                                <td>1234</td>
                                 <td>bariza@gmail.com</td>
+                                <td>112233445566</td>
                                 <td>Jember</td>
                                 <td><!-- Circle Buttons (Small) -->
                                     <a href="#" class="btn btn-info btn-circle btn-sm">
@@ -74,11 +74,11 @@ include '../template/headerAdmin.php'; ?>
                 <div class="card-body">
                     <form id="formTambahOrtu">
                         <div class="row">
-                            <div class="col md-6 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label for="namaOrtu">Nama</label>
                                 <input type="text" class="form-control" id="namaOrtu" placeholder="Masukkan Nama Orang Tua" required>
                             </div>
-                            <div class="col md-6 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label for="jkOrtu">Jenis Kelamin</label>
                                 <select class="form-control" id="jkOrtu" name="gender" >
                                     <option value="">Pilih Jenis Kelamin</option>
@@ -88,23 +88,33 @@ include '../template/headerAdmin.php'; ?>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col md-6 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label for="email">Email</label>
                                 <input type="text" class="form-control" id="email" placeholder="Masukkan Email">
                             </div>
-                            <div class="col md-6 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password"  placeholder="Masukkan Password" required>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 mt-3">
-                                <label for="alamatOrtu">Alamat</label>
-                                <input type="text" class="form-control" id="alamatOrtu" placeholder="Masukkan Alamat" >
+                            <div class="col-md-6 mt-3">
+                                <label for="nik">NIK</label>
+                                <input type="text" class="form-control" id="nik" placeholder="Masukkan NIK">
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="nohp">No HP</label>
+                                <input type="text" class="form-control" id="nohp"  placeholder="Masukkan No HP" required>
                             </div>
                         </div>
-                        <div class="col md-12 mt-3 d-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary me-4" data-dismiss="modal">Batal</button>
+                        <div class="row">
+                            <div class="col-12 mt-3">
+                                <label for="alamatOrtu">Alamat</label>
+                                <textarea class="form-control" id="alamatOrtu" placeholder="Masukkan Alamat" ></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group text-right mt-3">
+                            <button type="button" class="btn btn-secondary pe-4" data-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary ">Simpan</button>
                         </div>
                     </form>

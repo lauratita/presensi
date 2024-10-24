@@ -72,59 +72,87 @@ include '../template/headerAdmin.php'; ?>
             <div class="card shadow mb-4 mt-4">
                 <div class="card-body">
                     <form id="formTambahSiswa" >
-                        <div class="form-group">
-                            <label for="nis">NIS</label>
-                            <input type="text" class="form-control" id="nis" placeholder="Masukkan NIS" required>
+                        <div class="row">
+                            <div class="col-md-5 mt-3">
+                                <label for="nis">NIS</label>
+                                <input type="text" class="form-control" id="nis" placeholder="Masukkan NIS" required>
+                            </div>
+                            <div class="col-md-5 mt-3">
+                                <label for="namaSiswa">Nama</label>
+                                <input type="text" class="form-control" id="namaSiswa" placeholder="Masukkan Nama" required>
+                            </div>
+                            <div class="col-md-2 mt-3">
+                                <label for="kelas">Tahun Masuk</label>
+                                <select class="form-control" id="tahun" name="tahun">
+                                    <option value="A">2020</option>
+                                    <option value="B">2021</option>
+                                    <option value="C">2023</option>
+                                    <!-- Add more class options if needed -->
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="namaSiswa">Nama</label>
-                            <input type="text" class="form-control" id="namaSiswa" placeholder="Masukkan Nama" required>
+                        <div class="row">
+                            <div class="col-md-6 mt-3">
+                                <label for="jkSiswa">Jenis Kelamin</label>
+                                <select class="form-control" id="jkSiswa" name="gender" >
+                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password"  placeholder="Masukkan Password" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="kelas">Tahun Masuk</label>
-                            <select class="form-control" id="tahun" name="tahun">
-                                <option value="A">2020</option>
-                                <option value="B">2021</option>
-                                <option value="C">2023</option>
-                                <!-- Add more class options if needed -->
-                            </select>
-                        </div>
-                        <div class="form-group">
+                        <div class="form-group mt-3">
                             <label for="alamat">Alamat</label>
-                            <input type="text" class="form-control" id="alamat" placeholder="Masukkan Alamat">
+                            <textarea class="form-control" id="alamat" placeholder="Masukkan Alamat"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="jkSiswa">Jenis Kelamin</label>
-                            <select class="form-control" id="jkSiswa" name="gender" >
-                                <option value="">Pilih Jenis Kelamin</option>
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
+                        
+                        <div class="row">
+                            <div class="card m-2 p-2" style="width: 12rem;">
+                                <img id="imgPreview1" src="https://via.placeholder.com/150" class="card-img-top" alt="Preview Gambar 1">
+                                <div class="card-body">
+                                    <span>Foto Sisi Depan</span>
+                                    <label for="fotodepan" class="btn btn-primary">Cari Gambar</label>
+                                    <input type="file" class="form-control-file" id="fotodepan" name="foto" accept="image/*" style="display: none;" required>
+                                </div>
+                            </div>
+                            <div class="card m-2 p-2" style="width: 12rem;">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <span>Foto Sisi Depan</span>
+                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
+                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password"  placeholder="Masukkan Password" required>
+                        <div class="card m-2 p-2" style="width: 12rem;">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <span>Foto Sisi Depan</span>
+                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
+                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="foto">Foto Sisi Depan</label>
-                            <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
+                        <div class="card m-2 p-2" style="width: 12rem;">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <span>Foto Sisi Depan</span>
+                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
+                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="foto">Foto Sisi Kiri</label>
-                            <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
+                        <div class="card m-2 p-2" style="width: 12rem;">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <span>Foto Sisi Depan</span>
+                                <label for="foto" class="btn btn-primary">Cari Gambar</label>
+                                <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" style="display: none;" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="foto">Foto Sisi Kanan</label>
-                            <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
                         </div>
-                        <div class="form-group">
-                            <label for="foto">Foto Sisi Bawah</label>
-                            <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="foto">Foto Sisi Atas</label>
-                            <input type="file" class="form-control-file" id="foto" name="foto" accept="image/*" required>
-                        </div>
+                        
                         <div class="form-group text-right">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>

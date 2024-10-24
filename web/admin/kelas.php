@@ -89,16 +89,16 @@ include '../template/headerAdmin.php'; ?>
             <!-- Form untuk tambah data kelas -->
             <form id="formTambahKelas" >
               <div class="form-group">
-                <label for="idKelas">ID Kelas</label>
-                <input type="text" class="form-control" id="idKelas" placeholder="Masukkan ID Kelas">
-              </div>
-              <div class="form-group">
                 <label for="namaKelas">Nama Kelas</label>
                 <input type="text" class="form-control" id="namaKelas" placeholder="Masukkan Nama Kelas">
               </div>
               <div class="form-group">
                 <label for="waliKelas">Wali Kelas</label>
-                <input type="text" class="form-control" id="waliKelas" placeholder="Masukkan Nama Wali Kelas">
+                <select class="form-control" id="walikelas" name="walikelas" >
+                                    <option value="">Pilih waliKelas</option>
+                                    <option value="Laki-laki">Bariza</option>
+                                    <option value="Perempuan">Hendra</option>
+                                </select>
               </div>
             </form>
           </div>
@@ -124,16 +124,16 @@ include '../template/headerAdmin.php'; ?>
             <!-- Form untuk tambah data kelas -->
             <form id="formTambahKelas">
               <div class="form-group">
-                <label for="idKelas">ID Kelas</label>
-                <input type="text" class="form-control" id="idKelas" placeholder="Masukkan ID Kelas">
-              </div>
-              <div class="form-group">
                 <label for="namaKelas">Nama Kelas</label>
                 <input type="text" class="form-control" id="namaKelas" placeholder="Masukkan Nama Kelas">
               </div>
               <div class="form-group">
                 <label for="waliKelas">Wali Kelas</label>
-                <input type="text" class="form-control" id="waliKelas" placeholder="Masukkan Nama Wali Kelas">
+                <select class="form-control" id="walikelas" name="walikelas" >
+                                    <option value="">Pilih Wali Kelas</option>
+                                    <option value="Laki-laki">Bariza</option>
+                                    <option value="Perempuan">Hendra</option>
+                                </select>
               </div>
             </form>
           </div>

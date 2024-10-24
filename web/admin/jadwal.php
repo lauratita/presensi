@@ -39,8 +39,6 @@ include '../template/headerAdmin.php'; ?>
                                 <th>Kelas</th> 
                                 <th>Jam Masuk</th> 
                                 <th>Jam Keluar</th>
-                                <th>Toleransi Masuk</th> 
-                                <th>Toleransi Pulang</th> 
                                 <th>Aksi</th>       
                             </tr>
                         </thead>
@@ -51,8 +49,7 @@ include '../template/headerAdmin.php'; ?>
                                 <td>X RPL 1</td>
                                 <td>06:00</td>
                                 <td>17:00</td>
-                                <td>05:00</td>
-                                <td>15:00</td>
+                                
                                 <td><!-- Circle Buttons (Small) -->
                                     <a href="#" class="btn btn-info btn-circle btn-sm">
                                         <i class="fas fa-eye"></i>
@@ -76,29 +73,32 @@ include '../template/headerAdmin.php'; ?>
             <div class="card shadow mb-4 mt-4">
                 <div class="card-body">
                 <form>
-                    <div class="form-group">
-                        <label for="kelas">Kelas</label>
-                        <select class="form-control" id="kelas" name="kelas">
-                            <option value="A">X RPL 1</option>
-                            <option value="B">X RPL 2</option>
-                            <option value="C">X1 TKJ 1</option>
-                            <!-- Add more class options if needed -->
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="hari">Hari</label>
-                        <select class="form-control" id="hari" name="hari">
-                            <option value="senin">Senin</option>
-                            <option value="selasa">Selasa</option>
-                            <option value="rabu">Rabu</option>
-                            <option value="rabu">Kamis</option>
-                            <option value="rabu">Jum'at</option>
-                            <option value="rabu">Sabtu</option>
-                            <!-- Add other days as needed -->
+                    <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label for="kelas">Kelas</label>
+                            <select class="form-control" id="kelas" name="kelas">
+                                <option value="A">X RPL 1</option>
+                                <option value="B">X RPL 2</option>
+                                <option value="C">X1 TKJ 1</option>
+                                <!-- Add more class options if needed -->
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label for="hari">Hari</label>
+                            <select class="form-control" id="hari" name="hari">
+                                <option value="senin">Senin</option>
+                                <option value="selasa">Selasa</option>
+                                <option value="rabu">Rabu</option>
+                                <option value="rabu">Kamis</option>
+                                <option value="rabu">Jum'at</option>
+                                <option value="rabu">Sabtu</option>
+                                <!-- Add other days as needed -->
 
-                        </select>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
+                    <div class="col-md-3 mt-3">
                         <label for="jam-mulai">Jam Masuk</label>
                         <div class="time-picker-container">
                             <select id="jam-mulai-hour" name="jam-mulai-hour">
@@ -122,7 +122,7 @@ include '../template/headerAdmin.php'; ?>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="col-md-3 mt-3">
                         <label for="jam-selesai">Jam Keluar</label>
                         <div class="time-picker-container">
                             <select id="jam-keluar-hour" name="jam-keluar-hour">
@@ -144,7 +144,7 @@ include '../template/headerAdmin.php'; ?>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="col-md-3 mt-3">
                         <label for="jam-selesai">Toleransi Masuk</label>
                         <div class="time-picker-container">
                             <select id="toleransi-masuk-hour" name="toleransi-masuk-hour">
@@ -166,7 +166,7 @@ include '../template/headerAdmin.php'; ?>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="col-md-3 mt-3">
                         <label for="jam-selesai">Toleransi Keluar</label>
                         <div class="time-picker-container">
                             <select id="toleransi-keluar-hour" name="toleransi-keluar-hour">
@@ -188,7 +188,8 @@ include '../template/headerAdmin.php'; ?>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group text-right">
+                    </div>
+                    <div class="form-group text-right mt-3">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
