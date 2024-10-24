@@ -10791,6 +10791,11 @@ a:focus {
   font-weight: 700;
 }
 
+.sidebar .nav-item .collapse .collapse-inner .collapse-item.active:hover,
+.sidebar .nav-item .collapsing .collapse-inner .collapse-item.active:hover {
+  color: #000; /* Ubah warna teks menjadi hitam saat hover pada item aktif */
+}
+
 .sidebar #sidebarToggle {
   width: 2.5rem;
   height: 2.5rem;
