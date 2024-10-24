@@ -1,3 +1,4 @@
+<?php $namaGuru = isset($_SESSION['namaPegawai']) ? $_SESSION['namaPegawai'] : 'Guru';  ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Admin</title>
+    <title>Dashboard Wali Kelas</title>
 
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -115,7 +116,10 @@
                     <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <h5 class="m-0" style="color: #f48a4e;">Welcome admin, Have a Nice Day!!!</h5>
+                        <h5 class="m-0" style="color: #f48a4e;">Welcome
+                            <?php echo htmlspecialchars($namaGuru); ?>, Have
+                            a Nice
+                            Day!!!</h5>
                     </form>
 
                     <!-- Topbar Navbar -->
@@ -124,7 +128,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Mr. Douglas McGee</span>
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo htmlspecialchars($namaGuru); ?></span>
                                 <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -135,7 +140,7 @@
                                     <span>Wali Kelas</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" id="btn-logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2" style="color: #f48a4e;"></i>
                                     Logout
                                 </a>
@@ -143,4 +148,5 @@
                         </li>
                     </ul>
                 </nav>
+
                 <!-- End of Topbar -->

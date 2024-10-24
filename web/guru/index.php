@@ -1,7 +1,24 @@
-<?php include '../template/headerGuru.php'; ?>
+<?php 
+session_start();
+include '../template/headerGuru.php';
+?>
 
 <!-- Begin Page Content -->
 <div class="container text-center">
+    <!-- SweetAlert jika login berhasil -->
+    <?php if(isset($_SESSION['login_success'])): ?>
+    <script src="../assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: '<?php echo $_SESSION['login_success']; ?>',
+        showConfirmButton: false,
+        timer: 1500
+    });
+    </script>
+    <!-- menghapus session setelah ditampilkan -->
+    <?php unset($_SESSION['login_success']); ?>
+    <?php endif ?>
     <!-- Content Row -->
     <div class="row">
         <!-- Statistik Siswa -->

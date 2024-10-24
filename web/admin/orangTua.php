@@ -6,20 +6,22 @@ include '../template/headerAdmin.php'; ?>
 <body>
     <div class="container-fluid">
         <!-- Page Heading -->
-    <h6 class="m-0 mt-4 mb-4 font-weight-bold text-primary"><span class="text-muted fw-flight">Data Orang Tua</span></h6>
+        <h6 class="m-0 mt-4 mb-4 font-weight-bold text-primary"><span class="text-muted fw-flight">Data Orang Tua</span>
+        </h6>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <button class="nav-link active" id="nav-dataOrtu-tab" data-toggle="tab" href="#tab-dataOrtu"
-                data-bs-target="#nav-dataOrtu" type="button" role="tab" aria-controls="tab-dataOrtu"
-                aria-selected="true">Data</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" id="nav-tambahOrtu-tab" data-toggle="tab" href="#tab-tambahOrtu"
-                data-bs-target="#nav-tambahOrtu" type="button" role="tab" aria-controls="tab-tambahOrtu"
-                aria-selected="false">Tambah Data</button>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="nav-dataOrtu-tab" data-toggle="tab" href="#tab-dataOrtu"
+                    data-bs-target="#nav-dataOrtu" type="button" role="tab" aria-controls="tab-dataOrtu"
+                    aria-selected="true">Data</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="nav-tambahOrtu-tab" data-toggle="tab" href="#tab-tambahOrtu"
+                    data-bs-target="#nav-tambahOrtu" type="button" role="tab" aria-controls="tab-tambahOrtu"
+                    aria-selected="false">Tambah Data</button>
+            </li>
+        </ul>
+
 
     <div class="tab-content" id="TabContent">
         <!-- Tab Data Ortu -->
@@ -123,28 +125,28 @@ include '../template/headerAdmin.php'; ?>
         </div>
     </div>
 
-    </div>
-
     <!-- Tombol Hapus -->
-    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Apakah Anda yakin ingin menghapus item ini?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-danger">Hapus</button>
-          </div>
+    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus item ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger">Hapus</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 </body>
+
 </html>
 <?php include '../template/footerAdmin.php'; ?>
