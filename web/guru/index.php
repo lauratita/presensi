@@ -19,6 +19,7 @@ include '../template/headerGuru.php';
     <!-- menghapus session setelah ditampilkan -->
     <?php unset($_SESSION['login_success']); ?>
     <?php endif ?>
+
     <!-- Content Row -->
     <div class="row">
         <!-- Statistik Siswa -->

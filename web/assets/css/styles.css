@@ -163,21 +163,21 @@ a:hover {
 }
 
 .btn {
-	display: block;
-	width: 100%;
-	height: 50px;
-	border-radius: 25px;
-	outline: none;
-	border: none;
-	background-color: #f48a4e !important;
-	background-image: none !important; /* Hapus background-image */
-	font-size: 1.2rem;
-	color: #fff;
-	font-family: "Poppins", sans-serif;
-	text-transform: uppercase;
-	margin: 1rem 0;
-	cursor: pointer;
-	transition: background-color 0.5s, box-shadow 0.5s;
+  display: block;
+  width: 100%;
+  height: 50px;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  background-color: #f48a4e !important;
+  background-image: none !important; /* Hapus background-image */
+  font-size: 1.2rem;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  margin: 1rem 0;
+  cursor: pointer;
+  transition: background-color 0.5s, box-shadow 0.5s;
 }
 
 .btn:hover {
@@ -222,4 +222,24 @@ a:hover {
   .login-content {
     justify-content: center;
   }
+}
+
+.form-group-pass {
+  position: relative;
+}
+
+.form-group-pass img {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  transform: translateY(-50%);
+  max-width: 100%;
+  height: 18px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.form-group-pass img:hover {
+  opacity: 1;
 }

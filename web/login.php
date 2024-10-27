@@ -77,7 +77,7 @@ if (isset($_POST['submit'])) {
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
@@ -113,13 +113,14 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <!-- Password -->
-                <div class="form-group">
+                <div class="form-group form-group-pass">
                     <input type="password" name="txt_passPegawai"
                         class="form-control form-control-user <?php echo !empty($errorPass) ? 'is-invalid' : ''; ?>"
-                        id="exampleInputPassword" placeholder="Password">
+                        id="password" placeholder="Password">
+                    <img src="img/eye-close.png" id="eyeIcon">
                     <!-- Tampilkan error password -->
                     <?php if (!empty($errorPass)): ?>
-                    <div class="invalid-feedback">
+                    <div class=" invalid-feedback">
                         <?php echo $errorPass; ?>
                     </div>
                     <?php endif; ?>
@@ -136,6 +137,22 @@ if (isset($_POST['submit'])) {
             </form>
         </div>
     </div>
+
+    <!-- show and hide password -->
+    <script>
+    let eyeIcon = document.getElementById("eyeIcon");
+    let password = document.getElementById("password");
+
+    eyeIcon.onclick = function() {
+        if (password.type == "password") {
+            password.type = "text"
+            eyeIcon.src = "img/eye.png"
+        } else {
+            password.type = "password"
+            eyeIcon.src = "img/eye-close.png"
+        }
+    }
+    </script>
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
