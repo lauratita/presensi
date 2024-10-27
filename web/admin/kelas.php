@@ -86,72 +86,70 @@ require ('../config/config.php');
     </div>
 
     <!-- Modal Tambah Data Kelas -->
-    <div class="modal fade" id="modalTambahKelas" tabindex="-1" role="dialog" aria-labelledby="modalTambahKelasLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTambahKelasLabel">Tambah Data Kelas</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form untuk tambah data kelas -->
-                    <form id="formTambahKelas">
-                        <div class="form-group">
-                            <label for="namaKelas">Nama Kelas</label>
-                            <input type="text" class="form-control" id="namaKelas" placeholder="Masukkan Nama Kelas">
-                        </div>
-                        <div class="form-group">
-                            <label for="waliKelas">Wali Kelas</label>
-                            <input type="text" class="form-control" id="waliKelas"
-                                placeholder="Masukkan Nama Wali Kelas">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="btnSimpanKelas">Simpan</button>
-                </div>
-            </div>
+    <div class="modal fade" id="modalTambahKelas" tabindex="-1" role="dialog" aria-labelledby="modalTambahKelasLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTambahKelasLabel">Tambah Data Kelas</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form untuk tambah data kelas -->
+            <form id="formTambahKelas" >
+              <div class="form-group">
+                <label for="namaKelas">Nama Kelas</label>
+                <input type="text" class="form-control" id="namaKelas" placeholder="Masukkan Nama Kelas">
+              </div>
+              <div class="form-group">
+                <label for="waliKelas">Wali Kelas</label>
+                <select class="form-control" id="walikelas" name="walikelas" >
+                                    <option value="">Pilih waliKelas</option>
+                                    <option value="Laki-laki">Bariza</option>
+                                    <option value="Perempuan">Hendra</option>
+                                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" id="btnSimpanKelas">Simpan</button>
+          </div>
         </div>
     </div>
 
     <!-- Modal Edit Data Kelas -->
-    <div class="modal fade" id="modalEditKelas" tabindex="-1" role="dialog" aria-labelledby="modalEditKelasLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTambahKelasLabel">Edit Data Kelas</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form untuk tambah data kelas -->
-                    <form id="formTambahKelas">
-                        <div class="form-group">
-                            <label for="idKelas">ID Kelas</label>
-                            <input type="text" class="form-control" id="idKelas" placeholder="Masukkan ID Kelas">
-                        </div>
-                        <div class="form-group">
-                            <label for="namaKelas">Nama Kelas</label>
-                            <input type="text" class="form-control" id="namaKelas" placeholder="Masukkan Nama Kelas">
-                        </div>
-                        <div class="form-group">
-                            <label for="waliKelas">Wali Kelas</label>
-                            <input type="text" class="form-control" id="waliKelas"
-                                placeholder="Masukkan Nama Wali Kelas">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="btnSimpanKelas">Perbarui</button>
-                </div>
-            </div>
+    <div class="modal fade" id="modalEditKelas" tabindex="-1" role="dialog" aria-labelledby="modalEditKelasLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTambahKelasLabel">Edit Data Kelas</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form untuk tambah data kelas -->
+            <form id="formTambahKelas">
+              <div class="form-group">
+                <label for="namaKelas">Nama Kelas</label>
+                <input type="text" class="form-control" id="namaKelas" placeholder="Masukkan Nama Kelas">
+              </div>
+              <div class="form-group">
+                <label for="waliKelas">Wali Kelas</label>
+                <select class="form-control" id="walikelas" name="walikelas" >
+                                    <option value="">Pilih Wali Kelas</option>
+                                    <option value="Laki-laki">Bariza</option>
+                                    <option value="Perempuan">Hendra</option>
+                                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-primary" id="btnSimpanKelas">Perbarui</button>
+          </div>
         </div>
     </div>
 

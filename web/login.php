@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
             if ($nikPegawai == $nik && $password == $pass) {
                 // set session untuk menyimpan pesan suskses login
                 $_SESSION['login_success'] = 'Login Berhasil!';
-                $_SESSION['namaPegawai'] = $namaPegawai; //menyimpan nama pegawai
+                $_SESSION['namaPegawai'] = $namaPegawai; // menyimpan nama pegawai
                 if ($id_jenis == 1) {
                     header('Location: ./admin/index.php');
                 } elseif ($id_jenis == 2) {
@@ -51,28 +51,25 @@ if (isset($_POST['submit'])) {
                     echo "<script>alert('Pegawai tidak ditemukan');window.location.href='login.php'</script>";
                 }
             } else {
+                // NIK ada, pass salah
                 $errorPass = 'Password salah';
             }
         } else {
-            $errorNik = 'NIK salah';
+            // NIK tidak ada
+            $errorNik = 'NIK tidak terdaftar';
         }
     }
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekInOut</title>
-
     <!-- Custom fonts for this template-->
     <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -80,78 +77,93 @@ if (isset($_POST['submit'])) {
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="../css/sb-admin-2.css" rel="stylesheet">
-
+    <link href="./css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Sweetalert 2 CSS -->
+    <link rel="stylesheet" href="./assets/plugins/sweetalert2/sweetalert2.min.css">
 </head>
 
-<body class="login-page bg-gradient" style="background-color: #DB7A43">
-
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-        <div class="col-xl-10 col-lg-12 col-md-9">
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="d-flex justify-content-center align-items-center vh-100 col-lg-6">
-                            <img src="./img/Logo.png" alt="Logo" class="img-fluid">
-                        </div>
-                        <div class="col-lg-6" style="padding-top: 100px;">
-                            <div class="p-5">
-                                <div class="text-center logo-login">
-                                    <h1 class="h4 text-warning-900 mb-4" style="color: #f48a4e"><img
-                                            src="./img/logo2.png" alt="">CekInOut
-                                    </h1>
-                                </div>
-                                <!-- form login -->
-                                <form class="user" action="" method="POST">
-                                    <!-- NIK -->
-                                    <div class="form-group has-validation">
-                                        <input type="text" name="txt_nikPegawai"
-                                            class="form-control form-control-user <?php echo !empty($errorNik) ? 'is-invalid' : ''; ?>"
-                                            id="nikPegawai" aria-describedby="" placeholder="Nomor Induk Karyawan (NIK)"
-                                            value="<?php echo isset($nik) ? htmlspecialchars($nik) : ''; ?>">
-                                        <!-- Tampilkan error NIK -->
-                                        <?php if (!empty($errorNik)): ?>
-                                        <div class="invalid-feedback">
-                                            <?php echo $errorNik; ?>
-                                        </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- end NIK -->
-                                    <!-- password -->
-                                    <div class="form-group">
-                                        <input type="password" name="txt_passPegawai"
-                                            class="form-control form-control-user <?php echo !empty($errorPass) ? 'is-invalid' : ''; ?>"
-                                            id="exampleInputPassword" placeholder="Password">
-                                        <!-- Tampilkan error password -->
-                                        <?php if (!empty($errorPass)): ?>
-                                        <div class="invalid-feedback">
-                                            <?php echo $errorPass; ?>
-                                        </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <!-- end password -->
-                                    <div class="mb-3 text-right">
-                                        <a class="small" href="../forgotPassword/forgot-password.php"
-                                            style="color: #f48a4e;">Forgot Password?</a>
-                                    </div>
-                                    <button type="submit" name="submit" class="btn text-white btn-user btn-block"
-                                        style="background-color: #f48a4e;" id="btn-login">
-                                        Login
-                                    </button>
-                                </form>
-                                <!-- end form login -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+<body>
+    <img class="wave" src="./img/wave.png" alt="Wave Image">
+    <div class="container">
+        <div class="img">
+            <img src="./img/bg.svg" alt="Background Image">
         </div>
+        <div class="login-content">
+            <form action="" method="POST" class="user">
+                <img src="./img/logo-skaga.jpeg" alt="Logo">
+                <h2 class="title" style="color: #f48a4e;">CekInOut</h2>
 
+                <!-- NIK -->
+                <div class="form-group has-validation">
+                    <input type="text" name="txt_nikPegawai"
+                        class="form-control form-control-user <?php echo !empty($errorNik) ? 'is-invalid' : ''; ?>"
+                        id="nikPegawai" aria-describedby="" placeholder="Nomor Induk Karyawan (NIK)"
+                        value="<?php echo isset($nik) ? htmlspecialchars($nik) : ''; ?>">
+                    <!-- Tampilkan error NIK -->
+                    <?php if (!empty($errorNik)): ?>
+                    <div class="invalid-feedback">
+                        <?php echo $errorNik; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group form-group-pass">
+                    <input type="password" name="txt_passPegawai"
+                        class="form-control form-control-user <?php echo !empty($errorPass) ? 'is-invalid' : ''; ?>"
+                        id="password" placeholder="Password">
+                    <img src="img/eye-close.png" id="eyeIcon">
+                    <!-- Tampilkan error password -->
+                    <?php if (!empty($errorPass)): ?>
+                    <div class=" invalid-feedback">
+                        <?php echo $errorPass; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <!-- end password -->
+
+                <div class="mb-3 text-right">
+                    <a class="small" href="../forgotPassword/forgot-password.php" style="color: #f48a4e;">Forgot
+                        Password?</a>
+                </div>
+                <button type="submit" name="submit" class="btn text-white btn-user btn-block" id=" btn-login">
+                    Login
+                </button>
+            </form>
+        </div>
     </div>
 
+    <!-- show and hide password -->
+    <script>
+    let eyeIcon = document.getElementById("eyeIcon");
+    let password = document.getElementById("password");
+
+    eyeIcon.onclick = function() {
+        if (password.type == "password") {
+            password.type = "text"
+            eyeIcon.src = "img/eye.png"
+        } else {
+            password.type = "password"
+            eyeIcon.src = "img/eye-close.png"
+        }
+    }
+    </script>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Sweetalert2 JS -->
+    <script src="./assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Main JS -->
+    <script src="./js/main.js"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -164,7 +176,6 @@ if (isset($_POST['submit'])) {
 
     <!-- SweetAlert -->
     <script src="./assets/js/jquery-3.7.1.min.js"></script>
-    <script src="./assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
