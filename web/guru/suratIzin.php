@@ -141,7 +141,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>
                                                     <button type="button" class="btn btn-danger">Disable</button>
-                                                    <button type="button" class="btn btn-primary">Verified</button>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -205,7 +205,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>
                                                     <button type="button" class="btn btn-danger">Disable</button>
-                                                    <button type="button" class="btn btn-primary">Verified</button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
