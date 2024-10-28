@@ -1,6 +1,5 @@
-<<<<<<< Updated upstream
-<?php include '../template/headerAdmin.php'; ?>
-=======
+
+
 <?php 
 $activeMenu = 'pegawai'; 
 $activeSubmenu = 'jenis pegawai';
@@ -55,7 +54,8 @@ if (isset($_GET['hapus_id'])) {
 }
 ?>
 
->>>>>>> Stashed changes
+
+
 <!DOCTYPE html>
 <html lang="en">
 <body>

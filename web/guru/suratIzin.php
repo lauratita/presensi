@@ -45,155 +45,42 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
-                                        <td>PPLG1001</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>PPLG1002</td>
-                                        <td>Melvina Citra Saqina</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>PPLG1003</td>
+                                        <td>15</td>
+                                        <td>PPLG10011</td>
                                         <td>Hovivah</td>
                                         <td><span class="badge bg-label-warning me-1">Unverified</span></td>
                                         <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
+                                            <button type="button" data-toggle="modal" data-target="#verifiedizin"
+                                                class="btn btn-sm btn-primary">Verified</button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>PPLG1005</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>PPLG1006</td>
-                                        <td>Dwi Farhan</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>PPLG1007</td>
-                                        <td>M. Dien Vito</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>PPLG1008</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>PPLG1009</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>PPLG10010</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>PPLG1004</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>11</td>
-                                        <td>PPLG1009</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>PPLG10011</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>PPLG10015</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>14</td>
-                                        <td>PPLG10012</td>
-                                        <td>Ita Nurlaili</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>15</td>
-                                        <td>PPLG10011</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
-                                        <td>
-                                            <form action="" id=""><button type="button" class="btn btn-sm btn-primary"
-                                                    onclick="">Verified</button></form>
-                                        </td>
-                                    </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="verifiedizin" tabindex="-1"
+                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit User</h3>
+                                                    <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6>NIS : 1231021 </h6>
+                                                    <h6>NAMA : </h6>
+                                                    <h6>FOTO SURAT : </h6>
+                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-danger">Disable</button>
+                                                    <button type="button" class="btn btn-primary">Verified</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tbody>
                             </table>
                         </div>
@@ -218,99 +105,47 @@
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>1</td>
                                         <td>PPLG1001</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>PPLG1002</td>
-                                        <td>Melvina Citra Saqina</td>
-                                        <td>Sakit</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>PPLG1003</td>
                                         <td>Hovivah</td>
                                         <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Verified</span></td>
+                                        <td>
+                                            <button type="button" data-toggle="modal" data-target="#updateverified"
+                                                class="btn btn-sm btn-warning ">Change Verified</button>
                                     </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>PPLG1005</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>PPLG1006</td>
-                                        <td>Dwi Farhan</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>PPLG1007</td>
-                                        <td>M. Dien Vito</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>PPLG1008</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Izin</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>PPLG1009</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>PPLG10010</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>PPLG1004</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>11</td>
-                                        <td>PPLG1009</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>PPLG10011</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>PPLG10015</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>14</td>
-                                        <td>PPLG10012</td>
-                                        <td>Ita Nurlaili</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>15</td>
-                                        <td>PPLG10011</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Alpha</td>
-                                    </tr>
+                                    <div class="modal fade" id="updateverified" tabindex="-1"
+                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Verified</h3>
+                                                    <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6>NIS : 1231021 </h6>
+                                                    <h6>NAMA : </h6>
+                                                    <h6>FOTO SURAT : </h6>
+                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-danger">Disable</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tbody>
                             </table>
                         </div>
@@ -334,99 +169,47 @@
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>1</td>
                                         <td>PPLG1001</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>PPLG1002</td>
-                                        <td>Melvina Citra Saqina</td>
-                                        <td>Sakit</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>PPLG1003</td>
                                         <td>Hovivah</td>
                                         <td>Hadir</td>
+                                        <td><span class="badge bg-label-warning me-1">Disable</span></td>
+                                        <td>
+                                            <button type="button" data-toggle="modal" data-target="#updatedisable"
+                                                class="btn btn-sm btn-warning ">Change Disable</button>
                                     </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>PPLG1005</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>PPLG1006</td>
-                                        <td>Dwi Farhan</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>PPLG1007</td>
-                                        <td>M. Dien Vito</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>7</td>
-                                        <td>PPLG1008</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Izin</td>
-                                    </tr>
-                                    <tr>
-                                        <td>8</td>
-                                        <td>PPLG1009</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>9</td>
-                                        <td>PPLG10010</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>10</td>
-                                        <td>PPLG1004</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>11</td>
-                                        <td>PPLG1009</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>12</td>
-                                        <td>PPLG10011</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>13</td>
-                                        <td>PPLG10015</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>14</td>
-                                        <td>PPLG10012</td>
-                                        <td>Ita Nurlaili</td>
-                                        <td>Hadir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>15</td>
-                                        <td>PPLG10011</td>
-                                        <td>Laura Tita A.G</td>
-                                        <td>Alpha</td>
-                                    </tr>
+                                    <div class="modal fade" id="updatedisable" tabindex="-1"
+                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Disable</h3>
+                                                    <button class="close" type="button" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6>NIS : 1231021 </h6>
+                                                    <h6>NAMA : </h6>
+                                                    <h6>FOTO SURAT : </h6>
+                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-success">Verified</button>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tbody>
                             </table>
                         </div>

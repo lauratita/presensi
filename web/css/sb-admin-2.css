@@ -27,6 +27,7 @@
   --primary: #4e73df;
   --secondary: #858796;
   --success: #1cc88a;
+  --bgnav : #e0e0e0;
   --info: #36b9cc;
   --warning: #f6c23e;
   --danger: #e74a3b;
@@ -175,13 +176,13 @@ sup {
 }
 
 a {
-  color: #4e73df;
+  color: #f48a4e;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #224abe;
+  color: #f48a4e;
   text-decoration: underline;
 }
 
@@ -10766,26 +10767,33 @@ a:focus {
   padding: 0.5rem 1rem;
   margin: 0 0.5rem;
   display: block;
-  color: #3a3b45;
+  color: white;
   text-decoration: none;
   border-radius: 0.35rem;
   white-space: nowrap;
+
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:hover,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item:hover {
-  background-color: #eaecf4;
+  background-color: white;
+  color: #000;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item:active,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item:active {
-  background-color: #dddfeb;
+  background-color: white;
 }
 
 .sidebar .nav-item .collapse .collapse-inner .collapse-item.active,
 .sidebar .nav-item .collapsing .collapse-inner .collapse-item.active {
-  color: #4e73df;
+  color: white;
   font-weight: 700;
+}
+
+.sidebar .nav-item .collapse .collapse-inner .collapse-item.active:hover,
+.sidebar .nav-item .collapsing .collapse-inner .collapse-item.active:hover {
+  color: #000; /* Ubah warna teks menjadi hitam saat hover pada item aktif */
 }
 
 .sidebar #sidebarToggle {
@@ -11711,4 +11719,100 @@ form.user .text-right {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.container-upfoto{
+  max-width: 200px;
+  width: 100%;
+  background: #fff;
+  padding: 30px;
+  border-radius: 30px;
+  gap: 20px;
+  padding: 30px;
+}
+
+.img-area{
+  position: relative;
+    width: 100%;
+    height: 240px;
+    background: var(--grey);
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.img-area .icon{
+  font-size: 100px;
+}
+
+.img-area h3 {
+  font-size: 20px;
+  font-weight: 50px;
+  margin-bottom: 6px;
+}
+
+.img-area p{
+  color: #999;
+}
+
+.img-area p span{
+  font-weight: 600;
+}
+
+.img-area img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 100;
+}
+
+.img-area::before{
+  content: attr(data-img);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 5);
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: all .3s ease;
+  z-index: 200;
+}
+
+.img-area:hover::before{
+  opacity: 1;
+
+}
+.select-image{
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all .3s ease;
+  align-items: center;
+}
+
+.select-image:hover{
+  background: var(--dark-blue);
 }

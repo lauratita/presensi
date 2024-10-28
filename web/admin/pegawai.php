@@ -1,6 +1,4 @@
-<<<<<<< Updated upstream
-<?php include '../template/headerAdmin.php'; ?>
-=======
+
 <?php 
 $activeMenu = 'pegawai'; // Menentukan menu 'Pegawai' yang aktif
 $activeSubmenu = 'pegawai';
@@ -21,7 +19,7 @@ if ($conn->connect_error) {
 }
 ?>
 
->>>>>>> Stashed changes
+
 <!DOCTYPE html>
 <html lang="en">
 <body>

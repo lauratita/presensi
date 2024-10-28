@@ -67,22 +67,35 @@
 
             <!-- Nav Item - Data -->
             <li class="nav-item">
-                <a class="nav-link collapsed <?php echo ($activeMenu == 'siswa') ? 'active' : ''; ?>" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed <?php echo ($activeMenu == 'siswa') ? 'active' : ''; ?>" href="#"
+                    data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true"
+                    aria-controls="collapseUtilities">
                     <i class="bi bi-mortarboard" style="color: #f48a4e"></i>
                     <span class="text-secondary">Siswa</span>
                 </a>
-                <div id="collapseUtilities" class="collapse <?php echo ($activeMenu == 'siswa') ? 'show' : ''; ?>" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-secondary py-2 collapse-inner rounded">
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'siswa') ? 'active' : ''; ?>" href="siswa.php"  style="color: #f8f9fc">Siswa</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'kelas') ? 'active' : ''; ?>" href="kelas.php" style="color: #f8f9fc">Kelas</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>" href="jadwal.php" style="color: #f8f9fc">Jadwal</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>" href="" style="color: #f8f9fc">Other</a>
+                <div id="collapseUtilities" class="collapse <?php echo ($activeMenu == 'siswa') ? 'show' : ''; ?>"
+                    aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                    <div class="py-2 collapse-inner rounded" style="background-color: #ffb347">
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'siswa') ? 'active' : ''; ?>"
+                            href="siswa.php">Siswa</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'kelas') ? 'active' : ''; ?>"
+                            href="kelas.php">Kelas</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>"
+                            href="jadwal.php">Jadwal</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>"
+                            href="">Other</a>
                     </div>
                 </div>
             </li>
 
+            <!-- Nav Item - Orang Tuas -->
+            <li class="nav-item">
+                <a class="nav-link" href="orangTua.php">
+                    <i class="bi bi-people" style="color: #f48a4e;"></i>
+                    <span class="text-secondary <?php echo ($activeSubmenu == 'ortu') ? 'active' : ''; ?>">Wali
+                        Murid</span>
+                </a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -93,30 +106,29 @@
 
             <!-- Nav Item - Pages Pegawai -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed <?php echo ($activeMenu == 'pegawai') ? 'active' : ''; ?>" href="#"
+                    data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="bi bi-person-badge" style="color : #f48a4e "></i>
                     <span class="text-secondary">Pegawai</span>
                 </a>
-<<<<<<< Updated upstream
+
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-secondary py-2 collapse-inner rounded">
                         <a class="collapse-item active" href="pegawai.php" style="color:white">Pegawai</a>
-                        <a class="collapse-item" href="jenisPegawai.php" style="color:white">Jabatan</a>
-=======
                 <div id="collapseTwo" class="collapse <?php echo ($activeMenu == 'pegawai') ? 'show' : ''; ?>"
                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded " style="background-color: #ffb347">
                         <a class="collapse-item <?php echo ($activeSubmenu == 'pegawai') ? 'active' : ''; ?>"
                             href="pegawai.php">Pegawai</a>
                         <a class="collapse-item <?php echo ($activeSubmenu == 'jenispegawai') ? 'active' : ''; ?>"
+
                             href="jenisPegawai.php">Jenis Pegawai</a>
->>>>>>> Stashed changes
+s
                     </div>
                 </div>
             </li>
 
-            
+
 
 
             <!-- Divider -->
@@ -140,7 +152,7 @@
                     <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <h5 class="m-0" style="color: #f48a4e;">Welcome admin, Have a Nice Day!!!</h5>
+                        <h5 class="m-0" style="color: #f48a4e;">Welcome Admin, Have a Nice Day!!!</h5>
                     </form>
 
                     <!-- Topbar Navbar -->
@@ -149,7 +161,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Mr. Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
                                 <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -157,10 +169,10 @@
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item">
                                     <i class="fas fa-user fa-sm fa-fw mr-2" style="color: #f48a4e;"></i>
-                                    <span>Wali Kelas</span>
+                                    <span>Admin</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" id="btn-logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2" style="color: #f48a4e;"></i>
                                     Logout
                                 </a>
