@@ -1,13 +1,10 @@
 <?php 
 
-$server = "localhost";
-$username = "root";
-$password = "";
-$db = "db_presensicekinout";
-// urutan pemanggilan variabelnya sama
-$koneksi = mysqli_connect($server, $username, $password, $db);
-
-// cek koneksi, gagal atau tidak
-if (mysqli_connect_errno()){
-    echo "Koneksi gagal: " . mysqli_connect_error();
+try {
+    $con = new PDO('mysql:host=localhost;dbname=db_presensicekinout', 'root', '', array(PDO::ATTR_PERSISTENT => true));
+} catch (PDOException $e){
+    echo $e->getMessage();
 }
+
+include_once __DIR__ . '/../Auth.php';
+$user = new Auth($con);

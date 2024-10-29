@@ -1,6 +1,7 @@
 <?php 
-session_start();
-include '../template/headerAdmin.php'; ?>
+include '../template/headerAdmin.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

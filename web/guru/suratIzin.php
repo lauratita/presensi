@@ -115,7 +115,7 @@
                                         <td>PPLG1001</td>
                                         <td>Hovivah</td>
                                         <td>Hadir</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td><span class="badge bg-label-warning me-1">Verified</span></td>
                                         <td>
                                             <button type="button" data-toggle="modal" data-target="#updateverified"
                                                 class="btn btn-sm btn-warning ">Change Verified</button>
@@ -141,7 +141,7 @@
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>
                                                     <button type="button" class="btn btn-danger">Disable</button>
-                                                    <button type="button" class="btn btn-primary">Verified</button>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -179,7 +179,7 @@
                                         <td>PPLG1001</td>
                                         <td>Hovivah</td>
                                         <td>Hadir</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td><span class="badge bg-label-warning me-1">Disable</span></td>
                                         <td>
                                             <button type="button" data-toggle="modal" data-target="#updatedisable"
                                                 class="btn btn-sm btn-warning ">Change Disable</button>
@@ -204,8 +204,8 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger">Disable</button>
-                                                    <button type="button" class="btn btn-primary">Verified</button>
+                                                    <button type="button" class="btn btn-success">Verified</button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
