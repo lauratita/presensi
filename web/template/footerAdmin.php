@@ -71,9 +71,9 @@
 <!-- Tab Data Table -->
 <script>
 $(document).ready(function() {
-    $("#dataTable-unVerified").DataTable();
-    $("#dataTable-verified").DataTable();
-    $("#dataTable-disable").DataTable();
+    $("#dataTableOrtu").DataTable();
+    $("#dataTableSiswa").DataTable();
+    $("#dataTableJadwal").DataTable();
 });
 </script>
 
