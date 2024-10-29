@@ -1,18 +1,23 @@
 <?php 
-require ('./config/config.php');
+require_once ('./config/config.php');
 
-session_start();
+if($user->isLoggedIn()){
+    if (isset($_SESSION['id_jenis'])){
+        if($_SESSION['id_jenis'] == 1){
+            header("location: ./admin/index.php");
+        } elseif ($_SESSION['id_jenis'] == 2){
+            header("location: ./guru/index.php");
+        }
+    }
+}
 
-// Inisialisasi variabel pesan error
-$errorNik = '';
-$errorPass = '';
-$errorMsg = '';
+$errorNik = $errorPass = $errorMsg = '';
 
-if (isset($_POST['submit'])) {
+if(isset($_POST['submit'])){
     $nik = $_POST['txt_nikPegawai'];
     $pass = $_POST['txt_passPegawai'];
 
-    // Validasi apakah NIK atau password kosong
+     // Validasi apakah NIK atau password kosong
     if (empty(trim($nik))) {
         $errorNik = 'NIK wajib diisi';
     } elseif (strlen($nik) < 10) {
@@ -23,41 +28,18 @@ if (isset($_POST['submit'])) {
         $errorPass = 'Password wajib diisi';
     }
 
-    // Jika tidak ada error, lanjutkan ke validasi database
-    if (empty($errorNik) && empty($errorPass)) {
-        // select data berdasarkan nik dari db
-        $query = "SELECT * FROM tb_pegawai WHERE nik = '$nik'";
-        $result = mysqli_query($koneksi, $query);
-        $num = mysqli_num_rows($result);
-
-        if ($num != 0) {
-            if ($row = mysqli_fetch_array($result)) {
-                $nikPegawai = $row['nik'];
-                $namaPegawai = $row['nama'];
-                $password = $row['password'];
-                $jenis_kelamin = $row['jenis_kelamin'];
-                $id_jenis = $row['id_jenis'];
-            }
-
-            if ($nikPegawai == $nik && $password == $pass) {
-                // set session untuk menyimpan pesan suskses login
-                $_SESSION['login_success'] = 'Login Berhasil!';
-                $_SESSION['namaPegawai'] = $namaPegawai; // menyimpan nama pegawai
-                if ($id_jenis == 1) {
-                    header('Location: ./admin/index.php');
-                } elseif ($id_jenis == 2) {
-                    header('Location: ./guru/index.php');
-                } else {
-                    echo "<script>alert('Pegawai tidak ditemukan');window.location.href='login.php'</script>";
+    if(empty($errorNik) && empty($errorPass)){
+        if ($user->login($nik, $pass)){
+            if (isset($_SESSION['id_jenis'])){
+                if($_SESSION['id_jenis'] == 1){
+                    header("location: ./admin/index.php");
+                } elseif ($_SESSION['id_jenis'] == 2){
+                    header("location: ./guru/index.php");
                 }
-            } else {
-                // NIK ada, pass salah
-                $errorPass = 'Password salah';
             }
-        } else {
-            // NIK tidak ada
-            $errorNik = 'NIK tidak terdaftar';
         }
+    } else {
+        $errorMsg = $user->getLastError();
     }
 }
 ?>

@@ -1,3 +1,10 @@
+<?php
+require_once ('../config/config.php');
+
+if (!$user->isLoggedIn()){
+    header("location: ../login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
