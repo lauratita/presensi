@@ -118,19 +118,13 @@ if (!$user->isLoggedIn()){
                     <i class="bi bi-person-badge" style="color : #f48a4e "></i>
                     <span class="text-secondary">Pegawai</span>
                 </a>
-
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-secondary py-2 collapse-inner rounded">
-                        <a class="collapse-item active" href="pegawai.php" style="color:white">Pegawai</a>
                 <div id="collapseTwo" class="collapse <?php echo ($activeMenu == 'pegawai') ? 'show' : ''; ?>"
                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded " style="background-color: #ffb347">
                         <a class="collapse-item <?php echo ($activeSubmenu == 'pegawai') ? 'active' : ''; ?>"
                             href="pegawai.php">Pegawai</a>
                         <a class="collapse-item <?php echo ($activeSubmenu == 'jenispegawai') ? 'active' : ''; ?>"
-
                             href="jenisPegawai.php">Jenis Pegawai</a>
-s
                     </div>
                 </div>
             </li>
