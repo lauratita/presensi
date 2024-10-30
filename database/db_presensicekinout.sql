@@ -115,7 +115,8 @@ CREATE TABLE `tb_presensi` (
   `jam_datang` time DEFAULT NULL,
   `jam_pulang` time DEFAULT NULL,
   `valid_foto_datang` tinyint(1) DEFAULT NULL,
-  `valid_foto_pulang` tinyint(1) DEFAULT NULL
+  `valid_foto_pulang` tinyint(1) DEFAULT NULL,
+  `keterangan` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
