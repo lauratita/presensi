@@ -4,9 +4,9 @@ include_once '../admin/service/ortuservice.php';
 
 class OrtuControler{
     private $ortuService;
-    public function __construct(){
-        global $koneksi;
-        $this->ortuService = new OrtuService($koneksi);
+
+    public function __construct($con){
+        $this->ortuService = new OrtuService($con);
     }
 
     public function create($request){
@@ -18,9 +18,9 @@ class OrtuControler{
         $alamat = $request['alamat'];
         $jenis_kelamin = $request['jenis_kelamin'];
         if ($this->ortuService->createOrtu($nik, $nama, $email, $password, $no_hp, $alamat, $jenis_kelamin)) {
-            return true;
+            return json_encode(["message" => "Berhasil tambah data"]);
         }
-        return false;
+        return json_encode(["message" => "Gagal menambah data"]);
     }
 
     public function read(){
@@ -28,9 +28,10 @@ class OrtuControler{
         return json_encode($ortus);
     }
 
-    public function getByNik($request){
-        $ortunik = $this->ortuService->getOrtuByNik();
-        return json_encode($ortunik);
+    public function getByNik($nik){
+        $ortugetnik = $this->ortuService->getOrtuByNik($nik);
+        // return json_encode($ortugetnik);
+        return $ortugetnik;
     }
 
     public function update($request){
@@ -41,7 +42,7 @@ class OrtuControler{
         $no_hp = $request['no_hp'];
         $alamat = $request['alamat'];
         $jenis_kelamin = $request['jenis_kelamin'];
-        if ($this->ortuService->updateOrtu($nik, $nama, $email, $password, $alamat, $jenis_kelamin)) {
+        if ($this->ortuService->updateOrtu($nik, $nama, $email, $password, $no_hp, $alamat, $jenis_kelamin)) {
             return json_encode(["message" => "Berhasil Perbarui Ortu"]);
         }
         return json_encode(["message" => "Gagal Memeperbarui Ortu"]);

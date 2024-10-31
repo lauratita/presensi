@@ -22,16 +22,22 @@ class OrtuService{
     }
 
     public function getAllOrtu(){
+        // $stmt = $this->ortu->read();
+        // $stmt->execute();
+        // $result = $stmt->get_result();
+        // $ortus = $result->fetch_all(MYSQLI_ASSOC);
+        // return $ortus;
         $stmt = $this->ortu->read();
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $ortus = $result->fetch_all(MYSQLI_ASSOC);
+        $ortus = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $ortus;
     }
 
-    public function getOrtuByNik(){
-        $this->ortu->nik = $nik;
-        return $this->ortu->getByNik();
+    public function getOrtuByNik($nik){
+        $ortugetnik = $this->ortu->getByNik($nik);
+        // $ortugetnik = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $ortugetnik;
+        // $ortus = $result->fetch_assoc();
+        // return $ortus;
     }
 
     public function updateOrtu($nik, $nama, $email, $password, $no_hp, $alamat, $jenis_kelamin){
