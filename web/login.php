@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use Web\Auth;
+
 require_once ('./config/config.php');
 
 if($user->isLoggedIn()){
@@ -10,14 +13,13 @@ if($user->isLoggedIn()){
         }
     }
 }
+$errorNik = $errorPassword = $errorMsg = '';
 
-$errorNik = $errorPass = $errorMsg = '';
+if (isset($_POST['submit'])) {
+    $nik = $_POST['txt_nikPegawai'] ?? '';
+    $pass = $_POST['txt_passPegawai'] ?? '';
 
-if(isset($_POST['submit'])){
-    $nik = $_POST['txt_nikPegawai'];
-    $pass = $_POST['txt_passPegawai'];
-
-     // Validasi apakah NIK atau password kosong
+    // Validasi apakah NIK atau password kosong
     if (empty(trim($nik))) {
         $errorNik = 'NIK wajib diisi';
     } elseif (strlen($nik) < 10) {
@@ -25,21 +27,30 @@ if(isset($_POST['submit'])){
     }
 
     if (empty(trim($pass))) {
-        $errorPass = 'Password wajib diisi';
+        $errorPassword = 'Password wajib diisi';
     }
 
-    if(empty($errorNik) && empty($errorPass)){
-        if ($user->login($nik, $pass)){
-            if (isset($_SESSION['id_jenis'])){
-                if($_SESSION['id_jenis'] == 1){
-                    header("location: ./admin/index.php");
-                } elseif ($_SESSION['id_jenis'] == 2){
-                    header("location: ./guru/index.php");
-                }
+    if (empty($errorNik) && empty($errorPassword)) {
+        // Proses login jika tidak ada error di NIK dan password
+        $id_jenis = $user->login($nik, $pass);
+
+        if ($id_jenis === false) {
+            // Ambil error dari Auth jika login gagal
+            $errorMsg = $user->getLastError();
+            if ($errorMsg === "NIK tidak terdaftar") {
+                $errorNik = $errorMsg;
+            } elseif ($errorMsg === "Password salah") {
+                $errorPassword = $errorMsg;
             }
+        } else {
+            // Jika login berhasil, arahkan berdasarkan id_jenis
+            if ($id_jenis == 1) {
+                header("Location: ./admin/index.php");
+            } elseif ($id_jenis == 2) {
+                header("Location: ./guru/index.php");
+            }
+            exit;
         }
-    } else {
-        $errorMsg = $user->getLastError();
     }
 }
 ?>
@@ -97,13 +108,13 @@ if(isset($_POST['submit'])){
                 <!-- Password -->
                 <div class="form-group form-group-pass">
                     <input type="password" name="txt_passPegawai"
-                        class="form-control form-control-user <?php echo !empty($errorPass) ? 'is-invalid' : ''; ?>"
+                        class="form-control form-control-user <?php echo !empty($errorPassword) ? 'is-invalid' : ''; ?>"
                         id="password" placeholder="Password">
                     <img src="img/eye-close.png" id="eyeIcon">
                     <!-- Tampilkan error password -->
                     <?php if (!empty($errorPass)): ?>
                     <div class=" invalid-feedback">
-                        <?php echo $errorPass; ?>
+                        <?php echo $errorPassword; ?>
                     </div>
                     <?php endif; ?>
                 </div>

@@ -15,6 +15,18 @@ class Auth {
 
     public function login($nik, $pass) {
         try {
+            // Cek jika NIK kosong
+            if (empty(trim($nik))) {
+                $this->error = "NIK wajib diisi";
+                return false;
+            }
+            
+            // Cek jika password kosong
+            if (empty(trim($pass))) {
+                $this->error = "Password wajib diisi";
+                return false;
+            }
+
             // Ambil data dari database berdasarkan NIK
             $stmt = $this->db->prepare("SELECT * FROM tb_pegawai WHERE nik = :nik");
             $stmt->bindParam(":nik", $nik);
@@ -24,20 +36,20 @@ class Auth {
             // Jika data ditemukan
             if ($stmt->rowCount() > 0) {
                 // Jika password sesuai
-                if($data['password'] == $pass){
+                if ($data['password'] === $pass) {
                     $_SESSION['namaPegawai'] = $data['nik'];
                     $_SESSION['id_jenis'] = $data['id_jenis'];
-                    return true;
+                    return $data['id_jenis']; // Mengembalikan id_jenis jika berhasil
                 } else {
                     $this->error = "Password salah";
                     return false;
                 }
             } else {
-                $this->errorNik = "NIK tidak terdaftar";
+                $this->error = "NIK tidak terdaftar";
                 return false;
             }
         } catch (\PDOException $e) {
-            echo $e->getMessage();
+            $this->error = "Kesalahan sistem: " . $e->getMessage();
             return false;
         }
     }

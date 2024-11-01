@@ -1,15 +1,9 @@
 <?php 
-// session_start();
 require_once ('../config/config.php');
 
 if (!$user->isLoggedIn()){
     header("location: ../login.php");
 }
-
-// if (!$user->isLoggedIn()){
-//     $redirectUrl = $_SESSION['id_jenis'] == 1 ? './admin/index.php' : './guru/index.php';
-//     header("location: $redirectUrl");
-// }
 
 $currentUser = $user->getUser();  
 ?>
@@ -115,7 +109,8 @@ $currentUser = $user->getUser();
                     <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <h5 class="m-0" style="color: #f48a4e;">Welcome <?php echo $currentUser['nama']?>, Have
+                        <h5 class="m-0" style="color: #f48a4e;">Welcome
+                            <?php echo $currentUser['nama']?>, Have
                             a Nice
                             Day!!!</h5>
                     </form>
