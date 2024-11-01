@@ -3,7 +3,7 @@ ob_start();
 include '../template/headerAdmin.php'; 
 include_once '../admin/controler/ortucontroler.php';
 
-$controller = new OrtuControler();
+$controller = new OrtuControler($con);
 $ortus = json_decode($controller->read(), true);
 
 // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <a href="" class="btn btn-info btn-circle btn-sm" data-nik="<?=$ortu['nik']?>">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="?action=edit&nik=<?= $ortu['nik'];?>" class="btn btn-warning btn-circle btn-sm edit-btn" >
+                                    <a href="orangTuaEdit.php?action=edit&nik=<?= $ortu['nik'];?>" class="btn btn-warning btn-circle btn-sm" >
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                     <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#modalHapus" data-nik="<?= $ortu['nik'] ?>">
