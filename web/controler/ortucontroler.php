@@ -1,6 +1,6 @@
 <?php
 include_once '../config/config.php';
-include_once '../admin/service/ortuservice.php';
+include_once '../service/ortuservice.php';
 
 class OrtuControler{
     private $ortuService;
@@ -31,6 +31,10 @@ class OrtuControler{
     public function getByNik($nik){
         $ortugetnik = $this->ortuService->getOrtuByNik($nik);
         // return json_encode($ortugetnik);
+        if (!$ortugetnik) {
+            // Jika data tidak ditemukan, tampilkan pesan di sini untuk debugging
+            var_dump("Data tidak ditemukan untuk NIK:", $nik);
+        }
         return $ortugetnik;
     }
 
