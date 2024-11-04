@@ -39,6 +39,7 @@
                                         <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
+                                        <th>Keterangan</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -48,6 +49,7 @@
                                         <td>15</td>
                                         <td>PPLG10011</td>
                                         <td>Hovivah</td>
+                                        <td>Sakit</td>
                                         <td><span class="badge bg-label-warning me-1">Unverified</span></td>
                                         <td>
                                             <button type="button" data-toggle="modal" data-target="#verifiedizin"
@@ -69,8 +71,10 @@
                                                 <div class="modal-body">
                                                     <h6>NIS : 1231021 </h6>
                                                     <h6>NAMA : </h6>
+                                                    <h6>KETERANGAN : </h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid"
+                                                        width="300" height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -125,7 +129,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Verified</h3>
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Verified
+                                                    </h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">×</span>
@@ -135,7 +140,8 @@
                                                     <h6>NIS : 1231021 </h6>
                                                     <h6>NAMA : </h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid"
+                                                        width="300" height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -189,7 +195,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Disable</h3>
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Disable
+                                                    </h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">×</span>
@@ -199,13 +206,14 @@
                                                     <h6>NIS : 1231021 </h6>
                                                     <h6>NAMA : </h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid"
+                                                        width="300" height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-bs-dismiss="modal">Close</button>
                                                     <button type="button" class="btn btn-success">Verified</button>
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
