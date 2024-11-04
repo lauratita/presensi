@@ -79,7 +79,7 @@ CREATE TABLE `tb_kelas` (
 --
 
 CREATE TABLE `tb_ortu` (
-  `id_ortu` varchar(20) NOT NULL,
+  `nik` varchar(20) NOT NULL,
   `nama` varchar(100) DEFAULT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -135,6 +135,16 @@ CREATE TABLE `tb_siswa` (
   `id_kelas` int DEFAULT NULL,
   `id_ortu` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `tb_surat_izin` (
+  `id_surat` int(10) NOT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `keterangan` varchar(50) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `nik` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 
 -- --------------------------------------------------------
 
@@ -398,6 +408,10 @@ ALTER TABLE `tb_presensi`
 ALTER TABLE `tb_siswa`
   ADD CONSTRAINT `fk_siswa_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `tb_kelas` (`id_kelas`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_siswa_ortu` FOREIGN KEY (`id_ortu`) REFERENCES `tb_ortu` (`id_ortu`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+
+ALTER TABLE `tb_surat_izin`
+  ADD CONSTRAINT `fk_nikortu` FOREIGN KEY (`nik`) REFERENCES `tb_ortu` (`nik`) ON DELETE RESTRICT ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

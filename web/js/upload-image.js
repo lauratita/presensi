@@ -1,3 +1,15 @@
+$('#editModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Tombol yang memicu modal
+    var nik = button.data('nik'); // Ambil NIK dari tombol
+    var name = button.data('name'); // Ambil data lain jika ada
+
+    // Isi data ke dalam form modal
+    var modal = $(this);
+    modal.find('.modal-body #nik').val(nik);
+    modal.find('.modal-body #name').val(name);
+});
+
+
 $('#modalHapus').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Tombol yang men-trigger modal
     var nik = button.data('nik'); // Ambil data NIK dari tombol

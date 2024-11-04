@@ -1,7 +1,7 @@
 <?php 
 ob_start();
 include '../template/headerAdmin.php'; 
-include_once '../admin/controler/ortucontroler.php';
+include_once '../controler/ortucontroler.php';
 
 $controller = new OrtuControler($con);
 $ortus = json_decode($controller->read(), true);
@@ -27,6 +27,15 @@ $ortus = json_decode($controller->read(), true);
 
 // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nik'])) {
 //     $result = $controller->delete(['nik' => $_POST['nik']]);
+// }
+// if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['nik'])) {
+//     $nik = $_GET['nik'];
+//     var_dump($nik);
+//     $ortugetnik = $controller->getByNik($nik);
+//     var_dump($ortugetnik);
+//     if (!$ortugetnik) {
+//         echo "<script>alert('Data tidak ditemukan');</script>";
+//     }
 // }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <a href="" class="btn btn-info btn-circle btn-sm" data-nik="<?=$ortu['nik']?>">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="orangTuaEdit.php?action=edit&nik=<?= $ortu['nik'];?>" class="btn btn-warning btn-circle btn-sm" >
+                                    <!-- <a href="orangTuaEdit.php?action=edit&nik=<?= $ortu['nik'];?>" class="btn btn-warning btn-circle btn-sm" >
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a> -->
+                                    <!-- <a  href="?action=edit&nik=<?= $ortu['nik'] ?>" class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#modalEdit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a> -->
+                                    <a href="#" class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#modalEdit" data-nik="<?= $ortu['nik'] ?>">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
                                     <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#modalHapus" data-nik="<?= $ortu['nik'] ?>">
@@ -177,11 +193,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <div class="form-group text-right mt-3">
                             <button type="button" class="btn btn-secondary pe-4" data-dismiss="modal">Batal</button>
-                            <!-- <button type="submit" name="edit" class="btn btn-warning">Edit</button>
-                            <button type="submit"  name="create" class="btn btn-primary ">Simpan</button> -->
-                            <button type="submit" class="btn btn-primary">
+                            <!-- <button type="submit" name="edit" class="btn btn-warning">Edit</button> -->
+                            <button type="submit"  name="create" class="btn btn-primary ">Simpan</button>
+                            <!-- <button type="submit" class="btn btn-primary">
                                 <?= isset($_GET['action']) && $_GET['action'] === 'edit' ? 'Edit' : 'Simpan'; ?>
-                            </button>
+                            </button> -->
                         </div>
                     </form>
                 </div>    
@@ -211,6 +227,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit Data -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditLabel">Edit Data Orang Tua</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editForm" method="POST" action="?action=update">
+                <div class="modal-body">
+                
+                    <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label for="editNikOrtu">NIK</label>
+                            <input type="text" class="form-control" name="nik" id="editNik" readonly>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label for="editNamaOrtu">Nama</label>
+                            <input type="text" class="form-control" name="nama" id="editNamaOrtu" required>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label for="editJkOrtu">Jenis Kelamin</label>
+                            <select class="form-control" name="jenis_kelamin" id="editJkOrtu">
+                                <option value="Laki-laki" <?= $ortugetnik['jenis_kelamin'] == 'laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
+                                <option value="Perempuan" <?= $ortugetnik['jenis_kelamin'] == 'perempuan' ? 'selected' : '' ?>>Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" value="<?= $ortugetnik['password'] ?>" name="password" id="password"  placeholder="Masukkan Password" required>
+                        </div>    
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label for="editEmail">Email</label>
+                            <input type="text" class="form-control" value="<?= $ortugetnik['email'] ?>" name="email" id="editEmail" required>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label for="editNoHp">No HP</label>
+                            <input type="text" class="form-control" value="<?= $ortugetnik['no_hp'] ?>" name="no_hp" id="editNoHp" required>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label for="editAlamatOrtu">Alamat</label>
+                        <textarea class="form-control" name="alamat" id="editAlamatOrtu"><?= $ortugetnik['alamat'] ?></textarea>
+                    </div> -->
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 
 </html>

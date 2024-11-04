@@ -86,6 +86,9 @@ class OrtuModel{
         // $result = $stmt->get_result();
         // return $result->fetch_assoc();
         // return $stmt;
+        if (!$stmt) {
+            var_dump($this->con->errorInfo());
+        }
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

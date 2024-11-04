@@ -1,5 +1,5 @@
 <?php
-include_once '../admin/model/ortumodel.php';
+include_once '../model/ortumodel.php';
 use OrtuModel as Ortu;
 
 class OrtuService{

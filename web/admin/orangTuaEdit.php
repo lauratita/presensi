@@ -2,7 +2,7 @@
 ob_start();
 
 include '../config/config.php';
-include_once '../admin/controler/ortucontroler.php';
+include_once '../controler/ortucontroler.php';
 $controller = new OrtuControler($con);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
