@@ -333,6 +333,11 @@ ALTER TABLE `tb_siswa`
   ADD KEY `idx_siswa_kelas` (`id_kelas`),
   ADD KEY `idx_siswa_ortu` (`id_ortu`);
 
+
+ALTER TABLE `tb_surat_izin`
+  ADD PRIMARY KEY (`id_surat`),
+  ADD KEY (`nik`);
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -366,6 +371,9 @@ ALTER TABLE `tb_kelas`
 --
 ALTER TABLE `tb_presensi`
   MODIFY `id_presensi` int NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `tb_surat_izin`
+MODIFY `id_surat` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
