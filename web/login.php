@@ -1,57 +1,68 @@
 <?php
+session_start();
 
 use Web\Auth;
-
 require_once ('./config/config.php');
+include_once "./controller/authController.php";
 
-if($user->isLoggedIn()){
-    if (isset($_SESSION['id_jenis'])){
-        if($_SESSION['id_jenis'] == 1){
-            header("location: ./admin/index.php");
-        } elseif ($_SESSION['id_jenis'] == 2){
-            header("location: ./guru/index.php");
-        }
-    }
-}
-$errorNik = $errorPassword = $errorMsg = '';
+// Inisialisasi variabel error
+$errorNik = $errorPassword = $errorMessage = '';
 
-if (isset($_POST['submit'])) {
-    $nik = $_POST['txt_nikPegawai'] ?? '';
-    $pass = $_POST['txt_passPegawai'] ?? '';
+// Cek apakah form telah disubmit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil input dari form
+    $nikPegawai = trim($_POST['txt_nikPegawai']);
+    $password = trim($_POST['txt_passPegawai']);
 
-    // Validasi apakah NIK atau password kosong
-    if (empty(trim($nik))) {
+    // Validasi input
+    if (empty($nikPegawai)) {
         $errorNik = 'NIK wajib diisi';
-    } elseif (strlen($nik) < 10) {
-        $errorNik = 'NIK minimal 10 digit';
     }
-
-    if (empty(trim($pass))) {
+    if (empty($password)) {
         $errorPassword = 'Password wajib diisi';
     }
 
+    // Jika tidak ada error, proses login
     if (empty($errorNik) && empty($errorPassword)) {
-        // Proses login jika tidak ada error di NIK dan password
-        $id_jenis = $user->login($nik, $pass);
-
-        if ($id_jenis === false) {
-            // Ambil error dari Auth jika login gagal
-            $errorMsg = $user->getLastError();
-            if ($errorMsg === "NIK tidak terdaftar") {
-                $errorNik = $errorMsg;
-            } elseif ($errorMsg === "Password salah") {
-                $errorPassword = $errorMsg;
-            }
+        // Validasi panjang NIK
+        if (strlen($nikPegawai) < 10) {
+            $errorNik = 'NIK minimal 10 karakter';
         } else {
-            // Jika login berhasil, arahkan berdasarkan id_jenis
-            if ($id_jenis == 1) {
-                header("Location: ./admin/index.php");
-            } elseif ($id_jenis == 2) {
-                header("Location: ./guru/index.php");
+            $controller = new LoginController();
+            $loginResult = $controller->login($nikPegawai, $password);
+            $login = json_decode($loginResult, true);
+            if ($login['status'] === 'success') {
+                // loginResult berhasil
+                $idJenis = $login['data']['id_jenis'];
+                
+                // Set session
+                $_SESSION['nik_pegawai'] = $login['data']['nik_pegawai'];
+                $_SESSION['nama'] = $login['data']['nama'];
+                $_SESSION['id_jenis'] = $idJenis;
+    
+                // Arahkan ke halaman yang sesuai berdasarkan id_jenis
+                if ($idJenis == 1) {
+                    // Arahkan ke halaman admin
+                    header('Location: ./admin/index.php'); 
+                } elseif ($idJenis == 2) {
+                    // Arahkan ke halaman guru
+                    header('Location: ./guru/index.php'); 
+                }
+                exit();
+            } else {
+                // Pesan kesalahan berdasarkan hasil loginResult
+                if ($login['message'] == 'Password salah') {
+                    $errorPassword = 'Password salah';
+                } elseif ($login['message'] == 'NIK tidak terdaftar') {
+                    $errorNik = 'NIK tidak terdaftar';
+                }
             }
-            exit;
         }
+    } else {
+        // Tampilkan pesan error jika ada
+        $errorMessage = isset($errorMessage) ? $errorMessage : 'Terjadi kesalahan, silakan coba lagi';
     }
+    
 }
 ?>
 
@@ -64,7 +75,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekInOut</title>
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -110,7 +121,7 @@ if (isset($_POST['submit'])) {
                     <input type="password" name="txt_passPegawai"
                         class="form-control form-control-user <?php echo !empty($errorPassword) ? 'is-invalid' : ''; ?>"
                         id="password" placeholder="Password">
-                    <img src="img/eye-close.png" id="eyeIcon">
+                    <img src="./img/eye-close.png" id="eyeIcon">
                     <!-- Tampilkan error password -->
                     <?php if (!empty($errorPass)): ?>
                     <div class=" invalid-feedback">

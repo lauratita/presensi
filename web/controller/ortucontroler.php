@@ -1,6 +1,6 @@
 <?php
 include_once '../config/config.php';
-include_once '../service/ortuservice.php';
+include_once '../views/ortuView.php';
 
 class OrtuControler{
     private $ortuService;

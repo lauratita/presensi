@@ -1,11 +1,13 @@
 <?php 
-use Web\Auth;
 
-try {
-    $con = new PDO('mysql:host=localhost;dbname=db_presensicekinout', 'root', '', array(PDO::ATTR_PERSISTENT => true));
-} catch (PDOException $e){
-    echo $e->getMessage();
+$server = "localhost";
+$username = "root";
+$password = "";
+$db = "cekinout";
+// urutan pemanggilan variabelnya sama
+$koneksi = mysqli_connect($server, $username, $password, $db);
+
+// cek koneksi, gagal atau tidak
+if (mysqli_connect_errno()){
+    echo "Koneksi gagal: " . mysqli_connect_error();
 }
-
-include_once __DIR__ . '/../auth/Auth.php';
-$user = new Auth($con);

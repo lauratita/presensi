@@ -1,11 +1,12 @@
 <?php 
 require_once ('../config/config.php');
+session_start();
 
-if (!$user->isLoggedIn()){
-    header("location: ../login.php");
+if(!isset($_SESSION['nik'])){
+    header("location: ");
 }
 
-$currentUser = $user->getUser();  
+// $currentUser = $user->getUser();  
 ?>
 
 <!DOCTYPE html>
