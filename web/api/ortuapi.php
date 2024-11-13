@@ -1,5 +1,7 @@
 <?php
-include_once '../controler/ortucontroler.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/ortuView.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/ortuModel.php';
 
 $controller = new OrtuControler();
 $requestMethod = $_SERVER['REQUEST_METHOD'];

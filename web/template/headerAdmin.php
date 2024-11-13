@@ -1,9 +1,6 @@
 <?php
 require_once ('../config/config.php');
-
-if (!$user->isLoggedIn()){
-    header("location: ../login.php");
-}
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -1,6 +1,8 @@
 <?php 
+ob_start();
 include '../template/headerGuru.php';
 include_once '../controller/authController.php';
+
 $controller = new LoginController();
 
 

@@ -14,6 +14,7 @@ class LoginController
 
     public function login($nikPegawai, $password)
     {
+        session_start();
         if (strlen($nikPegawai) < 10) {
             return json_encode(['message' => 'NIK minimal 10 karakter', 'status' => 'error']);
         }
