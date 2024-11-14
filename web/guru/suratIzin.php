@@ -1,4 +1,25 @@
-<?php include '../template/headerGuru.php' ?>
+<?php 
+// session_start();
+// if (!isset($_SESSION['nik_pegawai'])) {
+//     header("Location: ../login.php");
+//     exit();
+// }
+
+include '../template/headerGuru.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/suratIzinView.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/suratIzinController.php';
+
+$nik_pegawai = $_SESSION['nik_pegawai'];
+
+$model = new SuratIzinModel($db);
+$controller = new SuratIzinController($model);
+$view = new suratIzinView($db);
+
+$surat_unverified = $controller->tampilSuratIzin($nik_pegawai, 'unverified');
+$surat_verified = $controller->tampilSuratIzin($nik_pegawai, 'verified');
+$surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
+?>
 <div class="container-fluid">
 
     <!-- Page Heading -->
@@ -31,12 +52,12 @@
             <div class="card shadow mb-4 mt-4">
                 <h5 class="card-header">UnVerified</h5>
                 <div class="card-body">
+                    <?php if (!empty($surat_unverified)) : ?>
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <table class="table table-bordered" id="dataTable-unVerified" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
@@ -45,19 +66,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($surat_unverified as $surat) : ?>
                                     <tr>
-                                        <td>15</td>
-                                        <td>PPLG10011</td>
-                                        <td>Hovivah</td>
-                                        <td>Sakit</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td><?= $surat['nis'] ?></td>
+                                        <td><?= $surat['nama'] ?></td>
+                                        <td><?= $surat['keterangan'] ?></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status']?></span></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#verifiedizin"
+                                            <button type="button" data-toggle="modal"
+                                                data-target="#verifiedizin<?= $surat['id_surat'] ?>"
                                                 class="btn btn-sm btn-primary">Verified</button>
                                         </td>
                                     </tr>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="verifiedizin" tabindex="-1"
+                                    <div class="modal fade" id="verifiedizin<?= $surat['id_surat'] ?>" tabindex="-1"
                                         aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -69,12 +91,12 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>NIS : 1231021 </h6>
-                                                    <h6>NAMA : </h6>
-                                                    <h6>KETERANGAN : </h6>
+                                                    <h6>NIS : <?= $surat['nis'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama'] ?></h6>
+                                                    <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid"
-                                                        width="300" height="300" />
+                                                    <img src="<?= $surat['foto_surat'] ?>" class="img-fluid" width="300"
+                                                        height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -85,10 +107,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
-
+                        <?php else : ?>
+                        <p>Tidak ada data unverified.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -100,12 +125,12 @@
             <div class="card shadow mb-4 mt-4">
                 <h5 class="card-header">Verified</h5>
                 <div class="card-body">
+                    <?php if (!empty($surat_verified)) : ?>
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <table class="table table-bordered" id="dataTable-verified" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
@@ -114,22 +139,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($surat_verified as $surat) : ?>
                                     <tr>
-                                        <td>1</td>
-                                        <td>PPLG1001</td>
-                                        <td>Hovivah</td>
-                                        <td>Hadir</td>
-                                        <td><span class="badge bg-label-warning me-1">Verified</span></td>
+                                        <td><?= $surat['nis'] ?></td>
+                                        <td><?= $surat['nama'] ?></td>
+                                        <td><?= $surat['keterangan'] ?></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        </td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#updateverified"
-                                                class="btn btn-sm btn-warning ">Change Verified</button>
+                                            <button type="button" data-toggle="modal"
+                                                data-target="#updateverified<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-warning ">Change
+                                                Verified</button>
                                     </tr>
-                                    <div class="modal fade" id="updateverified" tabindex="-1"
+                                    <!-- Modal verified -->
+                                    <div class="modal fade" id="updateverified<?= $surat['id_surat'] ?>" tabindex="-1"
                                         aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Verified
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">
+                                                        Edit
+                                                        Verified
                                                     </h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
@@ -137,11 +168,11 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>NIS : 1231021 </h6>
-                                                    <h6>NAMA : </h6>
+                                                    <h6>NIS : <?= $surat['nis'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid"
-                                                        width="300" height="300" />
+                                                    <img src="<?= $surat['foto_surat'] ?>" class="img-fluid" width="300"
+                                                        height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -152,9 +183,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
+                        <?php else : ?>
+                        <p>Tidak ada data verified.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -166,12 +201,12 @@
             <div class="card shadow mb-4 mt-4">
                 <h5 class="card-header">Disable</h5>
                 <div class="card-body">
+                    <?php if (!empty($surat_disable)) : ?>
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <table class="table table-bordered" id="dataTable-disable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
@@ -180,22 +215,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($surat_disable as $surat) : ?>
                                     <tr>
-                                        <td>1</td>
-                                        <td>PPLG1001</td>
-                                        <td>Hovivah</td>
-                                        <td>Hadir</td>
-                                        <td><span class="badge bg-label-warning me-1">Disable</span></td>
+                                        <td><?= $surat['nis'] ?></td>
+                                        <td><?= $surat['nama'] ?></td>
+                                        <td><?= $surat['keterangan'] ?></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        </td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#updatedisable"
-                                                class="btn btn-sm btn-warning ">Change Disable</button>
+                                            <button type="button" data-toggle="modal"
+                                                data-target="#updatedisable<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-warning ">Change
+                                                Disable</button>
                                     </tr>
-                                    <div class="modal fade" id="updatedisable" tabindex="-1"
+                                    <!-- modal disable -->
+                                    <div class="modal fade" id="updatedisable<?= $surat['id_surat'] ?>" tabindex="-1"
                                         aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Disable
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit
+                                                        Disable
                                                     </h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
@@ -203,11 +243,11 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>NIS : 1231021 </h6>
-                                                    <h6>NAMA : </h6>
+                                                    <h6>NIS : <?= $surat['nis'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid"
-                                                        width="300" height="300" />
+                                                    <img src="<?= $surat['foto_surat'] ?>" class="img-fluid" width="300"
+                                                        height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -218,9 +258,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
+                        <?php else : ?>
+                        <p>Tidak ada data disable.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

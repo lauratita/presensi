@@ -1,6 +1,18 @@
 <?php
 session_start();
 
+// Cek apakah sesi sudah ada, artinya pengguna sudah login
+if (isset($_SESSION['nik_pegawai']) && isset($_SESSION['id_jenis'])) {
+    // Arahkan ke halaman sesuai dengan id_jenis
+    if ($_SESSION['id_jenis'] == 1) {
+        header('Location: ./admin/index.php');
+        exit();
+    } elseif ($_SESSION['id_jenis'] == 2) {
+        header('Location: ./guru/index.php');
+        exit();
+    }
+}
+
 use Web\Auth;
 require_once ('./config/config.php');
 include_once "./controller/authController.php";
@@ -44,9 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($idJenis == 1) {
                     // Arahkan ke halaman admin
                     header('Location: ./admin/index.php'); 
+                    exit();
                 } elseif ($idJenis == 2) {
                     // Arahkan ke halaman guru
                     header('Location: ./guru/index.php'); 
+                    exit();
                 }
                 exit();
             } else {

@@ -2,6 +2,7 @@
 require_once ('../config/config.php');
 session_start();
 
+
 if(!isset($_SESSION['nik'])){
     header("location: ");
 }
