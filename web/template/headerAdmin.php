@@ -1,8 +1,9 @@
 <?php
 require_once ('../config/config.php');
+session_start();
 
-if (!$user->isLoggedIn()){
-    header("location: ../login.php");
+if(!isset($_SESSION['nik'])){
+    header("location: ");
 }
 ?>
 <!DOCTYPE html>
@@ -23,10 +24,11 @@ if (!$user->isLoggedIn()){
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+        <script src="../assets/js/jquery-3.7.1.min.js"></script>
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
 
     <!-- Custom styles for this page -->
     <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">

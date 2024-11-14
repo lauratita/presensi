@@ -1,12 +1,37 @@
-$('#editModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); // Tombol yang memicu modal
-    var nik = button.data('nik'); // Ambil NIK dari tombol
-    var name = button.data('name'); // Ambil data lain jika ada
 
-    // Isi data ke dalam form modal
-    var modal = $(this);
-    modal.find('.modal-body #nik').val(nik);
-    modal.find('.modal-body #name').val(name);
+// document.addEventListener('DOMContentLoaded', function () {
+//     if (typeof showEditModal !== 'undefined' && showEditModal) {
+//         $('#modalEdit').modal('show');
+//     }
+// }
+
+$(document).ready(function() {
+    // Kode untuk memunculkan modal
+    $('.btn-edit').on('click', function() {
+        
+        const nik = $(this).data('nik');
+        $.ajax({
+            url: 'http://localhost/presensi/web/api/ortuApi.php',
+            type: 'GET',
+            data: { action: 'getByNik', nik: nik },
+            dataType: 'json',
+            success: function(data) {
+                $('#editNik').val(data.nik_ortu);
+                $('#editNamaOrtu').val(data.nama);
+                $('#editJkOrtu').val(data.jenis_kelamin);
+                $('#editEmail').val(data.email);
+                $('#editPassword').val(data.password);
+                $('#editNoHp').val(data.no_hp);
+                $('#editAlamatOrtu').val(data.alamat);
+
+                // Menampilkan modal
+                $('#modalEdit').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil data.');
+            }
+        });
+    });
 });
 
 
@@ -19,34 +44,32 @@ $('#modalHapus').on('show.bs.modal', function (event) {
     modal.find('#btnHapus').attr('href', hrefDelete); // Set href tombol hapus
 });
 
-$(document).on('click', '.edit-btn', function(e) {
-    e.preventDefault();
-    var nik = $(this).data('nik');
+// $(document).on('click', '.edit-btn', function(e) {
+//     var nik = $(this).data('nik');
 
-    // Ajax request to get the data
-    $.ajax({
-        url: 'ortuapi.php?action=getByNik&nik=' + nik,
-        type: 'GET',
-        success: function(response) {
-            var data = JSON.parse(response);
+//     // Ajax request to get the data
+//     $.ajax({
+//         url: 'OrangTua.php' ,
+//         type: 'GET',
+//         data: { action: 'edit', nik: nik },
+//         dataType: 'json',
+//         success: function(data) {
+            
 
-            // Isi form dengan data yang diambil
-            $('#namaOrtu').val(data.nama);
-            $('#jkOrtu').val(data.jenis_kelamin);
-            $('#email').val(data.email);
-            $('#password').val(data.password);
-            $('#nik').val(data.nik);
-            $('#nohp').val(data.no_hp);
-            $('#alamatOrtu').val(data.alamat);
-
-            // Ubah action form menjadi update
-            $('#formTambahOrtu').attr('action', '?action=update&nik=' + nik);
-        }
-    });
-
-    // Pindah ke tab edit data
-    $('#nav-tambahOrtu-tab').trigger('click');
-});
+//             // Isi form dengan data yang diambil
+//                 $('#editNik').val(data.nik);
+//                 $('#editNamaOrtu').val(data.nama);
+//                 $('#editJkOrtu').val(data.jenis_kelamin);
+//                 $('#editPassword').val(data.password);
+//                 $('#editEmail').val(data.email);
+//                 $('#editNoHp').val(data.no_hp);
+//                 $('#editAlamatOrtu').val(data.alamat);   
+//         },
+//         error: function () {
+//             alert('Gagal mengambil data')
+//         }
+//     });
+// });
 
 $('#formTambahOrtu').on('submit', function() {
     // Reset form after submit
