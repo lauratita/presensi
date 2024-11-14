@@ -19,8 +19,8 @@ class SuratIzinModel
         $stmt = $this->koneksi->prepare($sql);
         $stmt->bind_param('ss', $nik_pegawai, $status);
         $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
+        // $result = $stmt->get_result();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function updateStatusSuratIzin($id_surat, $new_status)

@@ -1,14 +1,14 @@
 <?php 
-session_start();
-if (!isset($_SESSION['nik_pegawai'])) {
-    header("Location: ../login.php");
-    exit();
-}
+// session_start();
+// if (!isset($_SESSION['nik_pegawai'])) {
+//     header("Location: ../login.php");
+//     exit();
+// }
 
 include '../template/headerGuru.php';
-include_once '../models/suratIzinModel.php';
-include_once '../views/suratIzinView.php';
-include_once '../controller/suratIzinController.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/suratIzinView.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/suratIzinController.php';
 
 $nik_pegawai = $_SESSION['nik_pegawai'];
 
@@ -111,7 +111,9 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                 </tbody>
                             </table>
                         </div>
-
+                        <?php else : ?>
+                        <p>Tidak ada data unverified.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

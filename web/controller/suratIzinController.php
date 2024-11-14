@@ -9,26 +9,17 @@ class SuratIzinController
     
     public function __construct($model)
     {
-        global $koneksi;
+        // global $koneksi;
         $this->model = $model;
     }
 
     public function tampilSuratIzin($nik_pegawai, $status)
     {
         return $this->model->getSuratIzinByWaliKelas($nik_pegawai, $status);
-        
-        // $unverified = $this->model->getSuratIzinByWaliKelas($nik_pegawai, 'unverified');
-        // $verified = $this->model->getSuratIzinByWaliKelas($nik_pegawai, 'verified');
-        // $disable = $this->model->getSuratIzinByWaliKelas($nik_pegawai, 'disable');
-        // return [
-        //     'unverified' => $unverified,
-        //     'verified' => $verified,
-        //     'disable' => $disable
-        // ];
     }
 
-    public function updateStatus($id_surat, $new_status)
-    {
-        return $this->model->updateStatusSuratIzin($id_surat, $new_status);
-    }
+    // public function updateStatus($id_surat, $new_status)
+    // {
+    //     return $this->model->updateStatusSuratIzin($id_surat, $new_status);
+    // }
 }
