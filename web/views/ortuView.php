@@ -1,5 +1,5 @@
 <?php
-include_once '../model/ortumodel.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/presensi/web/models/ortumodel.php';
 use OrtuModel as Ortu;
 
 class OrtuService{
@@ -10,44 +10,35 @@ class OrtuService{
         $this->ortu = new OrtuModel($db);
     }
 
-    public function createOrtu($nik, $nama, $email, $password, $no_hp, $alamat, $jenis_kelamin){
+    public function createOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email, $password){
         $this->ortu->nik = $nik;
         $this->ortu->nama = $nama;
+        $this->ortu->alamat = $alamat;
+        $this->ortu->no_hp = $no_hp;
+        $this->ortu->jenis_kelamin = $jenis_kelamin;
         $this->ortu->email = $email;
         $this->ortu->password = $password;
-        $this->ortu->no_hp = $no_hp;
-        $this->ortu->alamat = $alamat;
-        $this->ortu->jenis_kelamin = $jenis_kelamin;
         return $this->ortu->create();
     }
 
     public function getAllOrtu(){
-        // $stmt = $this->ortu->read();
-        // $stmt->execute();
-        // $result = $stmt->get_result();
-        // $ortus = $result->fetch_all(MYSQLI_ASSOC);
-        // return $ortus;
         $stmt = $this->ortu->read();
-        $ortus = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $ortus;
+        return $stmt;
     }
 
     public function getOrtuByNik($nik){
-        $ortugetnik = $this->ortu->getByNik($nik);
-        // $ortugetnik = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $ortugetnik;
-        // $ortus = $result->fetch_assoc();
-        // return $ortus;
+        $stmt = $this->ortu->getByNik($nik);
+        return $stmt;
     }
 
-    public function updateOrtu($nik, $nama, $email, $password, $no_hp, $alamat, $jenis_kelamin){
+    public function updateOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email, $password){
         $this->ortu->nik = $nik;
         $this->ortu->nama = $nama;
+        $this->ortu->alamat = $alamat;
+        $this->ortu->no_hp = $no_hp;
+        $this->ortu->jenis_kelamin = $jenis_kelamin;
         $this->ortu->email = $email;
         $this->ortu->password = $password;
-        $this->ortu->no_hp = $no_hp;
-        $this->ortu->alamat = $alamat;
-        $this->ortu->jenis_kelamin = $jenis_kelamin;
         return $this->ortu->update();
     }
 
