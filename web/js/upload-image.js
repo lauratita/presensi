@@ -10,27 +10,27 @@ $(document).ready(function() {
     $('.btn-edit').on('click', function() {
         
         const nik = $(this).data('nik');
-        $.ajax({
-            url: 'http://localhost/presensi/web/api/ortuApi.php',
-            type: 'GET',
-            data: { action: 'getByNik', nik: nik },
-            dataType: 'json',
-            success: function(data) {
-                $('#editNik').val(data.nik_ortu);
-                $('#editNamaOrtu').val(data.nama);
-                $('#editJkOrtu').val(data.jenis_kelamin);
-                $('#editEmail').val(data.email);
-                $('#editPassword').val(data.password);
-                $('#editNoHp').val(data.no_hp);
-                $('#editAlamatOrtu').val(data.alamat);
+        console.log(nik);
+        // $.ajax({
+        //     url: 'http://localhost/presensi/web/api/ortucontroler/getByNik',
+        //     data: { nik: nik },
+        //     dataType: 'json',
+        //     success: function(data) {
+        //         $('#editNik').val(data.nik_ortu);
+        //         $('#editNamaOrtu').val(data.nama);
+        //         $('#editJkOrtu').val(data.jenis_kelamin);
+        //         $('#editEmail').val(data.email);
+        //         $('#editPassword').val(data.password);
+        //         $('#editNoHp').val(data.no_hp);
+        //         $('#editAlamatOrtu').val(data.alamat);
 
-                // Menampilkan modal
-                $('#modalEdit').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil data.');
-            }
-        });
+        //         // Menampilkan modal
+        //         $('#modalEdit').modal('show');
+        //     },
+        //     error: function() {
+        //         alert('Gagal mengambil data.');
+        //     }
+        // });
     });
 });
 
