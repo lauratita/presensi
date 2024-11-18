@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 
 // Cek apakah sesi sudah ada, artinya pengguna sudah login
 if (isset($_SESSION['nik_pegawai']) && isset($_SESSION['id_jenis'])) {
