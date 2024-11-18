@@ -6,7 +6,6 @@ include_once '../controller/ortucontroler.php';
 $controller = new OrtuControler();
 $data = $controller->read();
 $ortus = [];
-$ortunik = [];
 
 if ($data !== false) {
     $data = json_decode($data, true);
@@ -45,20 +44,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+$ortunik = [];
 
-if (isset($_GET['nik'])) {
+if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
     $nik = $_GET['nik'];
-    $data = $controller->getByNik($nik);
+    $datanik = $controller->getByNik($nik);
 
-    if ($data !== false) {
+    if ($datanik !== false) {
         // Decode JSON as associative array
-        $data = json_decode($data, true);
+        $datanik = json_decode($datanik, true);
         
-        if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
-            $ortunik = $data[0]; 
-            var_dump($ortunik);
-            $showEditModal = true;
-            
+        if (is_array($datanik) && (!isset($datanik['message']) || $datanik['message'] !== 'Data not found')) {
+            $ortunik = $datanik[0];
+            // var_dump($ortunik); 
         } else {
             echo 'Data not found';
         }
@@ -126,10 +124,13 @@ if (isset($_GET['nik'])) {
                                         data-nik="<?= htmlspecialchars($ortu['nik_ortu']) ?>">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="orangTua.php?nik=<?= htmlspecialchars($ortu['nik_ortu']) ?>"
+                                    <a  href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&nik=<?= $ortu['nik_ortu']; ?>"
+                                    class="btn btn-warning btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <!-- <a href=""
+                                        data-toggle="modal" data-target="#modalEdit"
                                         class="btn btn-warning btn-circle btn-sm ">
                                         <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                                    </a> -->
                                     <!-- <a href="#"
                                         class="btn btn-warning btn-circle btn-sm btn-edit" data-toggle="modal" data-target="#modalEdit"
                                         data-nik="<?= htmlspecialchars($ortu['nik_ortu']) ?>">
@@ -227,9 +228,10 @@ if (isset($_GET['nik'])) {
             </div>
         </div>
     </div>
-<?php if (isset($ortunik)): ?>
+
     <!-- Modal Edit Data -->
-<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true" ">
+     <?php if (!empty($ortunik)): ?>
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true" >
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -238,45 +240,46 @@ if (isset($_GET['nik'])) {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="formEditOrtu" method="POST" action="?action=update">
+            <form id="formEditOrtu" method="POST" action="<?= $_SERVER['PHP_SELF']; ?>?action=update">
                 <div class="modal-body">
                 
                     <div class="row">
                         <div class="col-md-6 mt-3">
                             <label for="editNikOrtu">NIK</label>
-                            <input type="text" class="form-control" name="editnik" id="editNik" value="<?= $ortunik['ortu_nik']?>">
+                            <input type="text" class="form-control" name="editnik" id="editNik" value="<?= $ortunik['nik_ortu']?>">
                         </div>
                         <div class="col-md-6 mt-3">
                             <label for="editNamaOrtu">Nama</label>
-                            <input type="text" class="form-control" name="editnama" id="editNamaOrtu"required>
+                            <input type="text" class="form-control" name="editnama" id="editNamaOrtu" value="<?=$ortunik['nama']?>"required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mt-3">
                             <label for="editJkOrtu">Jenis Kelamin</label>
                             <select class="form-control" name="editjenis_kelamin" id="editJkOrtu">
-                                <option value="Laki-laki" >Laki-laki</option>
-                                <option value="Perempuan" >Perempuan</option>
+                                <option value="Laki-laki" <?= $ortunik['jenis_kelamin'] == 'laki-laki' ? 'selected' : '' ?>
+                                >Laki-laki</option>
+                                <option value="Perempuan" <?= $ortunik['jenis_kelamin'] == 'perempuan' ? 'selected' : '' ?>>Perempuan</option>
                             </select>
                         </div>
                         <div class="col-md-6 mt-3">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control"  name="editpassword" id="editPassword"  placeholder="Masukkan Password" required>
+                                <input type="password" class="form-control"  name="editpassword" id="editPassword" value="<?= $ortunik['password'] ?>" placeholder="Masukkan Password" required>
                         </div>    
                     </div>
                     <div class="row">
                         <div class="col-md-6 mt-3">
                             <label for="editEmail">Email</label>
-                            <input type="text" class="form-control" name="editemail" id="editEmail" required>
+                            <input type="text" class="form-control" name="editemail" id="editEmail" value="<?= $ortunik['email'] ?>" required>
                         </div>
                         <div class="col-md-6 mt-3">
                             <label for="editNoHp">No HP</label>
-                            <input type="text" class="form-control"  name="editno_hp" id="editNoHp" required>
+                            <input type="text" class="form-control"  name="editno_hp" id="editNoHp" value="<?= $ortunik['no_hp'] ?>" required>
                         </div>
                     </div>
                     <div class="col-12 mt-3">
                         <label for="editAlamatOrtu">Alamat</label>
-                        <textarea class="form-control" name="editalamat" id="editAlamatOrtu"></textarea>
+                        <textarea class="form-control" name="editalamat" id="editAlamatOrtu"><?= $ortunik['alamat'] ?></textarea>
                     </div>
                     
                 </div>
@@ -288,6 +291,16 @@ if (isset($_GET['nik'])) {
         </div>
     </div>
 </div>
-<?php endif?>
+
+    <script>
+        const modalElement = document.querySelector('#modalEdit');
+        if (modalElement) {
+        const modalEdit = new bootstrap.Modal(modalElement);
+        modalEdit.show();
+    }
+    </script>
+<?php endif; ?>
+</body>
+</html>
 
 <?php include '../template/footerAdmin.php'; ?>
