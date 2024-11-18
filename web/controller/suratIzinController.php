@@ -1,25 +1,38 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/suratIzinView.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
 
 class SuratIzinController
 {
-    private $model;
+    private $suratView;
     
-    public function __construct($model)
+    public function __construct()
     {
-        // global $koneksi;
-        $this->model = $model;
+        global $koneksi;
+        $this->suratView = new suratIzinView($koneksi);
     }
 
-    public function tampilSuratIzin($nik_pegawai, $status)
+    public function read()
     {
-        return $this->model->getSuratIzinByWaliKelas($nik_pegawai, $status);
+        $surats = $this->suratView->getAllSurat();
+        return $surats;
     }
 
-    // public function updateStatus($id_surat, $new_status)
-    // {
-    //     return $this->model->updateStatusSuratIzin($id_surat, $new_status);
-    // }
+    public function getByWaliKelas($nik_pegawai)
+    {
+        $suratnik = $this->suratView->getSuratIzinByWaliKelas($nik_pegawai);
+        return $suratnik;
+    }
+
+    public function updateStatusSuratIzin($request)
+    {
+        $status = $request['status'];
+        $data = $this->suratView->updateStatusSuratIzin($status);
+        if ($data) {
+            return json_encode(["message" => "Berhasil Update Status Surat"]);
+        }else{
+            return json_encode(["message" => "Gagal Update Status Surat"]);
+        }
+    }
+
 }

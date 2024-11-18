@@ -6,19 +6,45 @@
 // }
 
 include '../template/headerGuru.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/suratIzinView.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/suratIzinController.php';
-
+include_once '../controller/suratIzinController.php';
 $nik_pegawai = $_SESSION['nik_pegawai'];
 
-$model = new SuratIzinModel($db);
-$controller = new SuratIzinController($model);
-$view = new suratIzinView($db);
+$controller = new SuratIzinController();
+$data = $controller->read();
+$surats = [];
 
-$surat_unverified = $controller->tampilSuratIzin($nik_pegawai, 'unverified');
-$surat_verified = $controller->tampilSuratIzin($nik_pegawai, 'verified');
-$surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
+if ($data !== false) {
+    $data = json_decode($data, true);
+    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
+        $surats = $data;
+    }
+} else {
+    // Handle errors from getAllOrtu()
+    echo "Error fetching data.";
+}
+
+if (isset($_GET['action'], $_GET['nik_pegawai']) && $_GET['action'] === 'edit') {
+    $nik = $_GET['nik_pegawai'];
+    $datanik = $controller->getByWaliKelas($nik_pegawai);
+
+    if ($datanik !== false) {
+        // Decode JSON as associative array
+        $datanik = json_decode($datanik, true);
+        
+        if (is_array($datanik) && (!isset($datanik['message']) || $datanik['message'] !== 'Data not found')) {
+            $ortunik = $datanik[0];
+            // var_dump($ortunik); 
+        } else {
+            echo 'Data not found';
+        }
+    } else {
+        echo 'Error fetching data.';
+    }
+}
+
+// $surat_unverified = $controller->tampilSuratIzin($nik_pegawai, 'unverified');
+// $surat_verified = $controller->tampilSuratIzin($nik_pegawai, 'verified');
+// $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
 ?>
 <div class="container-fluid">
 
@@ -52,7 +78,6 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
             <div class="card shadow mb-4 mt-4">
                 <h5 class="card-header">UnVerified</h5>
                 <div class="card-body">
-                    <?php if (!empty($surat_unverified)) : ?>
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <table class="table table-bordered" id="dataTable-unVerified" width="100%" cellspacing="0">
@@ -66,10 +91,10 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($surat_unverified as $surat) : ?>
+                                    <?php foreach ($surats as $surat) : ?>
                                     <tr>
                                         <td><?= $surat['nis'] ?></td>
-                                        <td><?= $surat['nama'] ?></td>
+                                        <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status']?></span></td>
                                         <td>
@@ -78,13 +103,14 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                                 class="btn btn-sm btn-primary">Verified</button>
                                         </td>
                                     </tr>
+
                                     <!-- Modal -->
                                     <div class="modal fade" id="verifiedizin<?= $surat['id_surat'] ?>" tabindex="-1"
                                         aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit User</h3>
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Surat Siswa</h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">×</span>
@@ -92,7 +118,7 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                                 </div>
                                                 <div class="modal-body">
                                                     <h6>NIS : <?= $surat['nis'] ?></h6>
-                                                    <h6>NAMA : <?= $surat['nama'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="<?= $surat['foto_surat'] ?>" class="img-fluid" width="300"
@@ -111,9 +137,6 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                 </tbody>
                             </table>
                         </div>
-                        <?php else : ?>
-                        <p>Tidak ada data unverified.</p>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -125,7 +148,6 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
             <div class="card shadow mb-4 mt-4">
                 <h5 class="card-header">Verified</h5>
                 <div class="card-body">
-                    <?php if (!empty($surat_verified)) : ?>
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <table class="table table-bordered" id="dataTable-verified" width="100%" cellspacing="0">
@@ -139,10 +161,10 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($surat_verified as $surat) : ?>
+                                    <?php foreach ($surats as $surat) : ?>
                                     <tr>
                                         <td><?= $surat['nis'] ?></td>
-                                        <td><?= $surat['nama'] ?></td>
+                                        <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
@@ -169,7 +191,7 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                                 </div>
                                                 <div class="modal-body">
                                                     <h6>NIS : <?= $surat['nis'] ?></h6>
-                                                    <h6>NAMA : <?= $surat['nama'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="<?= $surat['foto_surat'] ?>" class="img-fluid" width="300"
                                                         height="300" />
@@ -187,9 +209,6 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                 </tbody>
                             </table>
                         </div>
-                        <?php else : ?>
-                        <p>Tidak ada data verified.</p>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -201,7 +220,6 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
             <div class="card shadow mb-4 mt-4">
                 <h5 class="card-header">Disable</h5>
                 <div class="card-body">
-                    <?php if (!empty($surat_disable)) : ?>
                     <div class="table-responsive">
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                             <table class="table table-bordered" id="dataTable-disable" width="100%" cellspacing="0">
@@ -215,10 +233,10 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($surat_disable as $surat) : ?>
+                                    <?php foreach ($surats as $surat) : ?>
                                     <tr>
                                         <td><?= $surat['nis'] ?></td>
-                                        <td><?= $surat['nama'] ?></td>
+                                        <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
@@ -244,7 +262,7 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                                 </div>
                                                 <div class="modal-body">
                                                     <h6>NIS : <?= $surat['nis'] ?></h6>
-                                                    <h6>NAMA : <?= $surat['nama'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="<?= $surat['foto_surat'] ?>" class="img-fluid" width="300"
                                                         height="300" />
@@ -262,9 +280,6 @@ $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
                                 </tbody>
                             </table>
                         </div>
-                        <?php else : ?>
-                        <p>Tidak ada data disable.</p>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
