@@ -2,7 +2,7 @@
 class SuratIzinModel
 {
     private $koneksi;
-    private $view_name = "v_suratizin_ket";
+    private $view_name = "v_surat";
 
     public $nik_pegawai;
     public $nis;
@@ -30,26 +30,25 @@ class SuratIzinModel
         }
     }
 
-    public function getByWaliKelas($nik_pegawai)
+    public function getByWaliKelas($nik_pegawai, $status)
     {
-        $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_pegawai = ?";
+        $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_pegawai = ? AND status = ?";
         $stmt = $this->koneksi->prepare($sql);
-        $stmt->bind_param("ss", $nik_pegawai);
+        $stmt->bind_param("ss", $nik_pegawai, $status);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            return json_encode($data); 
-        } else {
-            echo json_encode(["message" => "Data not found for given NIK Pegawai"]);
+        
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
         }
-    
-        $stmt->close();
+        return $data;
+        // $stmt->close();
     }
 
     public function update()
     {
-        // UPDATE `v_suratizin_ket` SET `status` = 'verified' WHERE `v_suratizin_ket`.`id_surat` = '1' AND `v_suratizin_ket`.`nis` = 'pplg2303';
+        // UPDATE v_suratizin_ket SET status = 'verified' WHERE v_suratizin_ket.id_surat = '1' AND v_suratizin_ket.nis = 'pplg2303';
         $sql = "UPDATE " . $this->view_name . " SET status = '$this->status' WHERE id_surat = '$this->id_surat' AND nis = '$this->nis'";
         $stmt = $this->koneksi->prepare($sql);
         if ($stmt->execute()) {

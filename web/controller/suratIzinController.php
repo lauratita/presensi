@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/suratIzinView.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
 
 class SuratIzinController
 {
@@ -18,9 +19,9 @@ class SuratIzinController
         return $surats;
     }
 
-    public function getByWaliKelas($nik_pegawai)
+    public function getByWaliKelas($nik_pegawai, $status)
     {
-        $suratnik = $this->suratView->getSuratIzinByWaliKelas($nik_pegawai);
+        $suratnik = $this->suratView->getSuratIzinByWaliKelas($nik_pegawai, $status);
         return $suratnik;
     }
 

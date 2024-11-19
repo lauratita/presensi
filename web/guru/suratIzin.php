@@ -10,41 +10,16 @@ include_once '../controller/suratIzinController.php';
 $nik_pegawai = $_SESSION['nik_pegawai'];
 
 $controller = new SuratIzinController();
-$data = $controller->read();
-$surats = [];
 
-if ($data !== false) {
-    $data = json_decode($data, true);
-    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
-        $surats = $data;
-    }
-} else {
-    // Handle errors from getAllOrtu()
-    echo "Error fetching data.";
-}
+// Ambil data berdasarkan status
+$surat_unverified = $controller->getByWaliKelas($nik_pegawai, 'unverified') ?? [];
+$surat_verified = $controller->getByWaliKelas($nik_pegawai, 'verified') ?? [];
+$surat_disable = $controller->getByWaliKelas($nik_pegawai, 'disable') ?? [];
 
-if (isset($_GET['action'], $_GET['nik_pegawai']) && $_GET['action'] === 'edit') {
-    $nik = $_GET['nik_pegawai'];
-    $datanik = $controller->getByWaliKelas($nik_pegawai);
-
-    if ($datanik !== false) {
-        // Decode JSON as associative array
-        $datanik = json_decode($datanik, true);
-        
-        if (is_array($datanik) && (!isset($datanik['message']) || $datanik['message'] !== 'Data not found')) {
-            $ortunik = $datanik[0];
-            // var_dump($ortunik); 
-        } else {
-            echo 'Data not found';
-        }
-    } else {
-        echo 'Error fetching data.';
-    }
-}
-
-// $surat_unverified = $controller->tampilSuratIzin($nik_pegawai, 'unverified');
-// $surat_verified = $controller->tampilSuratIzin($nik_pegawai, 'verified');
-// $surat_disable = $controller->tampilSuratIzin($nik_pegawai, 'disable');
+// Validasi jika data tidak ditemukan
+$surat_unverified = isset($surat_unverified['message']) && $surat_unverified['message'] === 'Data not found' ? [] : $surat_unverified;
+$surat_verified = isset($surat_verified['message']) && $surat_verified['message'] === 'Data not found' ? [] : $surat_verified;
+$surat_disable = isset($surat_disable['message']) && $surat_disable['message'] === 'Data not found' ? [] : $surat_disable;
 ?>
 <div class="container-fluid">
 
@@ -91,12 +66,13 @@ if (isset($_GET['action'], $_GET['nik_pegawai']) && $_GET['action'] === 'edit') 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($surats as $surat) : ?>
+                                    <?php foreach ($surat_unverified as $surat): ?>
                                     <tr>
                                         <td><?= $surat['nis'] ?></td>
                                         <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
-                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status']?></span></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        </td>
                                         <td>
                                             <button type="button" data-toggle="modal"
                                                 data-target="#verifiedizin<?= $surat['id_surat'] ?>"
@@ -161,7 +137,7 @@ if (isset($_GET['action'], $_GET['nik_pegawai']) && $_GET['action'] === 'edit') 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($surats as $surat) : ?>
+                                    <?php foreach ($surat_verified as $surat) : ?>
                                     <tr>
                                         <td><?= $surat['nis'] ?></td>
                                         <td><?= $surat['nama_siswa'] ?></td>
@@ -233,7 +209,7 @@ if (isset($_GET['action'], $_GET['nik_pegawai']) && $_GET['action'] === 'edit') 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($surats as $surat) : ?>
+                                    <?php foreach ($surat_disable as $surat) : ?>
                                     <tr>
                                         <td><?= $surat['nis'] ?></td>
                                         <td><?= $surat['nama_siswa'] ?></td>

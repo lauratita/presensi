@@ -16,9 +16,9 @@ class suratIzinView
         return $stmt;
     }
 
-    public function getSuratIzinByWaliKelas($nik_pegawai)
+    public function getSuratIzinByWaliKelas($nik_pegawai, $status)
     {
-        $stmt = $this->surat->getByWaliKelas($nik_pegawai);
+        $stmt = $this->surat->getByWaliKelas($nik_pegawai, $status);
         return $stmt;
     }
 
