@@ -22,9 +22,9 @@ class suratIzinView
         return $stmt;
     }
 
-    public function updateStatusSuratIzin($status)
+    public function updateStatusSuratIzin($id_surat, $status)
     {
-        $this->surat->status = $status;
+        $this->surat->update($id_surat, $status);
         return $this->surat->update();
     }
 }

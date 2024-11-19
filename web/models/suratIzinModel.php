@@ -49,7 +49,7 @@ class SuratIzinModel
     public function update()
     {
         // UPDATE v_suratizin_ket SET status = 'verified' WHERE v_suratizin_ket.id_surat = '1' AND v_suratizin_ket.nis = 'pplg2303';
-        $sql = "UPDATE " . $this->view_name . " SET status = '$this->status' WHERE id_surat = '$this->id_surat' AND nis = '$this->nis'";
+        $sql = "UPDATE " . $this->view_name . " SET status = '$this->status' WHERE id_surat = '$this->id_surat'";
         $stmt = $this->koneksi->prepare($sql);
         if ($stmt->execute()) {
             return true;

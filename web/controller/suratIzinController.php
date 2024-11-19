@@ -25,14 +25,13 @@ class SuratIzinController
         return $suratnik;
     }
 
-    public function updateStatusSuratIzin($request)
+    public function updateStatusSuratIzin($id_surat, $status)
     {
-        $status = $request['status'];
-        $data = $this->suratView->updateStatusSuratIzin($status);
-        if ($data) {
-            return json_encode(["message" => "Berhasil Update Status Surat"]);
-        }else{
-            return json_encode(["message" => "Gagal Update Status Surat"]);
+        $result = $this->suratView->updateStatusSuratIzin($id_surat, $status);
+        if ($result) {
+            return json_encode(["message" => "Status berhasil diperbarui"]);
+        } else {
+            return json_encode(["message" => "Gagal memperbarui status"]);
         }
     }
 
