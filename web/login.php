@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-content">
             <form action="" method="POST" class="user">
                 <img src="./img/logo-skaga.jpeg" alt="Logo">
-                <h2 class="title" style="color: #f48a4e;">CekInOut</h2>
+                <h2 class="title" style="color: #f48a4e;">Presence+</h2>
 
                 <!-- NIK -->
                 <div class="form-group has-validation">

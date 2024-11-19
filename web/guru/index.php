@@ -1,5 +1,6 @@
 <?php 
 ob_start();
+session_start();
 include '../template/headerGuru.php';
 include_once '../controller/authController.php';
 

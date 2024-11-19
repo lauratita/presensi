@@ -1,5 +1,5 @@
 <?php 
-session_start();
+// session_start();
 require_once ('../config/config.php');
 
 ?>
@@ -47,7 +47,7 @@ require_once ('../config/config.php');
                 <div class="sidebar-brand-icon rotate-n-15">
                     <img src="../img/logo2.png" alt="iconDashboard">
                 </div>
-                <div class="sidebar-brand-text mx-3" style="color: #f48a4e;">CekInOut</div>
+                <div class="sidebar-brand-text mx-3" style="color: #f48a4e;">Presence+</div>
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">

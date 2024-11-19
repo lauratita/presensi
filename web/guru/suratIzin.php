@@ -1,10 +1,10 @@
 <?php 
 ob_start();
-// session_start();
-// if (!isset($_SESSION['nik_pegawai'])) {
-//     header("Location: ../login.php");
-//     exit();
-// }
+session_start();
+if (!isset($_SESSION['nik_pegawai'])) {
+    header("Location: ../login.php");
+    exit();
+}
 
 include '../template/headerGuru.php';
 include_once '../controller/suratIzinController.php';
@@ -126,20 +126,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <!-- Form untuk perubahan status -->
-                                                    <form action="suratIzin.php" method="POST" style="display:inline;">
+                                                    <form action="suratIzin.php" method="POST">
                                                         <input type="hidden" name="id_surat"
                                                             value="<?= $surat['id_surat'] ?>" />
                                                         <input type="hidden" name="status" value="verified" />
                                                         <button type="submit" class="btn btn-success">Verified</button>
                                                     </form>
-                                                    <form action="suratIzin.php" method="POST" style="display:inline;">
+                                                    <form action="suratIzin.php" method="POST">
                                                         <input type="hidden" name="id_surat"
                                                             value="<?= $surat['id_surat'] ?>" />
                                                         <input type="hidden" name="status" value="disable" />
                                                         <button type="submit" class="btn btn-danger">Disable</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
                                                     </form>
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
+
                                                 </div>
                                             </div>
                                         </div>
