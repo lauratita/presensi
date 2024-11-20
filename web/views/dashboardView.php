@@ -32,4 +32,15 @@ class DashboardView
             return isset($result['message']) ? $result['message'] : 'Unknown error';
         }
     }
+    public function getJumlahSuratHariIni($nik_pegawai)
+    {
+        $stmt = $this->dashboard->getJumlahSuratHariIni($nik_pegawai);
+        return $stmt;
+
+        if (isset($result['statistik_surat'])) {
+            return $result['statistik_surat']; // Return jumlah siswa
+        } else {
+            return isset($result['message']) ? $result['message'] : 'Unknown error';
+        }
+    }
 } 

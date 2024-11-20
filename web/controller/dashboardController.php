@@ -23,4 +23,9 @@ class DashboardController
         $jumlahSurat = $this->dashboardView->getJumlahSuratByWaliKelas($nik_pegawai);
         return $jumlahSurat;
     }
+    public function getJumlahSuratHariIni($nik_pegawai)
+    {
+        $jumlahSurat = $this->dashboardView->getJumlahSuratHariIni($nik_pegawai);
+        return $jumlahSurat;
+    }
 }

@@ -9,6 +9,7 @@ $controller = new LoginController();
 $statistikController = new DashboardController($koneksi);
 $jumlahSiswa = json_decode($statistikController->getJumlahSiswa($_SESSION['nik_pegawai']), true);
 $jumlahSurat = json_decode($statistikController->getJumlahSurat($_SESSION['nik_pegawai']), true);
+$jumlahSuratHariIni = $statistikController->getJumlahSuratHariIni($_SESSION['nik_pegawai']);
 
 
 
@@ -30,13 +31,6 @@ $currentUser = [
 ];
 
 // Data Statistik
-$statistikSuratIzin = [
-    'total' => 3, // Contoh data; ganti dengan nilai dari model/controller
-    'unverified' => 1,
-    'verified' => 1,
-    'disable' => 1
-];
-
 $statistikSiswa = [
     'total' => $jumlahSiswa['statistik_siswa'] ?? 0,
     'hadir' => 36, // Contoh data; ganti dengan nilai dari model/controller
@@ -46,11 +40,17 @@ $statistikSiswa = [
 ];
 $statistikSurat = [
     'total' => $jumlahSurat['statistik_surat'] ?? 0,
-    'hadir' => 36, // Contoh data; ganti dengan nilai dari model/controller
-    'sakit' => 2,
-    'izin' => 1,
-    'alpha' => 1
+    'unverified' => $jumlahSuratHariIni['unverified'] ?? 0,
+    'verified' => $jumlahSuratHariIni['verified'] ?? 0,
+    'disable' => $jumlahSuratHariIni['disable'] ?? 0
 ];
+$statistikSuratHariIni = [
+    'total' => $jumlahSuratHariIni['statistik_surat'] ?? 0,
+    'unverified' => $jumlahSuratHariIni['unverified'] ?? 0,
+    'verified' => $jumlahSuratHariIni['verified'] ?? 0,
+    'disable' => $jumlahSuratHariIni['disable'] ?? 0
+];
+
 
 ?>
 
@@ -143,7 +143,7 @@ $statistikSurat = [
                             <div class="h5 font-weight-bold text-primary text-uppercase mb-1 m-0 me-2">
                                 Statistik Surat Izin</div>
                             <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
-                                <?= $statistikSurat['total']; ?></div>
+                                <?php echo $statistikSurat['total']; ?></div>
                             <span>Total Surat</span>
                             <ul class="p-0 m-0 mt-5">
                                 <li class="d-flex mb-4 pb-1">
@@ -156,7 +156,8 @@ $statistikSurat = [
                                             <h6 class="mb-0" style="font-weight: bold;">Unverified</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?php echo $statistikSuratHariIni['unverified']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -170,7 +171,8 @@ $statistikSurat = [
                                             <h6 class="mb-0" style="font-weight: bold;">Verified</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?php echo $statistikSuratHariIni['verified']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -184,7 +186,8 @@ $statistikSurat = [
                                             <h6 class="mb-0" style="font-weight: bold;">Disable</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?php echo $statistikSuratHariIni['disable']; ?></small>
                                         </div>
                                     </div>
                                 </li>
