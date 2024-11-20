@@ -3,8 +3,13 @@ ob_start();
 session_start();
 include '../template/headerGuru.php';
 include_once '../controller/authController.php';
+include_once '../controller/dashboardController.php';
 
 $controller = new LoginController();
+$statistikController = new DashboardController($koneksi);
+$jumlahSiswa = json_decode($statistikController->getJumlahSiswa($_SESSION['nik_pegawai']), true);
+$jumlahSurat = json_decode($statistikController->getJumlahSurat($_SESSION['nik_pegawai']), true);
+
 
 
 if (!isset($_SESSION['nik_pegawai']) || !isset($_SESSION['id_jenis'])) {
@@ -24,6 +29,29 @@ $currentUser = [
     'id_jenis' => $_SESSION['id_jenis']
 ];
 
+// Data Statistik
+$statistikSuratIzin = [
+    'total' => 3, // Contoh data; ganti dengan nilai dari model/controller
+    'unverified' => 1,
+    'verified' => 1,
+    'disable' => 1
+];
+
+$statistikSiswa = [
+    'total' => $jumlahSiswa['statistik_siswa'] ?? 0,
+    'hadir' => 36, // Contoh data; ganti dengan nilai dari model/controller
+    'sakit' => 2,
+    'izin' => 1,
+    'alpha' => 1
+];
+$statistikSurat = [
+    'total' => $jumlahSurat['statistik_surat'] ?? 0,
+    'hadir' => 36, // Contoh data; ganti dengan nilai dari model/controller
+    'sakit' => 2,
+    'izin' => 1,
+    'alpha' => 1
+];
+
 ?>
 
 <!-- Begin Page Content -->
@@ -38,7 +66,9 @@ $currentUser = [
                         <div class="col mr-2">
                             <div class="h5 font-weight-bold text-primary text-uppercase mb-1 m-0 me-2">
                                 Statistik Siswa</div>
-                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">40</div>
+                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                <?= $statistikSiswa['total']; ?>
+                            </div>
                             <span>Total Siswa</span>
                             <ul class="p-0 m-0 mt-5">
                                 <li class="d-flex mb-4 pb-1">
@@ -112,7 +142,8 @@ $currentUser = [
                         <div class="col mr-2">
                             <div class="h5 font-weight-bold text-primary text-uppercase mb-1 m-0 me-2">
                                 Statistik Surat Izin</div>
-                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">3</div>
+                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                <?= $statistikSurat['total']; ?></div>
                             <span>Total Surat</span>
                             <ul class="p-0 m-0 mt-5">
                                 <li class="d-flex mb-4 pb-1">
