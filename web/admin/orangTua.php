@@ -11,6 +11,7 @@ if ($data !== false) {
     $data = json_decode($data, true);
     if (!isset($data['message']) || $data['message'] !== 'Data not found') {
         $ortus = $data;
+        // var_dump($ortus);
     }
 } else {
     // Handle errors from getAllOrtu()
@@ -56,7 +57,7 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
         
         if (is_array($datanik) && (!isset($datanik['message']) || $datanik['message'] !== 'Data not found')) {
             $ortunik = $datanik[0];
-            // var_dump($ortunik); 
+            var_dump($ortunik); 
         } else {
             echo 'Data not found';
         }
@@ -137,7 +138,7 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
                                         <i class="fas fa-pencil-alt"></i>
                                     </a> -->
                                     <a href="#" class="btn btn-danger btn-circle btn-sm"
-                                        data-toggle="modal" data-target="#modalHapus"
+                                        data-toggle="modal" data-target="#modalHapusOrtu"
                                         data-nik="<?= htmlspecialchars($ortu['nik_ortu']) ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
@@ -208,7 +209,7 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
     </div>
 
     <!-- Tombol Hapus -->
-    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+    <div class="modal fade" id="modalHapusOrtu" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
         aria-hidden="true" >
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -223,7 +224,7 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <a id="btnHapus" href="#" class="btn btn-danger">Hapus</a>
+                    <a id="btnHapusOrtu" href="#" class="btn btn-danger">Hapus</a>
                 </div>
             </div>
         </div>
