@@ -6,24 +6,6 @@ include_once '../controller/authController.php';
 
 $controller = new LoginController();
 
-
-if (!isset($_SESSION['nik_pegawai']) || !isset($_SESSION['id_jenis'])) {
-    // Jika tidak ada sesi login, arahkan ke halaman login
-    header("Location: ../login.php");
-    exit();
-}
-if ($_SESSION['id_jenis'] != 2) { // Ganti '1' sesuai id_jenis yang diperlukan untuk halaman ini
-    // Jika id_jenis tidak sesuai, arahkan ke halaman yang sesuai
-    header("Location: ../admin/index.php"); // Halaman unauthorized bisa dibuat sebagai halaman akses ditolak
-    exit();
-}
-
-$currentUser = [
-    'nik_pegawai' => $_SESSION['nik_pegawai'],
-    'nama' => $_SESSION['nama'],
-    'id_jenis' => $_SESSION['id_jenis']
-];
-
 ?>
 
 <!-- Begin Page Content -->
