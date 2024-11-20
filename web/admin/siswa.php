@@ -37,8 +37,8 @@ include '../template/headerAdmin.php'; ?>
                                 <th>Tanggal Lahir</th> 
                                 <th>Tahun Masuk</th>
                                 <th>Alamat</th>
-                                <th>Jenis Kelamin</th> 
-                                <th>Password</th>
+                                <th>Kelas</th> 
+                                
                                 <th>Aksi</th>       
                             </tr>
                         </thead>
@@ -49,8 +49,8 @@ include '../template/headerAdmin.php'; ?>
                                 <td>24 Juni 2006</td>
                                 <td>2020</td>
                                 <td>Bondowoso</td>
-                                <td>Perempuan</td>
-                                <td>123</td>
+                                <td>XI RPL 1</td>
+                                
                                 <td><!-- Circle Buttons (Small) -->
                                     <a href="#" class="btn btn-info btn-circle btn-sm">
                                         <i class="fas fa-eye"></i>

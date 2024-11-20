@@ -1,64 +1,82 @@
-<?php 
-require ('./config/config.php');
-
+<?php
 session_start();
 
-// Inisialisasi variabel pesan error
-$errorNik = '';
-$errorPass = '';
-$errorMsg = '';
+// Cek apakah sesi sudah ada, artinya pengguna sudah login
+if (isset($_SESSION['nik_pegawai']) && isset($_SESSION['id_jenis'])) {
+    // Arahkan ke halaman sesuai dengan id_jenis
+    if ($_SESSION['id_jenis'] == 1) {
+        header('Location: ./admin/index.php');
+        exit();
+    } elseif ($_SESSION['id_jenis'] == 2) {
+        header('Location: ./guru/index.php');
+        exit();
+    }
+}
 
-if (isset($_POST['submit'])) {
-    $nik = $_POST['txt_nikPegawai'];
-    $pass = $_POST['txt_passPegawai'];
+use Web\Auth;
+require_once ('./config/config.php');
+include_once "./controller/authController.php";
 
-    // Validasi apakah NIK atau password kosong
-    if (empty(trim($nik))) {
+// Inisialisasi variabel error
+$errorNik = $errorPassword = $errorMessage = '';
+
+// Cek apakah form telah disubmit
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil input dari form
+    $nikPegawai = trim($_POST['txt_nikPegawai']);
+    $password = trim($_POST['txt_passPegawai']);
+
+    // Validasi input
+    if (empty($nikPegawai)) {
         $errorNik = 'NIK wajib diisi';
-    } elseif (strlen($nik) < 10) {
-        $errorNik = 'NIK minimal 10 digit';
+    }
+    if (empty($password)) {
+        $errorPassword = 'Password wajib diisi';
     }
 
-    if (empty(trim($pass))) {
-        $errorPass = 'Password wajib diisi';
-    }
-
-    // Jika tidak ada error, lanjutkan ke validasi database
-    if (empty($errorNik) && empty($errorPass)) {
-        // select data berdasarkan nik dari db
-        $query = "SELECT * FROM tb_pegawai WHERE nik = '$nik'";
-        $result = mysqli_query($koneksi, $query);
-        $num = mysqli_num_rows($result);
-
-        if ($num != 0) {
-            if ($row = mysqli_fetch_array($result)) {
-                $nikPegawai = $row['nik'];
-                $namaPegawai = $row['nama'];
-                $password = $row['password'];
-                $jenis_kelamin = $row['jenis_kelamin'];
-                $id_jenis = $row['id_jenis'];
-            }
-
-            if ($nikPegawai == $nik && $password == $pass) {
-                // set session untuk menyimpan pesan suskses login
-                $_SESSION['login_success'] = 'Login Berhasil!';
-                $_SESSION['namaPegawai'] = $namaPegawai; // menyimpan nama pegawai
-                if ($id_jenis == 1) {
-                    header('Location: ./admin/index.php');
-                } elseif ($id_jenis == 2) {
-                    header('Location: ./guru/index.php');
-                } else {
-                    echo "<script>alert('Pegawai tidak ditemukan');window.location.href='login.php'</script>";
-                }
-            } else {
-                // NIK ada, pass salah
-                $errorPass = 'Password salah';
-            }
+    // Jika tidak ada error, proses login
+    if (empty($errorNik) && empty($errorPassword)) {
+        // Validasi panjang NIK
+        if (strlen($nikPegawai) < 10) {
+            $errorNik = 'NIK minimal 10 karakter';
         } else {
-            // NIK tidak ada
-            $errorNik = 'NIK tidak terdaftar';
+            $controller = new LoginController();
+            $loginResult = $controller->login($nikPegawai, $password);
+            $login = json_decode($loginResult, true);
+            if ($login['status'] === 'success') {
+                // loginResult berhasil
+                $idJenis = $login['data']['id_jenis'];
+                
+                // Set session
+                $_SESSION['nik_pegawai'] = $login['data']['nik_pegawai'];
+                $_SESSION['nama'] = $login['data']['nama'];
+                $_SESSION['id_jenis'] = $idJenis;
+    
+                // Arahkan ke halaman yang sesuai berdasarkan id_jenis
+                if ($idJenis == 1) {
+                    // Arahkan ke halaman admin
+                    header('Location: ./admin/index.php'); 
+                    exit();
+                } elseif ($idJenis == 2) {
+                    // Arahkan ke halaman guru
+                    header('Location: ./guru/index.php'); 
+                    exit();
+                }
+                exit();
+            } else {
+                // Pesan kesalahan berdasarkan hasil loginResult
+                if ($login['message'] == 'Password salah') {
+                    $errorPassword = 'Password salah';
+                } elseif ($login['message'] == 'NIK tidak terdaftar') {
+                    $errorNik = 'NIK tidak terdaftar';
+                }
+            }
         }
+    } else {
+        // Tampilkan pesan error jika ada
+        $errorMessage = isset($errorMessage) ? $errorMessage : 'Terjadi kesalahan, silakan coba lagi';
     }
+    
 }
 ?>
 
@@ -71,7 +89,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekInOut</title>
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="./vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -96,7 +114,7 @@ if (isset($_POST['submit'])) {
         <div class="login-content">
             <form action="" method="POST" class="user">
                 <img src="./img/logo-skaga.jpeg" alt="Logo">
-                <h2 class="title" style="color: #f48a4e;">CekInOut</h2>
+                <h2 class="title" style="color: #f48a4e;">Presence+</h2>
 
                 <!-- NIK -->
                 <div class="form-group has-validation">
@@ -115,13 +133,13 @@ if (isset($_POST['submit'])) {
                 <!-- Password -->
                 <div class="form-group form-group-pass">
                     <input type="password" name="txt_passPegawai"
-                        class="form-control form-control-user <?php echo !empty($errorPass) ? 'is-invalid' : ''; ?>"
+                        class="form-control form-control-user <?php echo !empty($errorPassword) ? 'is-invalid' : ''; ?>"
                         id="password" placeholder="Password">
-                    <img src="img/eye-close.png" id="eyeIcon">
+                    <img src="./img/eye-close.png" id="eyeIcon">
                     <!-- Tampilkan error password -->
                     <?php if (!empty($errorPass)): ?>
                     <div class=" invalid-feedback">
-                        <?php echo $errorPass; ?>
+                        <?php echo $errorPassword; ?>
                     </div>
                     <?php endif; ?>
                 </div>

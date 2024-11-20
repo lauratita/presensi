@@ -25,7 +25,7 @@
                     <input class="form-control" type="Date" value="12/10/2024" aria-label="Disabled input example">
                 </div>
                 <div class="ml-auto mr-2 ">
-                    <button type="button" class="btn btn-success">Eksport Excel</>
+                    <button type="button" class="btn btn-success">Export Excel</>
                 </div>
             </div>
         </div>

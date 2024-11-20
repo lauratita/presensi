@@ -1,4 +1,9 @@
-<?php $namaGuru = isset($_SESSION['namaPegawai']) ? $_SESSION['namaPegawai'] : 'Guru';  ?>
+<?php 
+// session_start();
+require_once ('../config/config.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,24 +38,19 @@
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar accordion" id="accordionSidebar" style="background-color: #ffffff;">
-
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <img src="../img/logo2.png" alt="iconDashboard">
                 </div>
-                <div class="sidebar-brand-text mx-3" style="color: #f48a4e;">CekInOut</div>
+                <div class="sidebar-brand-text mx-3" style="color: #f48a4e;">Presence+</div>
             </a>
-
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="index.php">
@@ -58,13 +58,10 @@
                     <span class="text-secondary">Dashboard</span>
                 </a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">SISWA</div>
-
             <!-- Nav Item -Presensi -->
             <li class="nav-item">
                 <a class="nav-link" href="presensi.php">
@@ -72,7 +69,6 @@
                     <span class="text-secondary">Presensi</span>
                 </a>
             </li>
-
             <!-- Nav Item - Surat Izin -->
             <li class="nav-item">
                 <a class="nav-link" href="suratIzin.php">
@@ -80,13 +76,10 @@
                     <span class="text-secondary">Surat Izin</span>
                 </a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">LAPORAN</div>
-
             <!-- Nav Item - Rekap -->
             <li class="nav-item">
                 <a class="nav-link" href="rekap.php">
@@ -94,19 +87,15 @@
                     <span class="text-secondary">Rekap</span>
                 </a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
-
         </ul>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <!-- Sidebar Toggle (Topbar) -->
@@ -117,7 +106,8 @@
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <h5 class="m-0" style="color: #f48a4e;">Welcome
-                            <?php echo htmlspecialchars($namaGuru); ?>, Have
+                            <?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Wali Kelas'; ?>,
+                            Have
                             a Nice
                             Day!!!</h5>
                     </form>
@@ -129,15 +119,15 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo htmlspecialchars($namaGuru); ?></span>
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Wali Kelas'; ?></span>
                                 <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2" style="color: #f48a4e;"></i>
-                                    <span>Wali Kelas</span>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modalUbahPassword">
+                                    <i class="bi bi-key-fill fa-sm fa-fw mr-2" style="color: #f48a4e;"></i>
+                                    Ubah Password
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" id="btn-logout">
@@ -147,6 +137,42 @@
                             </div>
                         </li>
                     </ul>
+
+                    <!-- modal ubah password -->
+                    <div class="modal fade" id="modalUbahPassword" tabindex="-1" role="dialog"
+                        aria-labelledby="modalUbahPasswordLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalUbahPasswordLabel">Ubah Password</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Form untuk ubah password -->
+                                    <form id="formUbahPassword">
+                                        <div class="form-group">
+                                            <label for="oldPass">Password Lama</label>
+                                            <input type="password" class="form-control" id="oldPass">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPass">New Password</label>
+                                            <input type="password" class="form-control" id="newPass">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmPass">Confirm Password</label>
+                                            <input type="password" class="form-control" id="confirmPass">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                    <button type="button" class="btn btn-primary" id="btn-newPass">Ubah
+                                        Password</button>
+                                </div>
+                            </div>
+                        </div>
                 </nav>
 
                 <!-- End of Topbar -->
