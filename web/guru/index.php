@@ -51,7 +51,6 @@ $statistikSuratHariIni = [
     'disable' => $jumlahSuratHariIni['disable'] ?? 0
 ];
 
-
 ?>
 
 <!-- Begin Page Content -->
