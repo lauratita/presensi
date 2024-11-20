@@ -35,14 +35,24 @@ $(document).ready(function() {
 });
 
 
-$('#modalHapus').on('show.bs.modal', function (event) {
+$('#modalHapusOrtu').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Tombol yang men-trigger modal
     var nik = button.data('nik'); // Ambil data NIK dari tombol
 
     var modal = $(this);
     var hrefDelete = "?action=delete&nik=" + nik; // Buat URL hapus
-    modal.find('#btnHapus').attr('href', hrefDelete); // Set href tombol hapus
+    modal.find('#btnHapusOrtu').attr('href', hrefDelete); // Set href tombol hapus
 });
+
+$('#modalHapusKelas').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); 
+    var id = button.data('id'); 
+
+    var modal = $(this);
+    var hrefDelete = "?action=delete&id=" + id; 
+    modal.find('#btnHapusKelas').attr('href', hrefDelete); // Set href tombol hapus
+});
+
 
 // $(document).on('click', '.edit-btn', function(e) {
 //     var nik = $(this).data('nik');
