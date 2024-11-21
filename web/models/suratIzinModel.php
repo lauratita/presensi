@@ -2,7 +2,7 @@
 class SuratIzinModel
 {
     private $koneksi;
-    private $view_name = "v_surat";
+    private $view_name = "v_suratizin";
 
     public $nik_pegawai;
     public $nis;
