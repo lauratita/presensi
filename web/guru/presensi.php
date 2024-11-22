@@ -64,19 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>NIS</th>
                             <th>Nama</th>
                             <th>Keterangan</th>
-                        </tr> 
+                        </tr>
                     </thead>
                     <tbody>
-                    <?php
+                        <?php
                     $no = 1;
                     foreach ($presensis as $presensi) : ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= $presensi['nis'] ?></td>
-                                <td><?= $presensi['nama'] ?></td>
-                                <td><?= $presensi['keterangan'] ?></td>
-                            </tr>
-                            <?php endforeach;?>
+                        <tr>
+                            <td><?= $no++ ?></td>
+                            <td><?= $presensi['nis'] ?></td>
+                            <td><?= $presensi['nama_siswa'] ?></td>
+                            <td><?= $presensi['keterangan'] ?></td>
+                        </tr>
+                        <?php endforeach;?>
                     </tbody>
                 </table>
             </div>

@@ -72,4 +72,26 @@ class DashboardModel
             return ["unverified" => 0, "verified" => 0, "disable" => 0];
         }
     }
+    public function getJumlahPresensiHariIni($nik_pegawai)
+    {
+        // SELECT SUM(CASE WHEN status = 'unverified' THEN 1 ELSE 0 END) AS unverified, SUM(CASE WHEN status = 'verified' 
+        // THEN 1 ELSE 0 END) AS verified, SUM(CASE WHEN status = 'disable' THEN 1 ELSE 0 END) AS disable FROM v_suratizin 
+        // WHERE DATE(tanggal) = CURDATE() AND nik_pegawai = '6611552244';
+        $sql = "SELECT SUM(CASE WHEN p.keterangan = 'hadir' THEN 1 ELSE 0 END) AS hadir, 
+        SUM(CASE WHEN p.keterangan = 'izin' THEN 1 ELSE 0 END) AS izin, 
+        SUM(CASE WHEN p.keterangan = 'sakit' THEN 1 ELSE 0 END) AS sakit, 
+        SUM(CASE WHEN p.keterangan = 'alpha' THEN 1 ELSE 0 END) AS alpha 
+        FROM tb_presensi p JOIN tb_siswa s ON p.nis = s.nis JOIN tb_kelas k ON s.id_kelas = k.id_kelas 
+        WHERE DATE(p.tanggal) = CURDATE() AND k.nik_pegawai = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("s", $nik_pegawai); // Perbaikan: hanya satu "s"
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc();
+        } else {
+            return ["hadir" => 0, "izin" => 0, "sakit" => 0, "alpha" => 0];
+        }
+    }
 }

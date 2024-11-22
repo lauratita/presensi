@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <h6>NIS : <?= $surat['nis'] ?></h6>
                                                     <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
+                                                    <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
                                                         width="300" height="300" />
@@ -204,6 +205,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <div class="modal-body">
                                                     <h6>NIS : <?= $surat['nis'] ?></h6>
                                                     <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
+                                                    <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
+                                                    <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
                                                         width="300" height="300" />
@@ -279,6 +282,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <div class="modal-body">
                                                     <h6>NIS : <?= $surat['nis'] ?></h6>
                                                     <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
+                                                    <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
+                                                    <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
                                                         width="300" height="300" />

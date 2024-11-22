@@ -2,7 +2,8 @@
 class PresensiModel
 {
     private $koneksi;
-    private $view_name = "tb_presensi";
+    private $table_name = "tb_presensi";
+    private $view_name = "v_presensi_jadwal_siswa";
 
   
     public $id_presensi ;
@@ -13,7 +14,8 @@ class PresensiModel
     public   $valid_foto_pulang;
     public   $id_jadwal;
     public   $nis;
-    public   $id_surat; 
+    public   $id_surat;  
+    public   $keterangan;  
 
     public function __construct($db)
     {
@@ -32,7 +34,7 @@ class PresensiModel
         }
     }
     public function readvpresensi(){
-        $sql = "SELECT * FROM v_presensi";
+        $sql = "SELECT * FROM " . $this->view_name;
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);
@@ -43,7 +45,7 @@ class PresensiModel
         }
     }
     public function create(){
-        $sql = "INSERT INTO " . $this->table_name . "  `tanggal`, `jam_datang`, `jam_pulang`, `valid_foto_datang`, `valid_foto_pulang`, `id_jadwal`, `nis`, `id_surat`, `keterangan`)
+        $sql = "INSERT INTO " . $this->view_name . "  `tanggal`, `jam_datang`, `jam_pulang`, `valid_foto_datang`, `valid_foto_pulang`, `id_jadwal`, `nis`, `id_surat`, `keterangan`)
                                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             $stmt = $this->koneksi->prepare($sql);
@@ -75,7 +77,7 @@ class PresensiModel
         }
     }
     public function delete(){
-        $sql = "DELETE FROM " .$this->table_name . " WHERE id_presensi = ?";
+        $sql = "DELETE FROM " .$this->view_name . " WHERE id_presensi = ?";
         $stmt = $this->koneksi->prepare($sql);
 
         // $stmt->bindValue(1, $this->nik, PDO::PARAM_STR);
