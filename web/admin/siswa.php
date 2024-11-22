@@ -1,7 +1,29 @@
 <?php 
+ob_start();
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'siswa';
-include '../template/headerAdmin.php'; ?>
+include '../template/headerAdmin.php'; 
+include_once '../controller/siswaController.php';
+$showEditModal= false;
+$controller = new SiswaController();
+$data = $controller->read();
+$siswas = [];
+
+$dataortu = json_decode($controller->getortu());
+$datakelas = json_decode($controller->getkelas());
+
+if ($data !== false) {
+    $data = json_decode($data, true);
+    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
+        $siswas = $data;
+        // var_dump($kelass);
+    }
+} else {
+    // Handle errors from getAllOrtu()
+    echo "Error fetching data.";
+}
+?>
+
 <html lang="en">
 <body>
 <div class="container-fluid">
@@ -38,18 +60,19 @@ include '../template/headerAdmin.php'; ?>
                                 <th>Tahun Masuk</th>
                                 <th>Alamat</th>
                                 <th>Kelas</th> 
-                                
                                 <th>Aksi</th>       
                             </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($siswas as $siswa) : ?>
                             <tr>
-                                <td>306261805</td>
-                                <td>Ita Nurlaili</td>
-                                <td>24 Juni 2006</td>
-                                <td>2020</td>
-                                <td>Bondowoso</td>
-                                <td>XI RPL 1</td>
+                                <td><?= htmlspecialchars($siswa['nis']) ?></td>
+                                <td><?= htmlspecialchars($siswa['nama']) ?></td>
+                                <td><?= htmlspecialchars($siswa['tanggal_lahir']) ?></td>
+                                <td><?= htmlspecialchars($siswa['tahun_akademik']) ?></td>
+                                <td><?= htmlspecialchars($siswa['alamat']) ?></td>
+                                <td><?= htmlspecialchars($siswa['id_kelas']) ?></td>
+                                
                                 
                                 <td><!-- Circle Buttons (Small) -->
                                     <a href="#" class="btn btn-info btn-circle btn-sm">
@@ -62,6 +85,7 @@ include '../template/headerAdmin.php'; ?>
                                         <i class="fas fa-trash"></i>
                                     </a></td>
                             </tr>
+                            <?php endforeach;?>
                         </tbody>
                     </table>
                 </div>

@@ -52,8 +52,8 @@ class KelasController{
         return json_encode(["message" => "Gagal hapus Kelas"]);
     }
 
-    public function getpegawai(){
-        $pegawai = $this->kelasService->getPegawai();
+    public function getpegawai($id_kelas = null){
+        $pegawai = $this->kelasService->getPegawai($id_kelas);
         return $pegawai;
     }
 }
