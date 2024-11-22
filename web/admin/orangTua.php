@@ -3,6 +3,7 @@ ob_start();
 
 include '../template/headerAdmin.php';
 include_once '../controller/ortucontroler.php';
+$showEditModal= false;
 $controller = new OrtuControler();
 $data = $controller->read();
 $ortus = [];
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $ortunik = [];
 
-if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
+if (isset($_GET['nik'])) {
     $nik = $_GET['nik'];
     $datanik = $controller->getByNik($nik);
 
@@ -57,7 +58,8 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
         
         if (is_array($datanik) && (!isset($datanik['message']) || $datanik['message'] !== 'Data not found')) {
             $ortunik = $datanik[0];
-            var_dump($ortunik); 
+            $showEditModal= true;
+            // var_dump($ortunik); 
         } else {
             echo 'Data not found';
         }
@@ -125,8 +127,12 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
                                         data-nik="<?= htmlspecialchars($ortu['nik_ortu']) ?>">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a  href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&nik=<?= $ortu['nik_ortu']; ?>"
-                                    class="btn btn-warning btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                    <a href="?nik=<?= htmlspecialchars($ortu['nik_ortu']) ?>" class="btn btn-warning btn-circle btn-sm">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </a>
+
+                                    <!-- <a  href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&nik=<?= $ortu['nik_ortu']; ?>"
+                                    class="btn btn-warning btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a> -->
                                     <!-- <a href=""
                                         data-toggle="modal" data-target="#modalEdit"
                                         class="btn btn-warning btn-circle btn-sm ">
@@ -231,7 +237,7 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
     </div>
 
     <!-- Modal Edit Data -->
-     <?php if (!empty($ortunik)): ?>
+     <?php if ($showEditModal && !empty($ortunik)): ?>
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true" >
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -291,16 +297,24 @@ if (isset($_GET['action'], $_GET['nik']) && $_GET['action'] === 'edit') {
             </form>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#modalEdit').modal('show');
+        });
+    </script>
+    <?php endif; ?>
+
 </div>
 
-    <script>
+
+    <!-- <script>
         const modalElement = document.querySelector('#modalEdit');
         if (modalElement) {
         const modalEdit = new bootstrap.Modal(modalElement);
         modalEdit.show();
     }
-    </script>
-<?php endif; ?>
+    </script> -->
+
 </body>
 </html>
 

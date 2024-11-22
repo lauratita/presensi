@@ -40,8 +40,8 @@ class KelasService{
         return $this->kelas->delete();
     }
 
-    public function getPegawai(){
-        $stmt = $this->pegawai->getpegawai();
+    public function getPegawai($id_kelas = null){
+        $stmt = $this->pegawai->getpegawai($id_kelas);
         return $stmt;
     }
 }
