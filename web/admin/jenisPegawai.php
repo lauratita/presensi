@@ -169,41 +169,7 @@ if (isset($_GET['hapus_id'])) {
                 </div>
             </div>
         </div>
-
     </div>
-
-    <!-- Tambahkan script JS Bootstrap, jQuery, DataTables -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-    $(document).ready(function() {
-        $('#dataTable').DataTable({
-            "pagingType": "simple", // Previous, Next
-            "lengthMenu": [5, 10, 25, 50], // Show entries options
-            "searching": true, // Fitur search
-            "language": {
-                "paginate": {
-                    "previous": "Previous",
-                    "next": "Next"
-                }
-            }
-        });
-
-        // Menampilkan data di modal edit
-        $('#modalEditJenis').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); 
-            var id = button.data('id'); 
-            var nama = button.data('nama'); 
-
-            var modal = $(this);
-            modal.find('#edit_id_jenis').val(id);
-            modal.find('#edit_jenisPegawai').val(nama);
-        });
-    });
-    </script>
 </body>
 </html>
 
