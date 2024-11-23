@@ -163,7 +163,7 @@ if (isset($_GET['nik'])) {
         <div class="tab-pane fade" id="tab-tambahOrtu" role="tabpanel" aria-labelledby="nav-tambahOrtu-tab">
             <div class="card shadow mb-4 mt-4">
                 <div class="card-body">
-                    <form id="formTambahOrtu" method="POST" action="?action=create">
+                    <form  id="formTambahOrtu" method="POST" action="?action=create">
                         <div class="row">
                             <div class="col-md-6 mt-3">
                                 <label for="namaOrtu">Nama</label>
@@ -171,7 +171,7 @@ if (isset($_GET['nik'])) {
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label for="jkOrtu">Jenis Kelamin</label>
-                                <select class="form-control" id="jkOrtu" name="jenis_kelamin" >
+                                <select class="form-control" id="jkOrtu" name="jenis_kelamin" required>
                                     <option value="">Pilih Jenis Kelamin</option>
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
@@ -181,27 +181,27 @@ if (isset($_GET['nik'])) {
                         <div class="row">
                             <div class="col-md-6 mt-3">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" name="email" id="email" placeholder="Masukkan Email">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan Email" required>
                             </div>
                             <div class="col-md-6 mt-3">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" name="password" id="password"  placeholder="Masukkan Password" required>
+                                <label for="validationServer03">Password</label>
+                                <input type="password" class="form-control"  name="password"   placeholder="Masukkan Password" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mt-3">
-                                <label for="nik">NIK</label>
-                                <input type="text" class="form-control" name="nik" id="nik" placeholder="Masukkan NIK">
+                                <label class="form-label">NIK</label>
+                                <input type="text" class="form-control" name="nik" placeholder="Masukkan NIK" required>
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label for="nohp">No HP</label>
-                                <input type="text" class="form-control" name="no_hp" id="nohp"  placeholder="Masukkan No HP" required>
+                                <input type="tel" class="form-control" name="no_hp" id="nohp"  placeholder="Masukkan No HP" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 mt-3">
-                                <label for="alamatOrtu">Alamat</label>
-                                <textarea class="form-control" name="alamat" id="alamatOrtu" placeholder="Masukkan Alamat" ></textarea>
+                                <label for="validationTextarea" class="form-label">Alamat</label>
+                                <textarea class="form-control" name="alamat" id="validationTextarea" placeholder="Masukkan Alamat" required></textarea>
                             </div>
                         </div>
                         <div class="form-group text-right mt-3">
@@ -253,17 +253,17 @@ if (isset($_GET['nik'])) {
                     <div class="row">
                         <div class="col-md-6 mt-3">
                             <label for="editNikOrtu">NIK</label>
-                            <input type="text" class="form-control" name="editnik" id="editNik" value="<?= $ortunik['nik_ortu']?>">
+                            <input type="text" class="form-control" name="editnik" id="editNik" value="<?= $ortunik['nik_ortu']?>" required>
                         </div>
                         <div class="col-md-6 mt-3">
                             <label for="editNamaOrtu">Nama</label>
-                            <input type="text" class="form-control" name="editnama" id="editNamaOrtu" value="<?=$ortunik['nama']?>"required>
+                            <input type="text" class="form-control" name="editnama" id="editNamaOrtu" value="<?=$ortunik['nama']?>" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mt-3">
                             <label for="editJkOrtu">Jenis Kelamin</label>
-                            <select class="form-control" name="editjenis_kelamin" id="editJkOrtu">
+                            <select class="form-control" name="editjenis_kelamin" id="editJkOrtu" required>
                                 <option value="Laki-laki" <?= $ortunik['jenis_kelamin'] == 'laki-laki' ? 'selected' : '' ?>
                                 >Laki-laki</option>
                                 <option value="Perempuan" <?= $ortunik['jenis_kelamin'] == 'perempuan' ? 'selected' : '' ?>>Perempuan</option>
@@ -286,7 +286,7 @@ if (isset($_GET['nik'])) {
                     </div>
                     <div class="col-12 mt-3">
                         <label for="editAlamatOrtu">Alamat</label>
-                        <textarea class="form-control" name="editalamat" id="editAlamatOrtu"><?= $ortunik['alamat'] ?></textarea>
+                        <textarea class="form-control" name="editalamat" id="editAlamatOrtu" required><?= $ortunik['alamat'] ?></textarea>
                     </div>
                     
                 </div>

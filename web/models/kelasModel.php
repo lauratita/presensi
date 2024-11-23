@@ -90,48 +90,54 @@ class KelasModel{
         $stmt->close();
     }
 
-    // public function getpegawai(){
-    //     $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " WHERE id_jenis = 2 
-    //     AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . ")";
+    public function getpegawai(){
+        $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " WHERE id_jenis = 2 
+        AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name.")";
+        $result = $this->koneksi->query($sql);
+        if ($result->num_rows > 0) {
+            $data = $result->fetch_all(MYSQLI_ASSOC);
+            return json_encode($data? $data : ["message" => "Data not found for given ID"]);
+        } else {
+            http_response_code(404);
+            return json_encode(["message" => "Data not found"]);
+        }
+    }
+
+    // public function getPegawaiUntukTambah() {
+    //     $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " 
+    //             WHERE id_jenis = 2 
+    //             AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . ")";
     //     $result = $this->koneksi->query($sql);
+        
     //     if ($result->num_rows > 0) {
     //         $data = $result->fetch_all(MYSQLI_ASSOC);
-    //         return json_encode($data? $data : ["message" => "Data not found for given ID"]);
+    //         return json_encode($data);
     //     } else {
     //         http_response_code(404);
     //         return json_encode(["message" => "Data not found"]);
     //     }
     // }
 
-    public function getpegawai($id_kelas = null) {
-        // Default query untuk menampilkan pegawai yang belum digunakan
-        $sql = "SELECT nik_pegawai, nama 
-                FROM " . $this->table_pegawai . " 
-                WHERE id_jenis = 2 
-                AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . ")";
-        
-        // Jika sedang mengedit kelas, sertakan nik_pegawai yang sedang digunakan
-        if ($id_kelas !== null) {
-            $sql .= " OR nik_pegawai = (SELECT nik_pegawai FROM " . $this->table_name . " WHERE id_kelas = ?)";
-        }
-        
-        $stmt = $this->koneksi->prepare($sql);
-        
-        // Jika ada $id_kelas, tambahkan parameter ke query
-        if ($id_kelas !== null) {
-            $stmt->bind_param("s", $id_kelas);
-        }
-        
-        $stmt->execute();
-        $result = $stmt->get_result();
+    // public function getPegawaiUntukEdit($id_kelas) {
+    //     $sql = "SELECT p.nik_pegawai, p.nama 
+    //             FROM " . $this->table_pegawai . " p
+    //             LEFT JOIN " . $this->table_name . " k ON p.nik_pegawai = k.nik_pegawai 
+    //             WHERE p.id_jenis = 2 
+    //             AND (k.id_kelas IS NULL OR k.id_kelas = ?)";
+    //     $stmt = $this->koneksi->prepare($sql);
+    //     $stmt->bind_param("i", $id_kelas);  // Bind id_kelas untuk mengedit
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
     
-        if ($result->num_rows > 0) {
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            return json_encode($data);
-        } else {
-            http_response_code(404);
-            return json_encode(["message" => "Data not found"]);
-        }
-    }
+    //     if ($result->num_rows > 0) {
+    //         $data = $result->fetch_all(MYSQLI_ASSOC);
+    //         return json_encode($data);
+    //     } else {
+    //         http_response_code(404);
+    //         return json_encode(["message" => "Data not found"]);
+    //     }
+    // }
+    
+    
     
 }

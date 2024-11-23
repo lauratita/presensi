@@ -1,4 +1,6 @@
 <?php 
+
+
 ob_start();
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'kelas';
@@ -9,10 +11,8 @@ $controller = new KelasController();
 $data = $controller->read();
 $kelass = [];
 
-// $pegawai = $controller->getpegawai($id_kelas); 
-// $datapegawai = json_decode($pegawai, true);
-
-$datapegawai = json_decode($controller->getpegawai(isset($id_kelas) ? $id_kelas : null), true);
+$pegawai = $controller->getpegawai(); 
+$datapegawai = json_decode($pegawai, true);
 
 
 if ($data !== false) {
@@ -58,6 +58,7 @@ $kelasid = [];
 if (isset($_GET['id'])) {
     $id_kelas = $_GET['id'];
     $datakelas = $controller->getById($id_kelas);
+    // $pegawaiEdit = $controller->pegawaiEdit($id_kelas); 
 
     if ($datakelas !== false) {
         // Decode JSON as associative array
@@ -67,7 +68,7 @@ if (isset($_GET['id'])) {
             $kelasid = $datakelas[0];
             $showEditModal= true;
             // $pegawaiku = $controller->getPegawai($kelasid['nik_pegawai']);
-            // var_dump($kelasid); 
+            var_dump($kelasid); 
         } else {
             echo 'Data not found';
         }
@@ -120,7 +121,7 @@ if (isset($_GET['id'])) {
                                     </a>
                                     <a href="?id=<?= htmlspecialchars($kelas['id_kelas']) ?>" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
-                                            </a>
+                                    </a>
                                     <!-- <a href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&id=<?= $kelas['id_kelas']; ?>" 
                                         class="btn btn-warning btn-circle btn-sm" >
                                         <i class="fas fa-pencil-alt"></i>
@@ -219,7 +220,7 @@ if (isset($_GET['id'])) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Form untuk tambah edit kelas -->
+                        <!-- Form untuk  edit kelas -->
                         <form id="formEditKelas" method="POST" action="?action=update">
                             <input type="hidden" name="id_kelas" value="<?= $kelasid['id_kelas'] ?>">
                             <div class="form-group">
@@ -233,10 +234,17 @@ if (isset($_GET['id'])) {
                                     <option value="">Pilih Wali Kelas</option>
                                     <?php if (!empty($datapegawai)): ?>
                                         <?php foreach ($datapegawai as $pegawai): ?>
-                                            <option value="<?= htmlspecialchars($pegawai['nik_pegawai']) ?>" 
-                                                <?= isset($kelasid['nik_pegawai']) && $kelasid['nik_pegawai'] == $pegawai['nik_pegawai'] ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($pegawai['nama']) ?>
-                                            </option>
+                                        <option value="<?= htmlspecialchars($pegawai['nik_pegawai']) ?>"
+                                            <?= htmlspecialchars($kelasid['nik_pegawai'] == $pegawai['nik_pegawai']) ? 'selected' : '' ?>
+                                            <?php
+                                            // Mengizinkan pegawai yang sedang diedit untuk tetap muncul di dropdown
+                                             if ($kelasid['nik_pegawai'] != $pegawai['nik_pegawai'] && in_array($pegawai['nik_pegawai'], array_column($datapegawai, 'nik_pegawai'))) {
+                                               echo 'disabled';
+                                                }
+                                             ?>
+                                            >
+                                            <?= htmlspecialchars($pegawai['nama']) ?>
+                                        </option>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <option value="">Data tidak tersedia</option>

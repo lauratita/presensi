@@ -20,6 +20,13 @@ class SiswaController{
             $alamat = $request['alamat'];
             $id_kelas = $request['id_kelas'];
             $nik_ortu = $request['nik_ortu'];
+            // $id_foto = $request['id_foto'];
+            // $foto_depan = $_FILES['foto_depan'] ?? null;
+            // $foto_kiri = $_FILES['foto_kiri'] ?? null;
+            // $foto_kanan = $_FILES['foto_kanan'] ?? null;
+            // $foto_atas = $_FILES['foto_atas'] ?? null;
+            // $foto_bawah = $_FILES['foto_bawah'] ?? null;
+            // $nis_siswa = $request['nis'];
             if ($this->siswaService->createSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $id_kelas, $nik_ortu)) {
                 return json_encode(["message" => "Berhasil tambah data"]);
             }
@@ -35,7 +42,7 @@ class SiswaController{
     }
 
     public function getByNis($nis){
-        $siswanis = $this->ortuService->getSiswaByNis($nis);
+        $siswanis = $this->siswaService->getSiswaByNis($nis);
         return $siswanis;
     }
 

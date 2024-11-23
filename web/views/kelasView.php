@@ -5,11 +5,11 @@ include_once $_SERVER['DOCUMENT_ROOT']. '/presensi/web/models/kelasModel.php';
 class KelasService{
     private $db;
     private $kelas;
-    private $pegawai;
+    // private $pegawai;
 
     public function __construct($db){
         $this->kelas = new KelasModel($db);
-        $this->pegawai = new KelasModel($db);
+        // $this->pegawai = new KelasModel($db);
     }
 
     public function createKelas($nama_kelas, $nik_pegawai){
@@ -40,8 +40,18 @@ class KelasService{
         return $this->kelas->delete();
     }
 
-    public function getPegawai($id_kelas = null){
-        $stmt = $this->pegawai->getpegawai($id_kelas);
-        return $stmt;
+    public function getPegawai(){
+        // $this->kelas->getpegawai();
+        return $this->kelas->getpegawai();
     }
+
+
+    // public function getPegawaiUntukTambah() {
+    //     return $this->kelas->getPegawaiUntukTambah();
+    // }
+
+    // // Ambil pegawai yang bisa dipilih saat edit kelas
+    // public function getPegawaiUntukEdit($id_kelas) {
+    //     return $this->kelas->getPegawaiUntukEdit($id_kelas);
+    // }
 }
