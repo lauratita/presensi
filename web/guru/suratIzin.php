@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $koneksi->prepare($query);
     
     // Mengikat parameter untuk query
-    $stmt->bind_param('si', $status, $id_surat); // 'si' berarti string dan integer
+    $stmt->bind_param('si', $status, $id_surat);
     
     if ($stmt->execute()) {
         // Redirect ke tab yang sesuai setelah status diperbarui
@@ -98,9 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
                                         <td>
-                                            <button type="button" data-toggle="modal"
+                                            <a href="?verifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
                                                 data-target="#verifiedizin<?= $surat['id_surat'] ?>"
-                                                class="btn btn-sm btn-primary">Verified</button>
+                                                class="btn btn-sm btn-primary">
+                                                Verified
+                                            </a>
                                         </td>
                                     </tr>
 
@@ -182,14 +184,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
                                         <td>
-                                            <button type="button" data-toggle="modal"
-                                                data-target="#updateverified<?= $surat['id_surat'] ?>"
-                                                class="btn btn-sm btn-warning ">Change
-                                                Verified</button>
+                                            <a href="?updateverifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
+                                                data-target="#updateverifiedizin<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-warning">
+                                                Change
+                                            </a>
                                     </tr>
                                     <!-- Modal verified -->
-                                    <div class="modal fade" id="updateverified<?= $surat['id_surat'] ?>" tabindex="-1"
-                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                    <div class="modal fade" id="updateverifiedizin<?= $surat['id_surat'] ?>"
+                                        tabindex="-1" aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -260,14 +263,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
                                         <td>
-                                            <button type="button" data-toggle="modal"
-                                                data-target="#updatedisable<?= $surat['id_surat'] ?>"
-                                                class="btn btn-sm btn-warning ">Change
-                                                Disable</button>
+                                            <a href="?updatedisableizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
+                                                data-target="#updatedisableizin<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-warning">
+                                                Change
+                                            </a>
                                     </tr>
                                     <!-- modal disable -->
-                                    <div class="modal fade" id="updatedisable<?= $surat['id_surat'] ?>" tabindex="-1"
-                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                    <div class="modal fade" id="updatedisableizin<?= $surat['id_surat'] ?>"
+                                        tabindex="-1" aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
