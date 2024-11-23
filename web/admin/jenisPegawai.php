@@ -1,60 +1,70 @@
-
-
 <?php 
-$activeMenu = 'pegawai'; 
-$activeSubmenu = 'jenis pegawai';
-include '../template/headerAdmin.php'; 
+ob_start();
+include '../template/headerAdmin.php';
+include_once '../controller/jpgwcontroller.php';
 
-// Koneksi ke database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "db_presensicekinout";
+$controller = new JPGWController();
+$jpgws = [];
+$jpgwid = [];
+$showEditModal = false;
 
-// Membuat koneksi ke database
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Memeriksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+// Fetch data
+$data = $controller->read();
+if ($data !== false) {
+    $data = json_decode($data, true);
+    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
+        $jpgws = $data;
+    }
+} else {
+    echo "Error fetching data.";
 }
 
-// Tambah data jenis pegawai
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['tambahJenisPegawai'])) {
-    $jenisPegawai = $_POST['jenisPegawai'];
-    $sqlTambahJenis = "INSERT INTO tb_jenis_pegawai (nama) VALUES ('$jenisPegawai')";
-    if ($conn->query($sqlTambahJenis) === TRUE) {
-        echo "<div class='alert alert-success'>Jenis Pegawai berhasil ditambahkan!</div>";
-    } else {
-        echo "<div class='alert alert-danger'>Error: " . $sqlTambahJenis . "<br>" . $conn->error . "</div>";
+// Handle POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_GET['action'] ?? $_POST['action'] ?? null;
+
+    if ($action === 'update') {
+        $result = $controller->update($_POST);
+        if ($result) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+    } elseif ($action === 'create') {
+        $result = $controller->create($_POST);
+        if ($result) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
     }
 }
 
-// Edit data jenis pegawai
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['editJenisPegawai'])) {
-    $idJenis = $_POST['id_jenis'];
-    $jenisPegawai = $_POST['jenisPegawai'];
-    $sqlEditJenis = "UPDATE tb_jenis_pegawai SET nama='$jenisPegawai' WHERE id_jenis='$idJenis'";
-    if ($conn->query($sqlEditJenis) === TRUE) {
-        echo "<div class='alert alert-success'>Jenis Pegawai berhasil diupdate!</div>";
-    } else {
-        echo "<div class='alert alert-danger'>Error: " . $sqlEditJenis . "<br>" . $conn->error . "</div>";
-    }
-}
+// Handle GET request for delete or edit
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+        $idJenis = $_GET['id'];
+        $result = $controller->delete($idJenis);
+        if ($result) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+    } elseif (isset($_GET['id'])) {
+        $idJenis = $_GET['id'];
+        $data = $controller->getByIdJenis($idJenis);
 
-// Hapus data jenis pegawai
-if (isset($_GET['hapus_id'])) {
-    $idJenis = $_GET['hapus_id'];
-    $sqlHapusJenis = "DELETE FROM tb_jenis_pegawai WHERE id_jenis='$idJenis'";
-    if ($conn->query($sqlHapusJenis) === TRUE) {
-        echo "<div class='alert alert-success'>Jenis Pegawai berhasil dihapus!</div>";
-    } else {
-        echo "<div class='alert alert-danger'>Error: " . $sqlHapusJenis . "<br>" . $conn->error . "</div>";
+        if ($data !== false) {
+            $data = json_decode($data, true);
+            if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
+                $jpgwid = $data[0];
+                $showEditModal = true;
+            } else {
+                echo 'Data not found.';
+            }
+        } else {
+            echo 'Error fetching data.';
+        }
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,114 +75,104 @@ if (isset($_GET['hapus_id'])) {
             <h1 class="h4 mb-0 text-gray-800">Jenis Pegawai</h1>
         </div>
 
-        <!-- Tab Menu -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs">
             <li class="nav-item">
-                <button class="nav-link active" id="nav-jenisPegawai-tab" data-toggle="tab" href="#tab-jenisPegawai" type="button" role="tab" aria-controls="tab-jenisPegawai" aria-selected="true">Jenis Pegawai</button>
+                <button class="nav-link active" data-toggle="tab" href="#tab-tambahJPGW">Tambah Jenis Pegawai</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="nav-daftarJenisPegawai-tab" data-toggle="tab" href="#tab-daftarJenisPegawai" type="button" role="tab" aria-controls="tab-daftarJenisPegawai" aria-selected="false">Daftar Jenis Pegawai</button>
+                <button class="nav-link" data-toggle="tab" href="#tab-jenisPegawai">Jenis Pegawai</button>
             </li>
         </ul>
+        <div class="tab-content">
 
-        <div class="tab-content" id="myTabContent">
-            <!-- Tab Jenis Pegawai -->
-            <div class="tab-pane fade show active" id="tab-jenisPegawai" role="tabpanel" aria-labelledby="nav-jenisPegawai-tab">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Tambah Jenis Pegawai</h6>
-                    </div>
+            <!-- Tab Tambah Jenis Pegawai -->
+            <div class="tab-pane fade show active" id="tab-tambahJPGW">
+                <div class="card shadow mb-4 mt-4">
                     <div class="card-body">
-                        <!-- Form Jenis Pegawai -->
-                        <form method="POST" action="">
+                        <form action="?action=create" method="POST">
                             <div class="form-group">
-                                <label for="jenisPegawai">Jenis Pegawai</label>
-                                <input type="text" class="form-control" id="jenisPegawai" name="jenisPegawai" placeholder="Masukkan Jenis Pegawai" required>
+                                <label for="TambahJenisPegawai">Tambah Jenis Pegawai</label>
+                                <input type="text" class="form-control" id="TambahJenisPegawai" name="nama" placeholder="Masukkan Jenis Pegawai" required>
                             </div>
-                            <button type="submit" class="btn btn-primary" name="tambahJenisPegawai">Tambah</button>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
                         </form>
-                    </div>
+                    </div>    
                 </div>
             </div>
 
-            <!-- Tab Daftar Jenis Pegawai -->
-            <div class="tab-pane fade" id="tab-daftarJenisPegawai" role="tabpanel" aria-labelledby="nav-daftarJenisPegawai-tab">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Daftar Jenis Pegawai</h6>
-                    </div>
+            <!-- Tab Jenis Pegawai -->
+            <div class="tab-pane fade" id="tab-jenisPegawai">
+                <div class="card shadow mb-4 mt-4">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <!-- Tabel Daftar Jenis Pegawai -->
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="dataTableJPGW">
                                 <thead>
                                     <tr>
                                         <th>ID Jenis</th>
-                                        <th>Jenis Pegawai</th>
-                                        <th>Aksi</th>
+                                        <th>Jenis Pegawai</th> 
+                                        <th>Aksi</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    // Query untuk menampilkan daftar jenis pegawai
-                                    $sql = "SELECT * FROM tb_jenis_pegawai";
-                                    $result = $conn->query($sql);
-
-                                    if ($result->num_rows > 0) {
-                                        while($row = $result->fetch_assoc()) {
-                                            echo "<tr>";
-                                            echo "<td>" . $row['id_jenis'] . "</td>";
-                                            echo "<td>" . $row['nama'] . "</td>";
-                                            echo "<td>
-                                            <a href='#' class='btn btn-warning btn-circle btn-sm' data-toggle='modal' data-target='#modalEditJenis' data-id='{$row['id_jenis']}' data-nama='{$row['nama']}'>
-                                                <i class='fas fa-pencil-alt'></i>
+                                    <?php foreach ($jpgws as $jpgw): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($jpgw['id_jenis']) ?></td>
+                                        <td><?= htmlspecialchars($jpgw['nama']) ?></td>
+                                        <td>
+                                            <a href="?id=<?= htmlspecialchars($jpgw['id_jenis']) ?>" class="btn btn-warning btn-circle btn-sm">
+                                                <i class="fas fa-pencil-alt"></i>
                                             </a>
-                                            <a href='?hapus_id={$row['id_jenis']}' class='btn btn-danger btn-circle btn-sm' onclick='return confirm(\"Yakin ingin menghapus data ini?\")'>
-                                                <i class='fas fa-trash'></i>
+                                            <a href="?action=delete&id=<?= htmlspecialchars($jpgw['id_jenis']) ?>" class="btn btn-danger btn-circle btn-sm">
+                                                <i class="fas fa-trash"></i>
                                             </a>
-                                          </td>";                                    
-                                            echo "</tr>";
-                                        }
-                                    } else {
-                                        echo "<tr><td colspan='3' class='text-center'>Belum ada data jenis pegawai</td></tr>";
-                                    }
-                                    ?>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>     
 
-        <!-- Modal Edit Jenis Pegawai -->
-        <div class="modal fade" id="modalEditJenis" tabindex="-1" role="dialog" aria-labelledby="modalEditJenisLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <!-- Modal Edit Data -->
+        <?php if ($showEditModal && !empty($jpgwid)): ?>
+        <div class="modal fade show" id="modalEdit" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditJenisLabel">Edit Jenis Pegawai</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form Edit Jenis Pegawai -->
-                        <form method="POST" action="">
-                            <input type="hidden" id="edit_id_jenis" name="id_jenis">
+                    <form method="POST" action="?action=update">
+                        <div class="modal-header">
+                            <h5>Edit Jenis Pegawai</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id_jenis" value="<?= $jpgwid['id_jenis'] ?>">
                             <div class="form-group">
-                                <label for="edit_jenisPegawai">Jenis Pegawai</label>
-                                <input type="text" class="form-control" id="edit_jenisPegawai" name="jenisPegawai" required>
+                                <label for="editJPGW">Jenis Pegawai</label>
+                                <input type="text" class="form-control" id="editJPGW" name="editjenisPegawai" value="<?= $jpgwid['nama'] ?>">
                             </div>
-                            <button type="submit" class="btn btn-primary" name="editJenisPegawai">Simpan</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+        <script>
+            $(document).ready(function() {
+                $('#modalEdit').modal('show');
+            });
+        </script>
+        <?php endif; ?>
     </div>
-</body>
-</html>
 
-<?php 
-include '../template/footerAdmin.php'; 
-?>
+    </body>
+</html>
+<?php include '../template/footerAdmin.php'; ?>

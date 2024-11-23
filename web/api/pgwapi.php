@@ -1,24 +1,24 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/jpgwcontroller.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/pgwcontroller.php';
 
-$controller = new JPGWController();
+$controller = new PegawaiController();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 switch ($requestMethod) {
     case 'POST':
-        if (isset($_GET['action']) && $_GET['action'] === 'update' && isset($_GET['idJenis'])) {
+        if (isset($_GET['action']) && $_GET['action'] === 'update' && isset($_GET['nik'])) {
             header('Content-Type: application/json');
             echo $controller->update($_POST);
         }else{
             header('Content-Type: application/json');
             echo $controller->create($_POST);
         }
-        break;    
-    
+        break;
+
     case 'GET':
-        if (isset($_GET['action']) && $_GET['action'] === 'getByIdJenis' && isset($_GET['idJenis'])) {
+        if (isset($_GET['action']) && $_GET['action'] === 'getByNikp' && isset($_GET['nik'])) {
             header('Content-Type: application/json');
-            echo $controller->getByIdJenis($_GET['idJenis']);
+            echo $controller->getByKode($_GET['nik']);
         }else{
             header('Content-Type: application/json');
             echo $controller->read();
@@ -26,9 +26,9 @@ switch ($requestMethod) {
         break;
     
     case 'DELETE':
-        if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['idJenis'])) {
+        if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['nik'])) {
             header('Content-Type: application/json');
-            echo $controller->delete($_GET['idJenis']);
+            echo $controller->delete($_GET['nik']);
         }
         break;
         
