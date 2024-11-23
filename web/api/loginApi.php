@@ -1,54 +1,47 @@
 <?php
-
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
-include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/authView.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/authModel.php';
 
 header('Content-Type: application/json');
 
-$data = json_decode(file_get_contents("php://input"), true);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Ambil data dari body POST
+    $nikPegawai = isset($_POST['nik_pegawai']) ? $_POST['nik_pegawai'] : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-// Mengambil parameter NIK dan password dari request
-$nikPegawai = isset($data['nik_pegawai']) ? trim($data['nik_pegawai']) : '';
-$password = isset($data['password']) ? trim($data['password']) : '';
+    // Validasi input
+    if (empty($nikPegawai) || empty($password)) {
+        echo json_encode(['status' => 'error', 'message' => 'NIK dan Password wajib diisi']);
+        exit();
+    }
 
-// Validasi parameter NIK dan password
-if (empty($nikPegawai) || empty($password)) {
-    echo json_encode(["status" => "error", "message" => "NIK dan Password wajib diisi"]);
-    exit();
-}
+    // Cek login
+    $loginService = new LoginModel($koneksi);
+    $loginResult = $loginService->login($nikPegawai);
 
-// Validasi panjang NIK
-if (strlen($nikPegawai) < 10) {
-    echo json_encode(["status" => "error", "message" => "NIK minimal 10 karakter"]);
-    exit();
-}
+    // Cek apakah NIK ditemukan
+    if ($loginResult == false) {
+        echo json_encode(['status' => 'error', 'message' => 'NIK tidak terdaftar']);
+        exit();
+    }
 
-// Membuat instance LoginService untuk memeriksa login
-$loginService = new LoginService($koneksi);
-$loginResult = $loginService->getLogin($nikPegawai, $password);
+    // Verifikasi password
+    if (!password_verify($password, $loginResult['password'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Password salah']);
+        exit();
+    }
 
-// Mendekode hasil login
-$loginResult = json_decode($loginResult, true);
-
-// Mengecek hasil login
-if ($loginResult['status'] === 'success') {
-    // Jika login berhasil, buat session
-    session_start();
-    $_SESSION['nik_pegawai'] = $loginResult['data']['nik_pegawai'];
-    $_SESSION['nama'] = $loginResult['data']['nama'];
-    $_SESSION['id_jenis'] = $loginResult['data']['id_jenis'];
-
-    // Mengembalikan response sukses
+    // Berhasil login, kirim data
     echo json_encode([
-        "status" => "success",
-        "message" => "Login berhasil",
-        "data" => [
-            "nik_pegawai" => $_SESSION['nik_pegawai'],
-            "nama" => $_SESSION['nama'],
-            "id_jenis" => $_SESSION['id_jenis']
+        'status' => 'success',
+        'message' => 'Login berhasil',
+        'data' => [
+            'nik_pegawai' => $loginResult['nik_pegawai'],
+            'nama' => $loginResult['nama'],
+            'id_jenis' => $loginResult['id_jenis']
         ]
     ]);
 } else {
-    echo json_encode(["status" => "error", "message" => $loginResult['message']]);
+    echo json_encode(['status' => 'error', 'message' => 'Request method harus POST']);
 }
+?>
