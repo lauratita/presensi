@@ -19,9 +19,8 @@ if (!isset($_SESSION['nik_pegawai']) || !isset($_SESSION['id_jenis'])) {
     header("Location: ../login.php");
     exit();
 }
-if ($_SESSION['id_jenis'] != 2) { // Ganti '1' sesuai id_jenis yang diperlukan untuk halaman ini
-    // Jika id_jenis tidak sesuai, arahkan ke halaman yang sesuai
-    header("Location: ../admin/index.php"); // Halaman unauthorized bisa dibuat sebagai halaman akses ditolak
+if ($_SESSION['id_jenis'] != 2) { 
+    header("Location: ../admin/index.php"); 
     exit();
 }
 
@@ -34,7 +33,7 @@ $currentUser = [
 // Data Statistik
 $statistikSiswa = [
     'total' => $jumlahSiswa['statistik_siswa'] ?? 0,
-    'hadir' => 36, // Contoh data; ganti dengan nilai dari model/controller
+    'hadir' => 36,
     'sakit' => 2,
     'izin' => 1,
     'alpha' => 1
