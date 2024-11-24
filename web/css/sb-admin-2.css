@@ -11743,10 +11743,11 @@ form.user .text-right {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    z-index: 1;
 }
 
 .img-area .icon{
-  font-size: 100px;
+  font-size: 35px;
 }
 
 .img-area h3 {
@@ -11760,7 +11761,7 @@ form.user .text-right {
 }
 
 .img-area p span{
-  font-weight: 600;
+  font-weight: 60;
 }
 
 .img-area img{
@@ -11798,6 +11799,7 @@ form.user .text-right {
   opacity: 1;
 
 }
+
 .select-image{
   display: block;
   width: 100%;
@@ -11811,8 +11813,11 @@ form.user .text-right {
   cursor: pointer;
   transition: all .3s ease;
   align-items: center;
+  position: relative;
+  z-index: 10;
+  opacity: 1;
 }
 
 .select-image:hover{
-  background: var(--dark-blue);
+  background: var(--blue);
 }
