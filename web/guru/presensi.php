@@ -1,5 +1,10 @@
 <?php 
 ob_start();
+session_start();
+if (!isset($_SESSION['nik_pegawai'])) {
+    header("Location: ../login.php");
+    exit();
+}
 include '../template/headerGuru.php';
 include_once '../controller/presensicontroler.php';
 
@@ -50,8 +55,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         readonly>Tanggal</label>
                 </div>
                 <div class="col-auto">
-                    <input class="form-control" type="text" value="12/10/2024" aria-label="Disabled input example"
-                        disabled readonly>
+                    <!-- <input class="form-control" type="text" value="12/10/2024" aria-label="Disabled input example"
+                        disabled readonly> -->
+                        <input class="form-control" type="text" id="tanggal" aria-label="Disabled input example" disabled readonly>
+                    <script>
+                    // Fungsi untuk format tanggal (contoh: dd/mm/yyyy)
+                    function formatTanggal(tanggal) {
+                        let dd = String(tanggal.getDate()).padStart(2, '0');
+                        let mm = String(tanggal.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                        let yyyy = tanggal.getFullYear();
+
+                        return dd + '/' + mm + '/' + yyyy;
+                    }
+                    // Mendapatkan tanggal hari ini
+                    let tanggalHariIni = new Date();
+
+                    // Menampilkan tanggal yang diformat di input
+                    document.getElementById('tanggal').value = formatTanggal(tanggalHariIni);
+                    </script>
                 </div>
             </div>
         </div>
@@ -61,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Tanggal</th>
                             <th>NIS</th>
                             <th>Nama</th>
                             <th>Keterangan</th>
@@ -72,8 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     foreach ($presensis as $presensi) : ?>
                         <tr>
                             <td><?= $no++ ?></td>
+                            <td><?= $presensi['tanggal'] ?></td>
                             <td><?= $presensi['nis'] ?></td>
-                            <td><?= $presensi['nama_siswa'] ?></td>
+                            <td><?= $presensi['nama'] ?></td>
                             <td><?= $presensi['keterangan'] ?></td>
                         </tr>
                         <?php endforeach;?>
