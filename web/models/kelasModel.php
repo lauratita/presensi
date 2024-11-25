@@ -91,7 +91,8 @@ class KelasModel{
     }
 
     public function getpegawai(){
-        $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " WHERE id_jenis = 2";
+        $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " WHERE id_jenis = 2 
+        AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name.")";
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);
@@ -101,4 +102,42 @@ class KelasModel{
             return json_encode(["message" => "Data not found"]);
         }
     }
+
+    // public function getPegawaiUntukTambah() {
+    //     $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " 
+    //             WHERE id_jenis = 2 
+    //             AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . ")";
+    //     $result = $this->koneksi->query($sql);
+        
+    //     if ($result->num_rows > 0) {
+    //         $data = $result->fetch_all(MYSQLI_ASSOC);
+    //         return json_encode($data);
+    //     } else {
+    //         http_response_code(404);
+    //         return json_encode(["message" => "Data not found"]);
+    //     }
+    // }
+
+    // public function getPegawaiUntukEdit($id_kelas) {
+    //     $sql = "SELECT p.nik_pegawai, p.nama 
+    //             FROM " . $this->table_pegawai . " p
+    //             LEFT JOIN " . $this->table_name . " k ON p.nik_pegawai = k.nik_pegawai 
+    //             WHERE p.id_jenis = 2 
+    //             AND (k.id_kelas IS NULL OR k.id_kelas = ?)";
+    //     $stmt = $this->koneksi->prepare($sql);
+    //     $stmt->bind_param("i", $id_kelas);  // Bind id_kelas untuk mengedit
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+    
+    //     if ($result->num_rows > 0) {
+    //         $data = $result->fetch_all(MYSQLI_ASSOC);
+    //         return json_encode($data);
+    //     } else {
+    //         http_response_code(404);
+    //         return json_encode(["message" => "Data not found"]);
+    //     }
+    // }
+    
+    
+    
 }

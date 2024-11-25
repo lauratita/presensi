@@ -1,30 +1,19 @@
 <?php 
+
+
 ob_start();
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'kelas';
 include '../template/headerAdmin.php';
 include_once '../controller/kelasController.php';
-
+$showEditModal= false;
 $controller = new KelasController();
 $data = $controller->read();
 $kelass = [];
 
 $pegawai = $controller->getpegawai(); 
 $datapegawai = json_decode($pegawai, true);
-// var_dump($datapegawai);
 
-// $datapegawai = [];
-// var_dump($datapegawai);
-// if ($pegawai !== false) {
-//     $pegawai = json_decode($pegawai, true);
-//     if (!isset($pegawai['message']) || $pegawai['message'] !== 'Data not found') {
-//         $datapegawai = $pegawai;
-//         var_dump($datapegawai);
-//     }
-// } else {
-//     // Handle errors from getAllOrtu()
-//     echo "Error fetching data.";
-// }
 
 if ($data !== false) {
     $data = json_decode($data, true);
@@ -66,9 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $kelasid = [];
 
-if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
+if (isset($_GET['id'])) {
     $id_kelas = $_GET['id'];
     $datakelas = $controller->getById($id_kelas);
+    // $pegawaiEdit = $controller->pegawaiEdit($id_kelas); 
 
     if ($datakelas !== false) {
         // Decode JSON as associative array
@@ -76,8 +66,9 @@ if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
         
         if (is_array($datakelas) && (!isset($datakelas['message']) || $datakelas['message'] !== 'Data not found')) {
             $kelasid = $datakelas[0];
+            $showEditModal= true;
             // $pegawaiku = $controller->getPegawai($kelasid['nik_pegawai']);
-            // var_dump($kelasid); 
+            var_dump($kelasid); 
         } else {
             echo 'Data not found';
         }
@@ -128,10 +119,13 @@ if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
                                     <a href="#" class="btn btn-info btn-circle btn-sm">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&id=<?= $kelas['id_kelas']; ?>" 
+                                    <a href="?id=<?= htmlspecialchars($kelas['id_kelas']) ?>" class="btn btn-warning btn-circle btn-sm">
+                                                <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <!-- <a href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&id=<?= $kelas['id_kelas']; ?>" 
                                         class="btn btn-warning btn-circle btn-sm" >
                                         <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                                    </a> -->
                                     <a href="#" class="btn btn-danger btn-circle btn-sm" 
                                         data-toggle="modal"
                                         data-target="#modalHapusKelas"
@@ -189,7 +183,7 @@ if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
                             <input type="text" class="form-control" name="nama_kelas" id="namaKelas" placeholder="Masukkan Nama Kelas">
                         </div>
                         <div class="form-group">
-                            <label for="waliKelas">Wali Kelas</label>
+                            <label for="nik_pegawai">Wali Kelas</label>
                             <select class="form-control" id="nik_pegawai" name="nik_pegawai">
                                 <option value="">Pilih waliKelas</option>
                                     <?php if (!empty($datapegawai)): ?>
@@ -214,19 +208,19 @@ if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
     </div>
 
         <!-- Modal Edit Data Kelas -->
-        <?php if (!empty($kelasid)): ?>
+        <?php if ($showEditModal && !empty($kelasid)): ?>
         <div class="modal fade" id="modalEditKelas" tabindex="-1" role="dialog" aria-labelledby="modalEditKelasLabel"
-            aria-hidden="true">
+            >
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTambahKelasLabel">Edit Data Kelas</h5>
+                        <h5 class="modal-title" id="modalEditKelasLabel">Edit Data Kelas</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Form untuk tambah edit kelas -->
+                        <!-- Form untuk  edit kelas -->
                         <form id="formEditKelas" method="POST" action="?action=update">
                             <input type="hidden" name="id_kelas" value="<?= $kelasid['id_kelas'] ?>">
                             <div class="form-group">
@@ -240,10 +234,17 @@ if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
                                     <option value="">Pilih Wali Kelas</option>
                                     <?php if (!empty($datapegawai)): ?>
                                         <?php foreach ($datapegawai as $pegawai): ?>
-                                            <option value="<?= htmlspecialchars($pegawai['nik_pegawai']) ?>" 
-                                                <?= ($kelasid['nik_pegawai'] == $pegawai['nik_pegawai']) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($pegawai['nama']) ?>
-                                            </option>
+                                        <option value="<?= htmlspecialchars($pegawai['nik_pegawai']) ?>"
+                                            <?= htmlspecialchars($kelasid['nik_pegawai'] == $pegawai['nik_pegawai']) ? 'selected' : '' ?>
+                                            <?php
+                                            // Mengizinkan pegawai yang sedang diedit untuk tetap muncul di dropdown
+                                             if ($kelasid['nik_pegawai'] != $pegawai['nik_pegawai'] && in_array($pegawai['nik_pegawai'], array_column($datapegawai, 'nik_pegawai'))) {
+                                               echo 'disabled';
+                                                }
+                                             ?>
+                                            >
+                                            <?= htmlspecialchars($pegawai['nama']) ?>
+                                        </option>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <option value="">Data tidak tersedia</option>
@@ -258,15 +259,16 @@ if (isset($_GET['action'], $_GET['id']) && $_GET['action'] === 'edit') {
                     </div>
                 </div>
             </div>
+            
+            <script>
+                $(document).ready(function() {
+                $('#modalEditKelas').modal('show');
+                });
+            </script>
+            <?php endif?>
         </div>
-        <script>
-        const modalElement = document.querySelector('#modalEditKelas');
-        if (modalElement) {
-        const modalEdit = new bootstrap.Modal(modalElement);
-        modalEdit.show();
-        }
-        </script>
-        <?php endif?>
+            </div>
+            </div>
 </body>
 
 </html>

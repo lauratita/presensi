@@ -10,6 +10,7 @@ $statistikController = new DashboardController($koneksi);
 $jumlahSiswa = json_decode($statistikController->getJumlahSiswa($_SESSION['nik_pegawai']), true);
 $jumlahSurat = json_decode($statistikController->getJumlahSurat($_SESSION['nik_pegawai']), true);
 $jumlahSuratHariIni = $statistikController->getJumlahSuratHariIni($_SESSION['nik_pegawai']);
+$jumlahPresensiHariIni = $statistikController->getJumlahPresensiHariIni($_SESSION['nik_pegawai']);
 
 
 
@@ -18,9 +19,8 @@ if (!isset($_SESSION['nik_pegawai']) || !isset($_SESSION['id_jenis'])) {
     header("Location: ../login.php");
     exit();
 }
-if ($_SESSION['id_jenis'] != 2) { // Ganti '1' sesuai id_jenis yang diperlukan untuk halaman ini
-    // Jika id_jenis tidak sesuai, arahkan ke halaman yang sesuai
-    header("Location: ../admin/index.php"); // Halaman unauthorized bisa dibuat sebagai halaman akses ditolak
+if ($_SESSION['id_jenis'] != 2) { 
+    header("Location: ../admin/index.php"); 
     exit();
 }
 
@@ -33,7 +33,7 @@ $currentUser = [
 // Data Statistik
 $statistikSiswa = [
     'total' => $jumlahSiswa['statistik_siswa'] ?? 0,
-    'hadir' => 36, // Contoh data; ganti dengan nilai dari model/controller
+    'hadir' => 36,
     'sakit' => 2,
     'izin' => 1,
     'alpha' => 1
@@ -49,6 +49,13 @@ $statistikSuratHariIni = [
     'unverified' => $jumlahSuratHariIni['unverified'] ?? 0,
     'verified' => $jumlahSuratHariIni['verified'] ?? 0,
     'disable' => $jumlahSuratHariIni['disable'] ?? 0
+];
+$statistikPresensiHariIni = [
+    'total' => $jumlahPresensiHariIni['statistik_siswa'] ?? 0,
+    'hadir' => $jumlahPresensiHariIni['hadir'] ?? 0,
+    'sakit' => $jumlahPresensiHariIni['sakit'] ?? 0,
+    'izin' => $jumlahPresensiHariIni['izin'] ?? 0,
+    'alpha' => $jumlahPresensiHariIni['alpha'] ?? 0
 ];
 
 ?>
@@ -80,7 +87,8 @@ $statistikSuratHariIni = [
                                             <h6 class="mb-0" style="font-weight: bold;">Hadir</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">36</small>
+                                            <small
+                                                class="fw-semibold"><?= $statistikPresensiHariIni['hadir']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -94,7 +102,8 @@ $statistikSuratHariIni = [
                                             <h6 class="mb-0" style="font-weight: bold;">Sakit</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">2</small>
+                                            <small
+                                                class="fw-semibold"><?= $statistikPresensiHariIni['sakit']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -108,7 +117,7 @@ $statistikSuratHariIni = [
                                             <h6 class="mb-0" style="font-weight: bold;">Izin</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small class="fw-semibold"><?= $statistikPresensiHariIni['izin']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -122,7 +131,8 @@ $statistikSuratHariIni = [
                                             <h6 class="mb-0" style="font-weight: bold;">Alpha</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?= $statistikPresensiHariIni['alpha']; ?></small>
                                         </div>
                                     </div>
                                 </li>
