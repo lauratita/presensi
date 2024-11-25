@@ -3,7 +3,7 @@
 $server = "localhost";
 $username = "root";
 $password = "";
-$db = "cekinout";
+$db = "presenceplus";
 // urutan pemanggilan variabelnya sama
 $koneksi = mysqli_connect($server, $username, $password, $db);
 
