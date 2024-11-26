@@ -51,7 +51,7 @@ try {
                 'hadir' => $jumlahPresensiHariIni['hadir'] ?? 0,
                 'sakit' => $jumlahPresensiHariIni['sakit'] ?? 0,
                 'izin' => $jumlahPresensiHariIni['izin'] ?? 0,
-                'alpha' => $jumlahPresensiHariIni['alpha'] ?? 0
+                'alpa' => $jumlahPresensiHariIni['alpa'] ?? 0
             ]
         ]
     ];
