@@ -3,7 +3,7 @@ class PresensiModel
 {
     private $koneksi;
     private $table_name = "tb_presensi";
-    private $view_name = "v_presensi_jadwal_siswa";
+    private $view_name = "v_presensi";
 
     public   $id_presensi ;
     public   $tanggal ;
@@ -30,15 +30,10 @@ class PresensiModel
         }
     }
     public function readvpresensi(){
-        $sql = "SELECT * FROM " . $this->view_name;
+        $sql = "SELECT * FROM " . $this->view_name. " WHERE DATE(tanggal) = CURDATE()";
         $result = $this->koneksi->query($sql);
-        if ($result->num_rows > 0) {
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            return $data;
-        } else {
-            http_response_code(404);
-            return json_encode(["message" => "Data not found"]);
-        }
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        return $data;
     }
     public function create($tanggal, $jam_datang, $jam_pulang, $nis, $id_surat, $keterangan, $id_kelas) {
         $hariIni = date('l');
