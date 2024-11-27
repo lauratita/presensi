@@ -10,16 +10,33 @@ class PasswordModel {
         $this->koneksi = $db;
     }
     
-    public function update() 
+    public function update($nik_pegawai, $hashedPassword) 
     {
-        $sql = "UPDATE " . $this->table_name . " SET password = :password WHERE nik_pegawai = :nik_pegawai";
-        $stmt = $this->koneksi->prepare($sql);
-        $stmt->bindParam(':password', $this->password);
-        $stmt->bindParam(':nik_pegawai', $this->nik_pegawai);
+        $query = "UPDATE tb_pegawai SET password = ? WHERE nik_pegawai = ?";
+        $stmt = $this->koneksi->prepare($query);
 
-        if ($stmt->execute()) {
-            return true;
+        // Bind parameter
+        $stmt->bindParam("ss", $nik_pegawai, $hashedPassword);
+
+        // Eksekusi query dan return hasil
+        return $stmt->execute();
+    }
+
+    public function getByNik($nik_pegawai)
+    {
+        $sql = "SELECT password FROM " . $this->table_name . " WHERE nik_pegawai = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("s", $nik_pegawai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $data = $result->fetch_all(MYSQLI_ASSOC);
+            return json_encode($data); 
+        } else {
+            echo json_encode(["message" => "Data not found for given NIK"]);
         }
-        return false;
+    
+        $stmt->close();
     }
 }

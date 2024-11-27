@@ -81,50 +81,6 @@ document.getElementById('btn-logout').addEventListener('click', function(e) {
 });
 </script>
 
-<!-- modal ubah password -->
-<script>
-// Submit password change form using AJAX
-document.getElementById('btnUbahPassword').addEventListener('click', () => {
-    const nikPegawai = document.getElementById('nikPegawai').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (!newPassword || !confirmPassword) {
-        alert('Password baru dan konfirmasi tidak boleh kosong.');
-        return;
-    }
-
-    if (newPassword !== confirmPassword) {
-        alert('Konfirmasi password tidak sesuai.');
-        return;
-    }
-
-    fetch('index.php?action=ubahPassword', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nik_pegawai: nikPegawai,
-                newPassword: newPassword,
-                confirmPassword: confirmPassword
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                $('#modalUbahPassword').modal('hide'); // Tutup modal
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan, silakan coba lagi.');
-        });
-});
-</script>
 
 
 </body>

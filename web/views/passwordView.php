@@ -9,24 +9,24 @@ class PasswordView
     {
         $this->password = new PasswordModel($db);
     }
-    public function ubahPassword($nik_pegawai, $newPassword, $confirmPassword) {
-        // Validasi input
+
+    public function getGuruByNik($nik_pegawai)
+    {
+        $stmt = $this->password->getByNik($nik_pegawai);
+        return $stmt;
+    }
+    
+    public function ubahPassword($nik_pegawai, $newPassword, $confirmPassword) 
+    {
         if ($newPassword !== $confirmPassword) {
-            return ["success" => false, "message" => "Konfirmasi password tidak sesuai."];
+            return false; // Pastikan password cocok
         }
 
-        // Hash password sebelum disimpan
+        // Hash password baru
         $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
 
-        // Set nilai di model
-        $this->password->nik_pegawai = $nik_pegawai;
-        $this->password->password = $hashedPassword;
-
-        if ($this->password->update()) {
-            return ["success" => true, "message" => "Password berhasil diperbarui."];
-        }
-
-        return ["success" => false, "message" => "Gagal memperbarui password."];
+        // Kirim hash ke model untuk update
+        return $this->password->update($nik_pegawai, $hashedPassword);
     }
     
 }

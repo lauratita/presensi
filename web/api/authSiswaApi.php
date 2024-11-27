@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/authSiswaController.php';
 
-$controller = new LoginController();
+$controller = new LoginSiswaController();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 switch ($requestMethod) {

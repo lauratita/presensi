@@ -4,21 +4,52 @@ require_once ('../config/config.php');
 include_once '../controller/passwordController.php';
 $controller = new PasswordController();
 
+$showEditModal = false;
+$message = "";
+
+// Jika ada request POST untuk ubah password
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'ubahPassword') {
-    include_once 'config/config.php';
-    include_once 'controllers/PasswordController.php';
+    // Ambil data POST
+    $nik_pegawai = $_POST['nik_pegawai'];
+    $newPassword = $_POST['newPassword'];
+    $confirmPassword = $_POST['confirmPassword'];
 
-    $controller = new PasswordController($koneksi);
+    // Validasi input
+    if ($newPassword !== $confirmPassword) {
+        $message = "Password baru dan konfirmasi tidak cocok.";
+        $showEditModal = true; // Tampilkan modal kembali
+    } else {
+        // Proses ubah password
+        $result = $controller->ubahPassword([
+            'nik_pegawai' => $nik_pegawai,
+            'newPassword' => password_hash($newPassword, PASSWORD_BCRYPT), // Hash password
+            'confirmPassword' => password_hash($confirmPassword, PASSWORD_BCRYPT),
+        ]);
 
-    // Ambil data JSON dari request
-    $request = json_decode(file_get_contents('php://input'), true);
-
-    header('Content-Type: application/json');
-    echo $controller->ubahPassword($request);
-    exit();
+        // Berikan feedback
+        $message = json_decode($result, true)['message'];
+        $showEditModal = !$result; // Tampilkan modal jika gagal
+    }
 }
 
+// Ambil data password jika ada NIK di GET
+if (isset($_GET['nik_pegawai'])) {
+    $nik_pegawai = $_GET['nik_pegawai'];
+    $datanik = $controller->getByNik($nik_pegawai);
 
+    if ($datanik !== false) {
+        $datanik = json_decode($datanik, true);
+        if (isset($datanik['data']) && !empty($datanik['data'])) {
+            $passwordnik = $datanik['data'][0];
+            $showEditModal = true;
+            var_dump($passwordnik);
+        } else {
+            $message = "Data tidak ditemukan.";
+        }
+    } else {
+        $message = "Gagal mengambil data.";
+    }
+}
 
 ?>
 
@@ -166,8 +197,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-                                    <form id="formUbahPassword">
+                                <form id="formUbahPassword" method="POST"
+                                    action="<?= $_SERVER['PHP_SELF']; ?>?action=ubahPassword">
+                                    <div class="modal-body">
+
+                                        <!-- Pesan Feedback -->
+                                        <?php if (!empty($message)): ?>
+                                        <div class="alert alert-info"><?= htmlspecialchars($message); ?></div>
+                                        <?php endif; ?>
+
                                         <input type="hidden" name="nik_pegawai" id="nikPegawai"
                                             value="<?php echo $_SESSION['nik_pegawai']; ?>">
                                         <div class="form-group">
@@ -180,15 +218,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
                                             <input type="password" class="form-control" id="confirmPassword"
                                                 name="confirmPassword" required>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                    <button type="button" id="btnUbahPassword" class="btn btn-primary">Ubah
-                                        Password</button>
-                                </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Batal</button>
+                                            <button type="submit" name="ubahPassword" id="btnUbahPassword"
+                                                class="btn btn-primary">Ubah
+                                                Password</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                        <script>
+                        $(document).ready(function() {
+                            $('#modalUbahPassword').modal('show');
+                        });
+                        </script>
                     </div>
 
 

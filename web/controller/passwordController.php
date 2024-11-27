@@ -10,12 +10,23 @@ class PasswordController {
         $this->passwordView = new PasswordView($koneksi);
     }
 
+    public function getByNik($nik_pegawai)
+    {
+        $passwordnik = $this->passwordView->getGuruByNik($nik_pegawai);
+        return $passwordnik;
+    }
+
     public function ubahPassword($request) {
         $nik_pegawai = $request['nik_pegawai'];
         $newPassword = $request['newPassword'];
         $confirmPassword = $request['confirmPassword'];
-
-        return json_encode($this->passwordView->ubahPassword($nik_pegawai, $newPassword, $confirmPassword));
+        $data = $this->passwordView->ubahPassword($nik_pegawai, $newPassword, $confirmPassword);
+        
+        if ($data) {
+            return json_encode(["message" => "Berhasil Perbarui Password"]);
+        }else{
+            return json_encode(["message" => "Gagal Memperbarui Password"]);
+        }
     }
     
 }

@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/controller/authOrtuController.php';
 
-$controller = new LoginController();
+$controller = new LoginOrtuController();
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 switch ($requestMethod) {
