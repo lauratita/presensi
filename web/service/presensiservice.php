@@ -4,7 +4,7 @@ use PresensiModel as Presensi;
 
 class PresensiService{
     private $db;
-    private $Presensi;
+    private $presensi;
 
     public function __construct($db){
         $this->presensi = new PresensiModel($db);

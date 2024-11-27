@@ -5,34 +5,53 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.ph
 
 class SuratIzinController
 {
-    private $suratView;
+    private $suratModel;
     
     public function __construct()
     {
         global $koneksi;
-        $this->suratView = new suratIzinView($koneksi);
+        $this->suratModel = new SuratIzinModel($koneksi);
+    }
+
+    public function create($request)
+    {
+        try {
+            $keterangan = $request['keterangan'];
+            $status = $request['status'];
+            $tanggal = $request['tanggal'];
+            $foto_surat = $request['foto_surat'];
+            $nik_ortu = $request['nik_ortu'];
+            $nik_pegawai = $request['nik_pegawai'];
+            if ($this->suratModel->create($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)) {
+                return json_encode(["message" => "Berhasil menambahkan surat izin"]);
+            }
+            return json_encode(["message" => "Gagal menambah surat izin"]);
+        } catch (Exception $e) {
+            return json_encode(["message" => $e->getMessage()]);
+        }
     }
 
     public function read()
     {
-        $surats = $this->suratView->getAllSurat();
+        $surats = $this->suratModel->read();
         return $surats;
     }
 
     public function getByWaliKelas($nik_pegawai, $status)
     {
-        $suratnik = $this->suratView->getSuratIzinByWaliKelas($nik_pegawai, $status);
+        $suratnik = $this->suratModel->getByWaliKelas($nik_pegawai, $status);
         return $suratnik;
     }
 
-    public function updateStatusSuratIzin($id_surat, $status)
+    public function updateStatusSuratIzin($request)
     {
-        $result = $this->suratView->updateStatusSuratIzin($id_surat, $status);
-        if ($result) {
-            return json_encode(["message" => "Status berhasil diperbarui"]);
-        } else {
-            return json_encode(["message" => "Gagal memperbarui status"]);
-        }
+        $id_surat = $request['id_surat'];
+        $nis = $request['nis'];
+        $status = $request['keterangan'];
+        $nik_ortu = $request['nik_ortu'];
+        $nik_pegawai = $request['nik_pegawai'];
+        $data = $this->suratModel->update($status, $id_surat, $nis, $nik_ortu, $nik_pegawai);
+        return json_encode($data);
     }
 
 }
