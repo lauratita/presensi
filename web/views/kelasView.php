@@ -40,15 +40,15 @@ class KelasService{
         return $this->kelas->delete();
     }
 
-    public function getPegawai(){
-        // $this->kelas->getpegawai();
-        return $this->kelas->getpegawai();
-    }
-
-
-    // public function getPegawaiUntukTambah() {
-    //     return $this->kelas->getPegawaiUntukTambah();
+    // public function getPegawai(){
+    //     // $this->kelas->getpegawai();
+    //     return $this->kelas->getpegawai();
     // }
+
+
+    public function getPegawaiUntukTambah() {
+        return $this->kelas->getPegawaiUntukTambah();
+    }
 
     // // Ambil pegawai yang bisa dipilih saat edit kelas
     // public function getPegawaiUntukEdit($id_kelas) {

@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT']. '/presensi/web/models/siswaModel.php';
-use OrtuModel as Ortu;
+
 
 class SiswaService{
     private $db;
@@ -12,7 +12,7 @@ class SiswaService{
         
     }
 
-    public function createSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $id_kelas, $nik_ortu){
+    public function createSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu){
         $this->siswa->nis = $nis;
         $this->siswa->nama = $nama;
         $this->siswa->tanggal_lahir = $tanggal_lahir;
@@ -20,15 +20,10 @@ class SiswaService{
         $this->siswa->password = $password;
         $this->siswa->jenis_kelamin = $jenis_kelamin;
         $this->siswa->alamat = $alamat;
+        $foto_path = $this->siswa->uploadImage($foto);
+        $this->siswa->foto = $foto_path;
         $this->siswa->id_kelas = $id_kelas;
         $this->siswa->nik_ortu = $nik_ortu;
-        // $this->siswa->id_foto = $id_foto;
-        // $this->siswa->foto_depan = $foto_depan;
-        // $this->siswa->foto_kiri = $foto_kiri;
-        // $this->siswa->foto_kanan = $foto_kanan;
-        // $this->siswa->foto_atas = $foto_atas;
-        // $this->siswa->foto_bawah = $foto_bawah;
-        // $this->siswa->nis_siswa = $nis_siswa;
         return $this->siswa->create();
     }
 
@@ -42,7 +37,9 @@ class SiswaService{
         return $stmt;
     }
 
-    public function updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $id_kelas, $nik_ortu){
+    public function updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu){
+        var_dump($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu);
+
         $this->siswa->nis = $nis;
         $this->siswa->nama = $nama;
         $this->siswa->tanggal_lahir = $tanggal_lahir;
@@ -50,6 +47,12 @@ class SiswaService{
         $this->siswa->password = $password;
         $this->siswa->jenis_kelamin = $jenis_kelamin;
         $this->siswa->alamat = $alamat;
+        if (!empty($foto['name'])) {
+            $foto_path = $this->siswa->uploadImage($foto);
+            $this->siswa->foto = $foto_path;
+        } else {
+            $this->siswa->foto = $this->getFotoLama($nis); 
+        }
         $this->siswa->id_kelas = $id_kelas;
         $this->siswa->nik_ortu = $nik_ortu;
         return $this->siswa->update();
@@ -68,5 +71,9 @@ class SiswaService{
     public function getKelas(){
         $stmt = $this->siswa->getkelas();
         return $stmt;
+    }
+    
+    public function getFotoLama($nis) {
+        return $this->siswa->getFotoLama($nis); // Delegasikan ke model Siswa
     }
 }
