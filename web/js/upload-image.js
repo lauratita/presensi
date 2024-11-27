@@ -53,33 +53,15 @@ $('#modalHapusKelas').on('show.bs.modal', function (event) {
     modal.find('#btnHapusKelas').attr('href', hrefDelete); // Set href tombol hapus
 });
 
+$('#modalHapusSiswa').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); 
+    var nis = button.data('nis'); 
 
-// $(document).on('click', '.edit-btn', function(e) {
-//     var nik = $(this).data('nik');
+    var modal = $(this);
+    var hrefDelete = "?action=delete&nis=" + nis; 
+    modal.find('#btnHapusSiswa').attr('href', hrefDelete); // Set href tombol hapus
+});
 
-//     // Ajax request to get the data
-//     $.ajax({
-//         url: 'OrangTua.php' ,
-//         type: 'GET',
-//         data: { action: 'edit', nik: nik },
-//         dataType: 'json',
-//         success: function(data) {
-            
-
-//             // Isi form dengan data yang diambil
-//                 $('#editNik').val(data.nik);
-//                 $('#editNamaOrtu').val(data.nama);
-//                 $('#editJkOrtu').val(data.jenis_kelamin);
-//                 $('#editPassword').val(data.password);
-//                 $('#editEmail').val(data.email);
-//                 $('#editNoHp').val(data.no_hp);
-//                 $('#editAlamatOrtu').val(data.alamat);   
-//         },
-//         error: function () {
-//             alert('Gagal mengambil data')
-//         }
-//     });
-// });
 
 $('#formTambahOrtu').on('submit', function() {
     // Reset form after submit
@@ -90,18 +72,6 @@ $('#formTambahOrtu').on('submit', function() {
 const selectImages = document.querySelectorAll('.select-image');
 const inputFiles = document.querySelectorAll('input[type="file"]');
 const imgAreas = document.querySelectorAll('.img-area');
-// selectImage.addEventListener('click', function(){
-//     inputFile.click();
-// })
-
-// selectImages.forEach(button, index=> {
-//     button.addEventListener('click', function(){
-//         const targetId = this.getAttribute('data-target');
-//         const inputFile = document.querySelector(`#${targetId}`);
-//         inputFile.click();
-//     });
-// });
-
 selectImages.forEach((button, index) => {
     button.addEventListener('click', function(){
         inputFiles[index].click();
@@ -124,39 +94,4 @@ selectImages.forEach((button, index) => {
     })
 })
 
-// inputFile.addEventListener('change', function(){
-//     const image = this.files[0]
-//     console.log(image);
-//     const reader = new FileReader();
-//     reader.onload = ()=> {
-//         const allImg = imgArea.querySelectorAll('img');
-//         allImg.forEach(item=> item.remove());
-//         const imgUrl = reader.result;
-//         const img = document.createElement('img');
-//         img.src = imgUrl;
-//         imgArea.appendChild(img);
-//         imgArea.classList.add('active');
-//         imgArea.dataset.img = image.name;
-//     }
-//     reader.readAsDataURL(image);
-// })
 
-// inputFiles.forEach(inputFile => {
-//     inputFile.addEventListener('change', function(){
-//         const image = this.files[0];
-//         const reader = new FileReader();
-//         const imgArea = this.nextElementSibling;
-
-//         reader.onload = () => {
-//             const allImg = imgArea.querySelectorAll('img');
-//             allImg.forEach(item => item.remove());
-//             const imgUrl = reader.result;
-//             const img = document.createElement('img');
-//             img.src = imgUrl;
-//             imgArea.appendChild(img);
-//             imgArea.classList.add('active');
-//             imgArea.dataset.img = image.name;
-//         }
-//         reader.readAsDataURL(image);
-//     })
-// })

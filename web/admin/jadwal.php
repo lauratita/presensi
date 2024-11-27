@@ -35,12 +35,9 @@ include '../template/headerAdmin.php'; ?>
                         <thead>
                             <tr>
                                 <th>Kelas</th>
-                                <th>Senin</th>
-                                <th>Selasa</th> 
-                                <th>Rabu</th> 
-                                <th>Kamis</th>
-                                <th>Jum'at</th>     
-                                <th>Sabtu</th> 
+                                <th>Hari</th>
+                                <th>Jam Masuk</th> 
+                                <th>Jam Pulang</th> 
                                 <th>Aksi</th> 
                             </tr>
                         </thead>
