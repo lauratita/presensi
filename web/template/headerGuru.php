@@ -9,7 +9,6 @@ $message = "";
 
 // Jika ada request POST untuk ubah password
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'ubahPassword') {
-    // Ambil data POST
     $nik_pegawai = $_POST['nik_pegawai'];
     $newPassword = $_POST['newPassword'];
     $confirmPassword = $_POST['confirmPassword'];
@@ -19,11 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
         $message = "Password baru dan konfirmasi tidak cocok.";
         $showEditModal = true; // Tampilkan modal kembali
     } else {
-        // Proses ubah password
+        // Hash hanya pada newPassword
         $result = $controller->ubahPassword([
             'nik_pegawai' => $nik_pegawai,
-            'newPassword' => password_hash($newPassword, PASSWORD_BCRYPT), // Hash password
-            'confirmPassword' => password_hash($confirmPassword, PASSWORD_BCRYPT),
+            'newPassword' => $newPassword, 
+            'confirmPassword' => $confirmPassword, 
         ]);
 
         // Berikan feedback
@@ -42,7 +41,6 @@ if (isset($_GET['nik_pegawai'])) {
         if (isset($datanik['data']) && !empty($datanik['data'])) {
             $passwordnik = $datanik['data'][0];
             $showEditModal = true;
-            var_dump($passwordnik);
         } else {
             $message = "Data tidak ditemukan.";
         }
