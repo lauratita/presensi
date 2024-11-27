@@ -1,6 +1,24 @@
 <?php 
-// session_start();
+ob_start();
 require_once ('../config/config.php');
+include_once '../controller/passwordController.php';
+$controller = new PasswordController();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'ubahPassword') {
+    include_once 'config/config.php';
+    include_once 'controllers/PasswordController.php';
+
+    $controller = new PasswordController($koneksi);
+
+    // Ambil data JSON dari request
+    $request = json_decode(file_get_contents('php://input'), true);
+
+    header('Content-Type: application/json');
+    echo $controller->ubahPassword($request);
+    exit();
+}
+
+
 
 ?>
 
@@ -139,40 +157,41 @@ require_once ('../config/config.php');
                     </ul>
 
                     <!-- modal ubah password -->
-                    <div class="modal fade" id="modalUbahPassword" tabindex="-1" role="dialog"
-                        aria-labelledby="modalUbahPasswordLabel" aria-hidden="true">
+                    <div class="modal fade" id="modalUbahPassword" tabindex="-1" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalUbahPasswordLabel">Ubah Password</h5>
+                                    <h5 class="modal-title">Ubah Password</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Form untuk ubah password -->
                                     <form id="formUbahPassword">
+                                        <input type="hidden" name="nik_pegawai" id="nikPegawai"
+                                            value="<?php echo $_SESSION['nik_pegawai']; ?>">
                                         <div class="form-group">
-                                            <label for="oldPass">Password Lama</label>
-                                            <input type="password" class="form-control" id="oldPass">
+                                            <label for="newPassword">Password Baru</label>
+                                            <input type="password" class="form-control" id="newPassword"
+                                                name="newPassword" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="newPass">New Password</label>
-                                            <input type="password" class="form-control" id="newPass">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="confirmPass">Confirm Password</label>
-                                            <input type="password" class="form-control" id="confirmPass">
+                                            <label for="confirmPassword">Konfirmasi Password Baru</label>
+                                            <input type="password" class="form-control" id="confirmPassword"
+                                                name="confirmPassword" required>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                    <button type="button" class="btn btn-primary" id="btn-newPass">Ubah
+                                    <button type="button" id="btnUbahPassword" class="btn btn-primary">Ubah
                                         Password</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+
                 </nav>
 
                 <!-- End of Topbar -->

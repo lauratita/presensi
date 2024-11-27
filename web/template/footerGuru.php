@@ -83,37 +83,46 @@ document.getElementById('btn-logout').addEventListener('click', function(e) {
 
 <!-- modal ubah password -->
 <script>
-$(document).ready(function() {
-    $('#btn-newPass').click(function() {
-        const oldPass = $('#oldPass').val();
-        const newPass = $('#newPass').val();
-        const confirmPass = $('#confirmPass').val();
+// Submit password change form using AJAX
+document.getElementById('btnUbahPassword').addEventListener('click', () => {
+    const nikPegawai = document.getElementById('nikPegawai').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
-        if (newPass !== confirmPass) {
-            alert('Password baru tidak sesuai dengan konfirmasi.');
-            return;
-        }
+    if (!newPassword || !confirmPassword) {
+        alert('Password baru dan konfirmasi tidak boleh kosong.');
+        return;
+    }
 
-        $.ajax({
-            url: 'ubahPassword.php', // Ganti dengan URL handler password
-            type: 'POST',
-            data: {
-                oldPass: oldPass,
-                newPass: newPass
+    if (newPassword !== confirmPassword) {
+        alert('Konfirmasi password tidak sesuai.');
+        return;
+    }
+
+    fetch('index.php?action=ubahPassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            success: function(response) {
-                if (response === 'success') {
-                    alert('Password berhasil diubah');
-                    $('#modalUbahPassword').modal('hide');
-                } else {
-                    alert('Gagal mengubah password: ' + response);
-                }
-            },
-            error: function() {
-                alert('Terjadi kesalahan saat mengubah password.');
+            body: JSON.stringify({
+                nik_pegawai: nikPegawai,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                $('#modalUbahPassword').modal('hide'); // Tutup modal
+            } else {
+                alert(data.message);
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan, silakan coba lagi.');
         });
-    });
 });
 </script>
 
