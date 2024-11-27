@@ -35,54 +35,15 @@ include '../template/headerAdmin.php'; ?>
                         <thead>
                             <tr>
                                 <th>Kelas</th>
-                                <th>Senin</th>
-                                <th>Selasa</th> 
-                                <th>Rabu</th> 
-                                <th>Kamis</th>
-                                <th>Jum'at</th>     
-                                <th>Sabtu</th> 
+                                <th>Hari</th>
+                                <th>Jam Masuk</th> 
+                                <th>Jam Pulang</th> 
                                 <th>Aksi</th> 
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>X RPL 1</td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
+                                
                                 <td><!-- Circle Buttons (Small) -->
                                     <a href="#" class="btn btn-info btn-circle btn-sm">
                                         <i class="fas fa-eye"></i>

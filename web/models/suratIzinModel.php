@@ -3,11 +3,14 @@ class SuratIzinModel
 {
     private $koneksi;
     private $view_name = "v_suratizin";
+    private $table_name = "tb_suratizin";
 
     public $nik_pegawai;
     public $nis;
     public $nama_siswa;
     public $keterangan;
+    public $tanggal;
+    public $foto_surat;
     public $status;
     public $nik_ortu;
     public $id_kelas;
@@ -30,6 +33,23 @@ class SuratIzinModel
         }
     }
 
+    public function create()
+    {
+        $sql = "INSERT INTO " . $this->table_name . " (`keterangan`, `status`, `tanggal`, `foto_surat`, `nik_ortu`, `nik_pegawai`)
+                VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            $stmt = $this->koneksi->prepare($sql);
+            $stmt->bind_param("sssssss", $this->keterangan, $this->status, $this->tanggal, $this->foto_surat, $this->nik_ortu, $this->nik_pegawai);
+            if ($stmt->execute()) {
+                return ["status" => true, "message" => "Berhasil menambahkan surat izin."];
+            } else {
+                return ["status" => false, "message" => "Gagal menambahkan surat izin."];
+            }
+        } catch (Exception $e) {
+            return ["status" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()];
+        }
+    }
+
     public function getByWaliKelas($nik_pegawai, $status)
     {
         $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_pegawai = ? AND status = ?";
@@ -46,14 +66,20 @@ class SuratIzinModel
         // $stmt->close();
     }
 
-    public function update()
+    public function update($status, $id_surat, $nis, $nik_ortu, $nik_pegawai)
     {
         // UPDATE v_suratizin_ket SET status = 'verified' WHERE v_suratizin_ket.id_surat = '1' AND v_suratizin_ket.nis = 'pplg2303';
-        $sql = "UPDATE " . $this->view_name . " SET status = '$this->status' WHERE id_surat = '$this->id_surat'";
-        $stmt = $this->koneksi->prepare($sql);
-        if ($stmt->execute()) {
-            return true;
+        $sql = "UPDATE " . $this->view_name . " SET status = ? WHERE id_surat = ? AND nis = ? AND nik_ortu AND id_kelas = ? AND nik_pegawai = ?";
+        try {
+            $updateStmt = $this->koneksi->prepare($sql);
+            $updateStmt->bind_param("ssss", $status, $id_surat, $nis, $nik_ortu, $nik_pegawai);
+            if ($updateStmt->execute()) {
+                return ["status" => true, "message" => "Surat Izin Berhasil Verifikasi"];
+            } else {
+                return ["status" => false, "message" => "Gagal Verifikasi Surat Izin"];
+            }
+        } catch (Exception $e) {
+            return ["status" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()];
         }
-        return false;
     }
 }
