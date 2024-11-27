@@ -1,7 +1,7 @@
 <?php
 class JadwalModel{
     private $koneksi;
-    private $table_name ="v_detai_jadwal_mapel";
+    private $table_name ="v_detail_jadwal_mapel";
 
 
     public function __construct($db){
@@ -9,7 +9,7 @@ class JadwalModel{
     }
 
     public function read(){
-        $sql = "SELECT * FROM " .$this->v_table;
+        $sql = "SELECT * FROM " .$this->table_name;
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);
@@ -19,6 +19,5 @@ class JadwalModel{
             return json_encode(["message" => "Data not found"]);
         }
     }
-
     
 }
