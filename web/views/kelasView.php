@@ -50,8 +50,8 @@ class KelasService{
         return $this->kelas->getPegawaiUntukTambah();
     }
 
-    // // Ambil pegawai yang bisa dipilih saat edit kelas
-    // public function getPegawaiUntukEdit($id_kelas) {
-    //     return $this->kelas->getPegawaiUntukEdit($id_kelas);
-    // }
+
+    public function getPegawaiUntukEdit($id_kelas) {
+        return $this->kelas->getPegawaiUntukEdit($id_kelas);
+    }
 }

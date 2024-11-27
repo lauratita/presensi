@@ -138,6 +138,35 @@ class KelasModel{
     //     }
     // }
     
+    public function getPegawaiUntukEdit($id_kelas) {
+        $sql = "
+            SELECT nik_pegawai, nama 
+            FROM " . $this->table_pegawai . " 
+            WHERE id_jenis = 2 
+            AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . " WHERE id_kelas != ?)
+            
+            UNION
+            
+            SELECT nik_pegawai, nama 
+            FROM " . $this->table_pegawai . " 
+            WHERE id_jenis = 2 
+            AND nik_pegawai = (SELECT nik_pegawai FROM " . $this->table_name . " WHERE id_kelas = ?)
+        ";
+    
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("ss", $id_kelas, $id_kelas);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $data = $result->fetch_all(MYSQLI_ASSOC);
+            return json_encode($data);
+        } else {
+            http_response_code(404);
+            return json_encode(["message" => "Data not found"]);
+        }
+    }
+    
     
     
 }
