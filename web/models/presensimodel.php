@@ -35,6 +35,19 @@ class PresensiModel
         $data = $result->fetch_all(MYSQLI_ASSOC);
         return $data;
     }
+
+    public function getById(String $nis){
+        $sql = "SELECT * FROM " . $this->table_name. " WHERE nis = '$nis'";
+        $result = $this->koneksi->query($sql);
+        if ($result->num_rows > 0) {
+            $data = $result->fetch_all(MYSQLI_ASSOC);
+            return json_encode($data? $data : ["message" => "Data not found for given NIK"]);
+        } else {
+            http_response_code(404);
+            return json_encode(["message" => "Data not found"]);
+        }
+    }
+    
     public function create($tanggal, $jam_datang, $jam_pulang, $nis, $id_surat, $keterangan, $id_kelas) {
         $hariIni = date('l');
         $hariMapping = [

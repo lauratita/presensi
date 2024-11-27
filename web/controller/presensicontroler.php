@@ -27,6 +27,10 @@ class PresensiControler{
         $presensis = $this->presensimodel->readvpresensi();
         return json_encode($presensis);
     }
+    public function getallpresensi($nis){
+        $presensis = $this->presensimodel->getById($nis);
+        return json_encode($presensis);
+    }
 
     public function presensigetid_presensi($id_presensi){
         $presensigetid_presensi = $this->presensimodel->getPresensiById_presensi($id_presensi);
