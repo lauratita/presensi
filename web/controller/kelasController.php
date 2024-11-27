@@ -62,10 +62,10 @@ class KelasController{
         return $datapegawaitambah;
     }
 
-    // public function pegawaiEdit($id_kelas) {
-    //     $datapegawai = $this->kelasService->getPegawaiUntukEdit($id_kelas);
-    //     return $datapegawai;
-    //      // Mengirim data pegawai ke view
-    // }
+    public function pegawaiEdit($id_kelas) {
+        $datapegawaiedit = $this->kelasService->getPegawaiUntukEdit($id_kelas);
+        return $datapegawaiedit;
+         // Mengirim data pegawai ke view
+    }
 
 }
