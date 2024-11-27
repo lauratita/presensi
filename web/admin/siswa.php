@@ -355,9 +355,10 @@ if (isset($_GET['nis'])) {
                         <div class="container-upfoto">
                             <input type="file" id="editfoto" name="edit_foto" accept="image/*" hidden>
                             <div class="img-area mb-3">
-                                <img src="<?= str_replace('C:/laragon/www', '',
+                                <!-- <img src="<?= str_replace('C:/laragon/www', '',
                                       $siswanis['foto']); ?>" alt="Foto Siswa" 
-                                      style="max-width: 100%; height: 100%;">
+                                      style="max-width: 100%; height: 100%;"> -->
+                                      <img src="<?= $siswa['foto']; ?>" alt="Foto Siswa">
                                 <i class='bi bi-cloud-arrow-up icon'></i>
                              </div>
                             <button type="button" class="select-image">Cari Gambar</button>
