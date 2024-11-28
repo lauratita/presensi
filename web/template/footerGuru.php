@@ -47,11 +47,11 @@
 
 <!-- Tab Data Table -->
 <script>
-    $("#dataTablepresensi").DataTable();
-    $("#dataTablerekap").DataTable();
-    $("#dataTable-verified").DataTable();
-    $("#dataTable-unVerified").DataTable();
-    $("#dataTable-disable").DataTable();
+$("#dataTablepresensi").DataTable();
+$("#dataTablerekap").DataTable();
+$("#dataTable-verified").DataTable();
+$("#dataTable-unVerified").DataTable();
+$("#dataTable-disable").DataTable();
 </script>
 
 <!-- SweetAlert -->
@@ -59,27 +59,28 @@
 <script src="../assets/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('btn-logout').addEventListener('click', function (e) {
-        e.preventDefault(); // Mencegah default action dari tombol logout
+document.getElementById('btn-logout').addEventListener('click', function(e) {
+    e.preventDefault(); // Mencegah default action dari tombol logout
 
-        // Menampilkan SweetAlert untuk konfirmasi
-        Swal.fire({
-            title: 'Apakah anda ingin keluar halaman?',
-            text: "Anda akan keluar dari sesi ini!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Keluar!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Jika pengguna mengklik "Ya", arahkan ke logout.php
-                window.location.href = '../logout.php';
-            }
-        });
+    // Menampilkan SweetAlert untuk konfirmasi
+    Swal.fire({
+        title: 'Apakah anda ingin keluar halaman?',
+        text: "Anda akan keluar dari sesi ini!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Keluar!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jika pengguna mengklik "Ya", arahkan ke logout.php
+            window.location.href = '../logout.php';
+        }
     });
+});
 </script>
+
 
 
 </body>

@@ -11,6 +11,7 @@ class PegawaiController{
 
     public function create($request){
         try {
+
             $nik_pegawai = $request['nik_pegawai'];
             $nama = $request['nama'];
             $alamat = $request['alamat'];
@@ -18,6 +19,7 @@ class PegawaiController{
             $password = $request['password'];
             $no_hp = $request['no_hp'];
             $email = $request['email'];
+
             $id_jenis = $request['id_jenis'];
             if ($this->pegawaiService->createPegawai($nik_pegawai, $nama, $alamat, $jenis_kelamin, $password, $no_hp, $email, $id_jenis)) {
                 return json_encode(["message" => "Berhasil tambah data"]);
@@ -32,6 +34,7 @@ class PegawaiController{
         $pgws = $this->pegawaiService->getAllPegawai();
         return $pgws;
     }
+
 
     public function getByNik($nik_pegawai){
         $pgwnik = $this->pegawaiService->getPegawaiByNik($nik_pegawai);

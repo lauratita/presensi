@@ -25,8 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
+
             $_SESSION['message'] = "Mata pelajaran berhasil diperbaharui!";
             $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -34,8 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses tambah data
         $result = $controller->create($_POST);
         if ($result) {
+
             $_SESSION['message'] = "Mata pelajaran berhasil ditambahkan!";
             $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -47,8 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $kode = $_GET['kode'];
     $result = $controller->delete($kode);
     if ($result) {
+
         $_SESSION['message'] = "Mata pelajaran berhasil dihapus!";
         $_SESSION['type'] = "success";
+
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -94,6 +100,7 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
         <div class="tab-content">
 
             <!-- Tab Mata Pelajaran -->
+
             <div class="tab-pane fade show active" id="tab-mataPelajaran" role="tabpanel" aria-labelledby="nav-mataPelajaran-tab">
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -118,6 +125,7 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
                                         <a href="?action=update&kode=<?= htmlspecialchars($mpl['kd_mapel']) ?>" class="btn btn-warning btn-circle btn-sm">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
+
                                         <a href="#" class="btn btn-danger btn-circle btn-sm" 
                                         data-toggle="modal"
                                         data-target="#modalHapusMapel"
@@ -211,6 +219,7 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
         </script>
         <?php endif; ?>
     </div>
+
 
     <?php if (isset($_SESSION['message'])): ?>
     <script>

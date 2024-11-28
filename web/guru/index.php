@@ -1,25 +1,67 @@
 <?php 
+ob_start();
 session_start();
 include '../template/headerGuru.php';
+include_once '../controller/authController.php';
+include_once '../controller/dashboardController.php';
+
+$controller = new LoginController();
+$statistikController = new DashboardController($koneksi);
+$jumlahSiswa = json_decode($statistikController->getJumlahSiswa($_SESSION['nik_pegawai']), true);
+$jumlahSurat = json_decode($statistikController->getJumlahSurat($_SESSION['nik_pegawai']), true);
+$jumlahSuratHariIni = $statistikController->getJumlahSuratHariIni($_SESSION['nik_pegawai']);
+$jumlahPresensiHariIni = $statistikController->getJumlahPresensiHariIni($_SESSION['nik_pegawai']);
+
+
+
+if (!isset($_SESSION['nik_pegawai']) || !isset($_SESSION['id_jenis'])) {
+    // Jika tidak ada sesi login, arahkan ke halaman login
+    header("Location: ../login.php");
+    exit();
+}
+if ($_SESSION['id_jenis'] != 2) { 
+    header("Location: ../admin/index.php"); 
+    exit();
+}
+
+$currentUser = [
+    'nik_pegawai' => $_SESSION['nik_pegawai'],
+    'nama' => $_SESSION['nama'],
+    'id_jenis' => $_SESSION['id_jenis']
+];
+
+// Data Statistik
+$statistikSiswa = [
+    'total' => $jumlahSiswa['statistik_siswa'] ?? 0,
+    'hadir' => 36,
+    'sakit' => 2,
+    'izin' => 1,
+    'alpa' => 1
+];
+$statistikSurat = [
+    'total' => $jumlahSurat['statistik_surat'] ?? 0,
+    'unverified' => $jumlahSuratHariIni['unverified'] ?? 0,
+    'verified' => $jumlahSuratHariIni['verified'] ?? 0,
+    'disable' => $jumlahSuratHariIni['disable'] ?? 0
+];
+$statistikSuratHariIni = [
+    'total' => $jumlahSuratHariIni['statistik_surat'] ?? 0,
+    'unverified' => $jumlahSuratHariIni['unverified'] ?? 0,
+    'verified' => $jumlahSuratHariIni['verified'] ?? 0,
+    'disable' => $jumlahSuratHariIni['disable'] ?? 0
+];
+$statistikPresensiHariIni = [
+    'total' => $jumlahPresensiHariIni['statistik_siswa'] ?? 0,
+    'hadir' => $jumlahPresensiHariIni['hadir'] ?? 0,
+    'sakit' => $jumlahPresensiHariIni['sakit'] ?? 0,
+    'izin' => $jumlahPresensiHariIni['izin'] ?? 0,
+    'alpa' => $jumlahPresensiHariIni['alpa'] ?? 0
+];
+
 ?>
 
 <!-- Begin Page Content -->
 <div class="container text-center">
-    <!-- SweetAlert jika login berhasil -->
-    <?php if(isset($_SESSION['login_success'])): ?>
-    <script src="../assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
-    <script>
-    Swal.fire({
-        icon: 'success',
-        title: '<?php echo $_SESSION['login_success']; ?>',
-        showConfirmButton: false,
-        timer: 1500
-    });
-    </script>
-    <!-- menghapus session setelah ditampilkan -->
-    <?php unset($_SESSION['login_success']); ?>
-    <?php endif ?>
-
     <!-- Content Row -->
     <div class="row">
         <!-- Statistik Siswa -->
@@ -30,7 +72,9 @@ include '../template/headerGuru.php';
                         <div class="col mr-2">
                             <div class="h5 font-weight-bold text-primary text-uppercase mb-1 m-0 me-2">
                                 Statistik Siswa</div>
-                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">40</div>
+                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                <?= $statistikSiswa['total']; ?>
+                            </div>
                             <span>Total Siswa</span>
                             <ul class="p-0 m-0 mt-5">
                                 <li class="d-flex mb-4 pb-1">
@@ -43,7 +87,8 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Hadir</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">36</small>
+                                            <small
+                                                class="fw-semibold"><?= $statistikPresensiHariIni['hadir']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -57,7 +102,8 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Sakit</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">2</small>
+                                            <small
+                                                class="fw-semibold"><?= $statistikPresensiHariIni['sakit']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -71,7 +117,7 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Izin</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small class="fw-semibold"><?= $statistikPresensiHariIni['izin']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -85,7 +131,7 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Alpha</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small class="fw-semibold"><?= $statistikPresensiHariIni['alpa']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -104,7 +150,8 @@ include '../template/headerGuru.php';
                         <div class="col mr-2">
                             <div class="h5 font-weight-bold text-primary text-uppercase mb-1 m-0 me-2">
                                 Statistik Surat Izin</div>
-                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">3</div>
+                            <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                <?php echo $statistikSurat['total']; ?></div>
                             <span>Total Surat</span>
                             <ul class="p-0 m-0 mt-5">
                                 <li class="d-flex mb-4 pb-1">
@@ -117,7 +164,8 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Unverified</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?php echo $statistikSuratHariIni['unverified']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -131,7 +179,8 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Verified</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?php echo $statistikSuratHariIni['verified']; ?></small>
                                         </div>
                                     </div>
                                 </li>
@@ -145,7 +194,8 @@ include '../template/headerGuru.php';
                                             <h6 class="mb-0" style="font-weight: bold;">Disable</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small class="fw-semibold">1</small>
+                                            <small
+                                                class="fw-semibold"><?php echo $statistikSuratHariIni['disable']; ?></small>
                                         </div>
                                     </div>
                                 </li>

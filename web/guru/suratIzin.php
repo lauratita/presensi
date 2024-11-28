@@ -1,4 +1,50 @@
-<?php include '../template/headerGuru.php' ?>
+<?php 
+ob_start();
+session_start();
+if (!isset($_SESSION['nik_pegawai'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+include '../template/headerGuru.php';
+include_once '../controller/suratIzinController.php';
+$nik_pegawai = $_SESSION['nik_pegawai'];
+
+$controller = new SuratIzinController();
+
+// Ambil data berdasarkan status
+$surat_unverified = $controller->getByWaliKelas($nik_pegawai, 'unverified') ?? [];
+$surat_verified = $controller->getByWaliKelas($nik_pegawai, 'verified') ?? [];
+$surat_disable = $controller->getByWaliKelas($nik_pegawai, 'disable') ?? [];
+
+// Validasi jika data tidak ditemukan
+$surat_unverified = !empty($surat_unverified) ? $surat_unverified : [];;
+$surat_verified = !empty($surat_verified) ? $surat_verified : [];;
+$surat_disable = !empty($surat_disable) ? $surat_disable : [];;
+
+// Periksa apakah form disubmit untuk memperbarui status
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Ambil data dari form
+    $id_surat = $_POST['id_surat'];
+    $status = $_POST['status'];
+
+    // Update status surat izin
+    $query = "UPDATE tb_suratizin SET status = ? WHERE id_surat = ?";
+    $stmt = $koneksi->prepare($query);
+    
+    // Mengikat parameter untuk query
+    $stmt->bind_param('si', $status, $id_surat);
+    
+    if ($stmt->execute()) {
+        // Redirect ke tab yang sesuai setelah status diperbarui
+        header("Location: suratIzin.php?status=$status");
+        exit;
+    } else {
+        echo "Gagal memperbarui status.";
+    }
+}
+
+?>
 <div class="container-fluid">
 
     <!-- Page Heading -->
@@ -36,55 +82,78 @@
                             <table class="table table-bordered" id="dataTable-unVerified" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
+                                        <th>Keterangan</th>
                                         <th>Status</th>
+                                        <th>Tanggal</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($surat_unverified as $surat): ?>
                                     <tr>
-                                        <td>15</td>
-                                        <td>PPLG10011</td>
-                                        <td>Hovivah</td>
-                                        <td><span class="badge bg-label-warning me-1">Unverified</span></td>
+                                        <td><?= $surat['nis'] ?></td>
+                                        <td><?= $surat['nama_siswa'] ?></td>
+                                        <td><?= $surat['keterangan'] ?></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        </td>
+                                        <td><?= $surat['tanggal'] ?></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#verifiedizin"
-                                                class="btn btn-sm btn-primary">Verified</button>
+                                            <a href="?verifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
+                                                data-target="#verifiedizin<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-primary">
+                                                Verified
+                                            </a>
                                         </td>
                                     </tr>
+
                                     <!-- Modal -->
-                                    <div class="modal fade" id="verifiedizin" tabindex="-1"
+                                    <div class="modal fade" id="verifiedizin<?= $surat['id_surat'] ?>" tabindex="-1"
                                         aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit User</h3>
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Surat Siswa</h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">×</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>NIS : 1231021 </h6>
-                                                    <h6>NAMA : </h6>
+                                                    <h6>NIS : <?= $surat['nis'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
+                                                    <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
+                                                    <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                    <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
+                                                        width="300" height="300" />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger">Disable</button>
-                                                    <button type="button" class="btn btn-primary">Verified</button>
+                                                    <!-- Form untuk perubahan status -->
+                                                    <form action="suratIzin.php" method="POST">
+                                                        <input type="hidden" name="id_surat"
+                                                            value="<?= $surat['id_surat'] ?>" />
+                                                        <input type="hidden" name="status" value="verified" />
+                                                        <button type="submit" class="btn btn-success">Verified</button>
+                                                    </form>
+                                                    <form action="suratIzin.php" method="POST">
+                                                        <input type="hidden" name="id_surat"
+                                                            value="<?= $surat['id_surat'] ?>" />
+                                                        <input type="hidden" name="status" value="disable" />
+                                                        <button type="submit" class="btn btn-danger">Disable</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </form>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -101,51 +170,68 @@
                             <table class="table table-bordered" id="dataTable-verified" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
                                         <th>Status</th>
+                                        <th>Tanggal</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($surat_verified as $surat) : ?>
                                     <tr>
-                                        <td>1</td>
-                                        <td>PPLG1001</td>
-                                        <td>Hovivah</td>
-                                        <td>Hadir</td>
-                                        <td><span class="badge bg-label-warning me-1">Verified</span></td>
+                                        <td><?= $surat['nis'] ?></td>
+                                        <td><?= $surat['nama_siswa'] ?></td>
+                                        <td><?= $surat['keterangan'] ?></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        </td>
+                                        <td><?= $surat['tanggal'] ?></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#updateverified"
-                                                class="btn btn-sm btn-warning ">Change Verified</button>
+                                            <a href="?updateverifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
+                                                data-target="#updateverifiedizin<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-warning">
+                                                Change
+                                            </a>
                                     </tr>
-                                    <div class="modal fade" id="updateverified" tabindex="-1"
-                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                    <!-- Modal verified -->
+                                    <div class="modal fade" id="updateverifiedizin<?= $surat['id_surat'] ?>"
+                                        tabindex="-1" aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Verified</h3>
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">
+                                                        Edit
+                                                        Verified
+                                                    </h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">×</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>NIS : 1231021 </h6>
-                                                    <h6>NAMA : </h6>
+                                                    <h6>NIS : <?= $surat['nis'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
+                                                    <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
+                                                    <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                    <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
+                                                        width="300" height="300" />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger">Disable</button>
-
+                                                    <form action="suratIzin.php" method="POST" style="display:inline;">
+                                                        <input type="hidden" name="id_surat"
+                                                            value="<?= $surat['id_surat'] ?>" />
+                                                        <input type="hidden" name="status" value="disable" />
+                                                        <button type="submit" class="btn btn-danger">Disable</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -165,51 +251,67 @@
                             <table class="table table-bordered" id="dataTable-disable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>No</th>
                                         <th>NIS</th>
                                         <th>Nama</th>
                                         <th>Keterangan</th>
                                         <th>Status</th>
+                                        <th>Tanggal</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($surat_disable as $surat) : ?>
                                     <tr>
-                                        <td>1</td>
-                                        <td>PPLG1001</td>
-                                        <td>Hovivah</td>
-                                        <td>Hadir</td>
-                                        <td><span class="badge bg-label-warning me-1">Disable</span></td>
+                                        <td><?= $surat['nis'] ?></td>
+                                        <td><?= $surat['nama_siswa'] ?></td>
+                                        <td><?= $surat['keterangan'] ?></td>
+                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        </td>
+                                        <td><?= $surat['tanggal'] ?></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#updatedisable"
-                                                class="btn btn-sm btn-warning ">Change Disable</button>
+                                            <a href="?updatedisableizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
+                                                data-target="#updatedisableizin<?= $surat['id_surat'] ?>"
+                                                class="btn btn-sm btn-warning">
+                                                Change
+                                            </a>
                                     </tr>
-                                    <div class="modal fade" id="updatedisable" tabindex="-1"
-                                        aria-labelledby="verifiedizinLabel" aria-hidden="true">
+                                    <!-- modal disable -->
+                                    <div class="modal fade" id="updatedisableizin<?= $surat['id_surat'] ?>"
+                                        tabindex="-1" aria-labelledby="verifiedizinLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit Disable</h3>
+                                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edit
+                                                        Disable
+                                                    </h3>
                                                     <button class="close" type="button" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">×</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>NIS : 1231021 </h6>
-                                                    <h6>NAMA : </h6>
+                                                    <h6>NIS : <?= $surat['nis'] ?></h6>
+                                                    <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
+                                                    <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
+                                                    <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../../web/img/contoh_surat.jpg" class="img-fluid" width="300" height="300" />
+                                                    <img src="../img/contoh_surat.jpg" class="img-fluid" width="300"
+                                                        height="300" />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-success">Verified</button>
-                                                    
+                                                    <form action="suratIzin.php" method="POST" style="display:inline;">
+                                                        <input type="hidden" name="id_surat"
+                                                            value="<?= $surat['id_surat'] ?>" />
+                                                        <input type="hidden" name="status" value="verified" />
+                                                        <button type="submit" class="btn btn-success">Verified</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>

@@ -1,4 +1,44 @@
-<?php include '../template/headerGuru.php' ?>
+<?php 
+ob_start();
+session_start();
+if (!isset($_SESSION['nik_pegawai'])) {
+    header("Location: ../login.php");
+    exit();
+}
+include '../template/headerGuru.php';
+include_once '../controller/presensicontroler.php';
+
+$controller = new PresensiControler();
+$presensis = json_decode($controller->read(), true);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Mengecek tindakan berdasarkan nilai action
+    if (isset($_GET['action']) && $_GET['action'] === 'update') {
+        // Proses edit data
+        $result = $controller->update($_POST);
+        if ($result) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+    } else {
+        // Proses tambah data (create)
+        $result = $controller->create($_POST);
+        if ($result) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'delete') {
+    // Proses delete data
+    $nik = $_GET['nik'];
+    $result = $controller->delete(['nik' => $nik]);
+    if ($result) {
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+}
+
+ ?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -15,8 +55,24 @@
                         readonly>Tanggal</label>
                 </div>
                 <div class="col-auto">
-                    <input class="form-control" type="text" value="12/10/2024" aria-label="Disabled input example"
-                        disabled readonly>
+                    <!-- <input class="form-control" type="text" value="12/10/2024" aria-label="Disabled input example"
+                        disabled readonly> -->
+                        <input class="form-control" type="text" id="tanggal" aria-label="Disabled input example" disabled readonly>
+                    <script>
+                    // Fungsi untuk format tanggal (contoh: dd/mm/yyyy)
+                    function formatTanggal(tanggal) {
+                        let dd = String(tanggal.getDate()).padStart(2, '0');
+                        let mm = String(tanggal.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                        let yyyy = tanggal.getFullYear();
+
+                        return dd + '/' + mm + '/' + yyyy;
+                    }
+                    // Mendapatkan tanggal hari ini
+                    let tanggalHariIni = new Date();
+
+                    // Menampilkan tanggal yang diformat di input
+                    document.getElementById('tanggal').value = formatTanggal(tanggalHariIni);
+                    </script>
                 </div>
             </div>
         </div>
@@ -26,102 +82,24 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Tanggal</th>
                             <th>NIS</th>
                             <th>Nama</th>
                             <th>Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                    $no = 1;
+                    foreach ($presensis as $presensi) : ?>
                         <tr>
-                            <td>1</td>
-                            <td>PPLG1001</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
+                            <td><?= $no++ ?></td>
+                            <td><?= $presensi['tanggal'] ?></td>
+                            <td><?= $presensi['nis'] ?></td>
+                            <td><?= $presensi['nama'] ?></td>
+                            <td><?= $presensi['keterangan'] ?></td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>PPLG1002</td>
-                            <td>Melvina Citra Saqina</td>
-                            <td>Sakit</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>PPLG1003</td>
-                            <td>Hovivah</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>PPLG1005</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>PPLG1006</td>
-                            <td>Dwi Farhan</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>PPLG1007</td>
-                            <td>M. Dien Vito</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>PPLG1008</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Izin</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>PPLG1009</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>PPLG10010</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>PPLG1004</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td>PPLG1009</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td>PPLG10011</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
-                            <td>PPLG10015</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>14</td>
-                            <td>PPLG10012</td>
-                            <td>Ita Nurlaili</td>
-                            <td>Hadir</td>
-                        </tr>
-                        <tr>
-                            <td>15</td>
-                            <td>PPLG10011</td>
-                            <td>Laura Tita A.G</td>
-                            <td>Alpha</td>
-                        </tr>
+                        <?php endforeach;?>
                     </tbody>
                 </table>
             </div>

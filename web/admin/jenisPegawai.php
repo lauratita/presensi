@@ -26,16 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'update') {
         $result = $controller->update($_POST);
         if ($result) {
+
             $_SESSION['message'] = "Jenis pegawai berhasil diperbaharui!";
             $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
     } elseif ($action === 'create') {
         $result = $controller->create($_POST);
         if ($result) {
+
             $_SESSION['message'] = "Jenis pegawai berhasil ditambahkan!";
             $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -48,8 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $idJenis = $_GET['id'];
         $result = $controller->delete($idJenis);
         if ($result) {
+
             $_SESSION['message'] = "Jenis pegawai berhasil dihapus!";
             $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -84,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <!-- Tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
+
                 <button class="nav-link active" data-toggle="tab" href="#tab-jenisPegawai">Jenis Pegawai</button>
             </li>
             <li class="nav-item">
@@ -117,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                             <a href="?id=<?= htmlspecialchars($jpgw['id_jenis']) ?>" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
+
                                             <a href="#" class="btn btn-danger btn-circle btn-sm" 
                                                 data-toggle="modal"
                                                 data-target="#modalHapusJPegawai"
@@ -226,5 +234,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <?php endif; ?>
 
 </body>
+
 </html>
 <?php include '../template/footerAdmin.php'; ?>

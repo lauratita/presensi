@@ -124,6 +124,7 @@ if (isset($_GET['nik'])) {
                                         <td><?= htmlspecialchars($pgw['no_hp']) ?></td>
                                         <td><?= htmlspecialchars($pgw['id_jenis']) ?></td>
                                         <td>
+
                                         <a href="#" class="btn btn-info btn-circle btn-sm"
                                             data-toggle="modal" data-target="#modalRead"
                                             data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>"
@@ -141,6 +142,7 @@ if (isset($_GET['nik'])) {
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
                                             <a href="#" class="btn btn-danger btn-circle btn-sm"
+
                                         data-toggle="modal" data-target="#modalHapusPegawai"
                                         data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>">
                                             <i class="fas fa-trash"></i>
@@ -165,6 +167,7 @@ if (isset($_GET['nik'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
                 <div class="modal-body">
                     <form id="formTambahPegawai" method="POST" action="?action=create">
                         <div class="form-group">
@@ -205,6 +208,7 @@ if (isset($_GET['nik'])) {
                         </div>
                         <div class="form-group">
                             <label for="id_jenis">Jenis Pegawai</label>
+
                             <select class="form-control" id="id_jenis" name="id_jenis">
                                 <option value="">Pilih Jenis Pegawai</option>
                                 <?php if (!empty($datajpgw)): ?>
@@ -228,6 +232,7 @@ if (isset($_GET['nik'])) {
         </div>
     </div>
 </body>
+
 
 <script>
     document.getElementById('nikp').addEventListener('input', function() {
@@ -397,4 +402,5 @@ if (isset($_GET['nik'])) {
 
 </body>
 </html>
+
 <?php include '../template/footerAdmin.php'; ?>

@@ -1,10 +1,12 @@
 <?php
+
 include_once $_SERVER['DOCUMENT_ROOT']. '/presensi/web/models/pgwModel.php';
 // use PegawaiModel as pgw;
 
 class PegawaiService{
     private $db;
     private $pgw;
+
     // private $pegawai;
 
     public function __construct($db){

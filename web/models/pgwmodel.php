@@ -3,7 +3,6 @@ class PegawaiModel{
     private $koneksi;
     private $table_name ="tb_pegawai";
     private $table_jpegawai = "tb_jenispegawai";
-
     public $nik_pegawai;
     public $nama;
     public $alamat;
@@ -11,11 +10,13 @@ class PegawaiModel{
     public $password;
     public $no_hp;
     public $email;
+
     public $id_jenis;
 
     public function __construct($db){
         $this->koneksi = $db;
     }
+
 
     public function create() {
         $sql = "INSERT INTO " . $this->table_name . " (nik_pegawai, nama, alamat, jenis_kelamin, password, no_hp, email, id_jenis)
@@ -54,6 +55,7 @@ class PegawaiModel{
         }
     }
 
+
     public function update() {
         $sql = "UPDATE " . $this->table_name . " SET nama = ?, alamat = ?, jenis_kelamin = ?, password = ?, no_hp = ?, email = ?, id_jenis = ?
                 WHERE nik_pegawai = ?";
@@ -80,6 +82,7 @@ class PegawaiModel{
         $sql = "DELETE FROM " .$this->table_name . " WHERE nik_pegawai = ?";
         $stmt = $this->koneksi->prepare($sql);
 
+
         // $stmt->bindValue(1, $this->nik, PDO::PARAM_STR);
         $stmt->bind_param("s", $this->nik_pegawai);
         if ($stmt->execute()) {
@@ -95,12 +98,14 @@ class PegawaiModel{
         $stmt->bind_param("s", $nik_pegawai);
         $stmt->execute();
         $result = $stmt->get_result();
+
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);
             return json_encode($data); 
         } else {
             echo json_encode(["message" => "Data not found for given NIK"]);
         }
+
         $stmt->close();
     }
 
