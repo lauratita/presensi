@@ -21,7 +21,7 @@ class PasswordController {
         $newPassword = trim($request['newPassword']);  // Menghapus spasi yang tidak terlihat
         $confirmPassword = trim($request['confirmPassword']);  // Menghapus spasi yang tidak terlihat
 
-        var_dump($newPassword, $confirmPassword);
+        // var_dump($newPassword, $confirmPassword);
     
         // Validasi input
         if (empty($nik_pegawai) || empty($newPassword) || empty($confirmPassword)) {

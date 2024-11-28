@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/suratIzinView.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
 
 class SuratIzinController
 {
@@ -9,7 +10,7 @@ class SuratIzinController
     public function __construct()
     {
         global $koneksi;
-        $this->suratModel = new suratIzinService($koneksi);
+        $this->suratModel = new SuratIzinModel($koneksi);
     }
 
     public function create($request)
@@ -21,8 +22,7 @@ class SuratIzinController
             $foto_surat = $request['foto_surat'];
             $nik_ortu = $request['nik_ortu'];
             $nik_pegawai = $request['nik_pegawai'];
-          
-            if ($this->suratModel->createSuratIzin($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)) {
+            if ($this->suratModel->create($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)) {
                 return json_encode(["message" => "Berhasil menambahkan surat izin"]);
             }
             return json_encode(["message" => "Gagal menambah surat izin"]);
