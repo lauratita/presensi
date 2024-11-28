@@ -21,6 +21,7 @@ class SuratIzinController
             $foto_surat = $request['foto_surat'];
             $nik_ortu = $request['nik_ortu'];
             $nik_pegawai = $request['nik_pegawai'];
+          
             if ($this->suratModel->createSuratIzin($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)) {
                 return json_encode(["message" => "Berhasil menambahkan surat izin"]);
             }

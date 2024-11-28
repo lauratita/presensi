@@ -1,5 +1,38 @@
 <?php 
+ob_start();
 include '../template/headerAdmin.php';
+include_once '../controller/authController.php';
+include_once '../controller/dashAdminController.php';
+
+$controller = new LoginController();
+$statistikController = new DashboardAdminController($koneksi);
+
+$jumlahSiswa = json_decode($statistikController->getJumlahSiswa());
+$jumlahKelas = json_decode($statistikController->getJumlahKelas());
+$jumlahPegawai = json_decode($statistikController->getJumlahPegawai());
+$jumlahPresensiHariIni = $statistikController->getJumlahPresensiHariIni();
+
+// Data Statistik
+$statistikSiswa = [
+    'total' => $jumlahSiswa->total_siswa ?? 0,
+    'hadir' => 36,
+    'sakit' => 2,
+    'izin' => 1,
+    'alpha' => 1
+];
+$statistikKelas = [
+    'total' => $jumlahKelas->total_kelas ?? 0
+];
+$statistikPegawai = [
+    'total' => $jumlahPegawai->total_pegawai ?? 0
+];
+$statistikPresensiHariIni = [
+    'total' => $jumlahPresensiHariIni->total_siswa ?? 0,
+    'hadir' => $jumlahPresensiHariIni['hadir'] ?? 0,
+    'sakit' => $jumlahPresensiHariIni['sakit'] ?? 0,
+    'izin' => $jumlahPresensiHariIni['izin'] ?? 0,
+    'alpa' => $jumlahPresensiHariIni['alpa'] ?? 0
+];
 ?>
 
 <!DOCTYPE html>
@@ -14,20 +47,6 @@ include '../template/headerAdmin.php';
             <div id="content">
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- SweetAlert jika login berhasil -->
-                    <?php if(isset($_SESSION['login_success'])): ?>
-                    <script src="../assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
-                    <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: '<?php echo $_SESSION['login_success']; ?>',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                    </script>
-                    <!-- menghapus session setelah ditampilkan -->
-                    <?php unset($_SESSION['login_success']); ?>
-                    <?php endif ?>
                     <!-- Informasi  -->
                     <div class="row">
                         <!-- Siswa -->
@@ -40,7 +59,8 @@ include '../template/headerAdmin.php';
                                                 <div
                                                     class="h5 font-weight-bold text-warning text-uppercase mb-1 m-0 me-2">
                                                     Siswa</div>
-                                                <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">1800</div>
+                                                <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                                    <?= $statistikSiswa['total']; ?></div>
                                                 <span>Total Siswa</span>
                                             </div>
                                             <div class="col-auto">
@@ -60,7 +80,8 @@ include '../template/headerAdmin.php';
                                                         <h6 class="mb-0" style="font-weight: bold;">Hadir</h6>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold">36</small>
+                                                        <small class="fw-semibold">
+                                                            <?= $statistikPresensiHariIni['hadir'] ?></small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -74,7 +95,8 @@ include '../template/headerAdmin.php';
                                                         <h6 class="mb-0" style="font-weight: bold;">Sakit</h6>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold">2</small>
+                                                        <small
+                                                            class="fw-semibold"><?= $statistikPresensiHariIni['sakit'] ?></small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -88,7 +110,8 @@ include '../template/headerAdmin.php';
                                                         <h6 class="mb-0" style="font-weight: bold;">Izin</h6>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold">1</small>
+                                                        <small
+                                                            class="fw-semibold"><?= $statistikPresensiHariIni['izin'] ?></small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -102,7 +125,8 @@ include '../template/headerAdmin.php';
                                                         <h6 class="mb-0" style="font-weight: bold;">Alpha</h6>
                                                     </div>
                                                     <div class="user-progress">
-                                                        <small class="fw-semibold">1</small>
+                                                        <small
+                                                            class="fw-semibold"><?= $statistikPresensiHariIni['alpa'] ?></small>
                                                     </div>
                                                 </div>
                                             </li>
@@ -123,7 +147,8 @@ include '../template/headerAdmin.php';
                                                 <div
                                                     class="h5 font-weight-bold text-warning text-uppercase mb-1 m-0 me-2">
                                                     Kelas</div>
-                                                <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">24</div>
+                                                <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                                    <?= $statistikKelas['total'] ?></div>
                                                 <br>
                                                 <span>Total Kelas</span>
                                             </div>
@@ -144,7 +169,8 @@ include '../template/headerAdmin.php';
                                                 <div
                                                     class="h5 font-weight-bold text-warning text-uppercase mb-1 m-0 me-2">
                                                     Pegawai</div>
-                                                <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">500</div>
+                                                <div class="h2 mb-3 me-2 mt-4 font-weight-bold text-gray-800">
+                                                    <?= $statistikPegawai['total'] ?></div>
                                                 <br>
                                                 <span>Total Pegawai</span>
                                             </div>

@@ -52,21 +52,20 @@ class KelasController{
         return json_encode(["message" => "Gagal hapus Kelas"]);
     }
 
-    public function getpegawai(){
-        $pegawai = $this->kelasService->getPegawai();
-        return $pegawai;
+    // public function getpegawai(){
+    //     $pegawai = $this->kelasService->getPegawai();
+    //     return $pegawai;
+    // }
+
+    public function pegawaiTambah() {
+        $datapegawaitambah = $this->kelasService->getPegawaiUntukTambah();
+        return $datapegawaitambah;
     }
 
-    // public function pegawaiTambah() {
-    //     $datapegawai = $this->kelasService->getPegawaiUntukTambah();
-    //     return $datapegawai;
-    //      // Mengirim data pegawai ke view
-    // }
-
-    // public function pegawaiEdit($id_kelas) {
-    //     $datapegawai = $this->kelasService->getPegawaiUntukEdit($id_kelas);
-    //     return $datapegawai;
-    //      // Mengirim data pegawai ke view
-    // }
+    public function pegawaiEdit($id_kelas) {
+        $datapegawaiedit = $this->kelasService->getPegawaiUntukEdit($id_kelas);
+        return $datapegawaiedit;
+         // Mengirim data pegawai ke view
+    }
 
 }

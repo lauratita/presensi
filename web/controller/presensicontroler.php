@@ -12,23 +12,23 @@ class PresensiControler{
     }
 
     public function create($request){
-        $id_presensi = $request['id_presensi'];
         $tanggal = $request['tanggal'];
         $jam_datang = $request['jam_datang'];
-        $jam_pulang = $request['jam_pulang'];
-        $valid_foto_datang = $request['valid_foto_datang'];
-        $valid_foto_pulang = $request['valid_foto_pulang'];
-        $id_jadwal = $request['id_jadwal'];
+        $jam_pulang = $request['jam_pulang'] ?? null;
         $nis = $request['nis'];
-        $id_surat = $request['id_surat'];
-        if ($this->presensimodel->createPresensi($id_presensi, $tanggal, $jam_datang, $jam_pulang, $valid_foto_datang, $valid_foto_pulang, $id_jadwal, $nis, $id_surat)) {
-            return json_encode(["message" => "Berhasil tambah data"]);
-        }
-        return json_encode(["message" => "Gagal menambah data"]);
+        $id_surat = $request['id_surat'] ?? null;
+        $keterangan = $request['keterangan'] ?? null;
+        $id_kelas = $request['id_kelas'];
+        $data = $this->presensimodel->create($tanggal, $jam_datang, $jam_pulang, $nis, $id_surat,$keterangan,$id_kelas);
+        return json_encode($data);
     }
 
     public function read(){
         $presensis = $this->presensimodel->readvpresensi();
+        return json_encode($presensis);
+    }
+    public function getallpresensi($nis){
+        $presensis = $this->presensimodel->getById($nis);
         return json_encode($presensis);
     }
 
@@ -43,20 +43,12 @@ class PresensiControler{
     }
 
     public function update($request){
-        $id_presensi = $request['id_presensi'];
         $tanggal = $request['tanggal'];
-        $jam_datang = $request['jam_datang'];
         $jam_pulang = $request['jam_pulang'];
-        $valid_foto_datang = $request['valid_foto_datang'];
-        $valid_foto_pulang = $request['valid_foto_pulang'];
-        $id_jadwal = $request['id_jadwal'];
         $nis = $request['nis'];
-        $id_surat = $request['id_surat'];
-        if ($this->presensimodel->updatePresensi($id_presensi, $tanggal, $jam_datang, $jam_pulang, $valid_foto_datang, $valid_foto_pulang, $id_jadwal, $nis, $id_surat)) 
-        {
-            return json_encode(["message" => "Berhasil Perbarui Presensi"]);
-        }
-        return json_encode(["message" => "Gagal Memeperbarui Presensi"]);
+        $id_kelas = $request['id_kelas'];
+        $data = $this->presensimodel->absenPulang($tanggal, $jam_pulang, $nis, $id_kelas);
+        return json_encode($data);
     }
 
     public function delete($request){

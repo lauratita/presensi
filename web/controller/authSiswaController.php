@@ -3,7 +3,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/authSiswaView.php';
 
 
-class LoginController
+class LoginSiswaController
 {
     private $loginmodel;
 

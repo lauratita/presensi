@@ -81,41 +81,6 @@ document.getElementById('btn-logout').addEventListener('click', function(e) {
 });
 </script>
 
-<!-- modal ubah password -->
-<script>
-$(document).ready(function() {
-    $('#btn-newPass').click(function() {
-        const oldPass = $('#oldPass').val();
-        const newPass = $('#newPass').val();
-        const confirmPass = $('#confirmPass').val();
-
-        if (newPass !== confirmPass) {
-            alert('Password baru tidak sesuai dengan konfirmasi.');
-            return;
-        }
-
-        $.ajax({
-            url: 'ubahPassword.php', // Ganti dengan URL handler password
-            type: 'POST',
-            data: {
-                oldPass: oldPass,
-                newPass: newPass
-            },
-            success: function(response) {
-                if (response === 'success') {
-                    alert('Password berhasil diubah');
-                    $('#modalUbahPassword').modal('hide');
-                } else {
-                    alert('Gagal mengubah password: ' + response);
-                }
-            },
-            error: function() {
-                alert('Terjadi kesalahan saat mengubah password.');
-            }
-        });
-    });
-});
-</script>
 
 
 </body>

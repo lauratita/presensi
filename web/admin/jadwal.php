@@ -1,7 +1,27 @@
 <?php 
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'jadwal';
-include '../template/headerAdmin.php'; ?>
+include '../template/headerAdmin.php'; 
+include_once '../controller/jadwalController.php';
+
+$controller = new JadwalController();
+$data = $controller->read();
+$jadwals = [];
+
+if ($data !== false) {
+    $data = json_decode($data, true);
+    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
+        $jadwals = $data;
+        // var_dump($kelass);
+    }
+} else {
+    // Handle errors from getAllOrtu()
+    echo "Error fetching data.";
+}
+
+?>
+
+
 <html>
 <body>
     <div class="container-fluid">
@@ -35,65 +55,25 @@ include '../template/headerAdmin.php'; ?>
                         <thead>
                             <tr>
                                 <th>Kelas</th>
-                                <th>Senin</th>
-                                <th>Selasa</th> 
-                                <th>Rabu</th> 
-                                <th>Kamis</th>
-                                <th>Jum'at</th>     
-                                <th>Sabtu</th> 
-                                <th>Aksi</th> 
+                                <th>Hari</th>
+                                <th>Jam Masuk</th> 
+                                <th>Jam Pulang</th> 
+                                
                             </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($jadwals as $jadwal) : ?>
                             <tr>
-                                <td>X RPL 1</td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td>
-                                    <div>Masuk</div>
-                                    <input type="time" class="form-control mb-1" value="07:00">
-                                    <div>Pulang</div>
-                                    <input type="time" class="form-control" value="13:00">
-                                </td>
-                                <td><!-- Circle Buttons (Small) -->
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#modalEditKelas">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#modalHapus">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
+                                <td><?= htmlspecialchars($jadwal['nama_kelas']) ?></td>
+                                <td><?= htmlspecialchars($jadwal['hari']) ?></td>
+                                <td><?= htmlspecialchars($jadwal['jam_masuk']) ?></td>
+                                <td><?= htmlspecialchars($jadwal['jam_pulang']) ?></td>
+                                
+                                
+                                
+                                
                             </tr>
+                            <?php endforeach;?>
                         </tbody>
                     </table>
                 </div>

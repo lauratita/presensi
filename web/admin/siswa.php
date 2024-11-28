@@ -30,24 +30,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mengecek tindakan berdasarkan nilai action
     if (isset($_GET['action']) && $_GET['action'] === 'update') {
         // Proses edit data
-        $result = $controller->update($_POST);
+        $result = $controller->update(array_merge($_POST, $_FILES));
         if ($result) {
+            $_SESSION['message'] = "Data berhasil diperbaharui!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
     } else {
         // Proses tambah data (create)
-        $result = $controller->create($_POST);
+        $result = $controller->create(array_merge($_POST, $_FILES));
         if ($result) {
+            $_SESSION['message'] = "Data berhasil ditambahkan!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'delete') {
     // Proses delete data
-    $id_kelas = $_GET['id'];
-    $result = $controller->delete($id_kelas);
+    $nis = $_GET['nis'];
+    $result = $controller->delete($nis);
     if ($result) {
+        $_SESSION['message'] = "Data berhasil dihapus!";
+        $_SESSION['type'] = "success";
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -66,7 +72,7 @@ if (isset($_GET['nis'])) {
             $siswanis = $datasiswa[0];
             $showEditModal= true;
             // $pegawaiku = $controller->getPegawai($kelasid['nik_pegawai']);
-            var_dump($kelasid); 
+            var_dump($siswanis); 
         } else {
             echo 'Data not found';
         }
@@ -131,9 +137,12 @@ if (isset($_GET['nis'])) {
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="?nis=<?= htmlspecialchars($siswa['nis']) ?>" class="btn btn-warning btn-circle btn-sm">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#modalHapus">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-circle btn-sm" 
+                                        data-toggle="modal"
+                                        data-target="#modalHapusSiswa"
+                                        data-nis="<?= htmlspecialchars($siswa['nis']) ?>">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
@@ -148,7 +157,7 @@ if (isset($_GET['nis'])) {
         <div class="tab-pane fade" id="tab-tambahSiswa" role="tabpanel" aria-labelledby="nav-tambahSiswa-tab">
             <div class="card shadow mb-4 mt-4">
                 <div class="card-body">
-                    <form id="formTambahSiswa" method="POST" enctype="multipart/form-data">
+                    <form id="formTambahSiswa" method="POST" enctype="multipart/form-data" action="?action=create">
                         <div class="row">
                             <div class="col-md-5 mt-3">
                                 <label for="nis">NIS</label>
@@ -158,17 +167,13 @@ if (isset($_GET['nis'])) {
                                 <label for="namaSiswa">Nama</label>
                                 <input type="text" class="form-control" name="nama" id="namaSiswa" placeholder="Masukkan Nama" required>
                             </div>
-                            <!-- <div class="col-md-3 mt-3">
-                                <label for="namaSiswa">Nama</label>
-                                <input type="text" class="form-control" name="id_foto" id="namaSiswa" placeholder="Masukkan Nama" required>
-                            </div> -->
                             <div class="col-md-2 mt-3">
                                 <label for="kelas">Tahun Masuk</label>
                                 <input type="year" class="form-control yearpicker" name="tahun_akademik" id="tahunMasuk" placeholder="Pilih tahun">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label for="jkSiswa">Jenis Kelamin</label>
                                 <select class="form-control" id="jkSiswa" name="jenis_kelamin" >
                                     <option value="">Pilih Jenis Kelamin</option>
@@ -176,13 +181,13 @@ if (isset($_GET['nis'])) {
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
                             </div>
-                            <div class="col-md-4 mt-3">
+                            <!-- <div class="col-md-4 mt-3">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
-                            </div>
-                            <div class="col-md-4 mt-3">
+                            </div> -->
+                            <div class="col-md-6 mt-3">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="password" name="tanggal_lahir" placeholder="Masukkan Password" required>
+                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Masukkan Password" required>
                             </div>
                         </div>
                         <div class="row">
@@ -223,50 +228,15 @@ if (isset($_GET['nis'])) {
                             </div>
                         <div class="row">
                             <div class="container-upfoto">
-                                <input type="file" id="file1" name="foto_depan" accept="image/*" hidden>
+                                <input type="file" id="file1" name="foto" accept="image/*" hidden>
                                 <div class='img-area' data-img="">
                                     <i class='bi bi-cloud-arrow-up icon'></i>
                                     <h3>Upload Image</h3>
                                     <p>Foto depan</p>
                                 </div>
-                                <button class="select-image">Cari Gambar</button>
+                                <button type="button" class="select-image">Cari Gambar</button>
                             </div>
-                            <div class="container-upfoto">
-                                <input type="file" id="file2" name="foto_kiri"accept="image/*" hidden>
-                                <div class='img-area' data-img="">
-                                    <i class='bi bi-cloud-arrow-up icon'></i>
-                                    <h3>Upload Image</h3>
-                                    <p>Foto Kiri</p>
-                                </div>
-                                <button class="select-image">Cari Gambar</button>
-                            </div>
-                            <div class="container-upfoto">
-                                <input type="file" id="file3" name="foto_kanan" accept="image/*" hidden>
-                                <div class='img-area' data-img="">
-                                    <i class='bi bi-cloud-arrow-up icon'></i>
-                                    <h3>Upload Image</h3>
-                                    <p>Foto Kanan</p>
-                                </div>
-                                <button class="select-image">Cari Gambar</button>
-                            </div>
-                            <div class="container-upfoto">
-                                <input type="file" id="file4" name="foto_atas" accept="image/*" hidden>
-                                <div class='img-area' data-img="">
-                                    <i class='bi bi-cloud-arrow-up icon'></i>
-                                    <h3>Upload Image</h3>
-                                    <p>Foto Atas</p>
-                                </div>
-                                <button class="select-image">Cari Gambar</button>
-                            </div>
-                            <div class="container-upfoto">
-                                <input type="file" id="file5" name="foto_bawah" accept="image/*" hidden>
-                                <div class='img-area' data-img="">
-                                    <i class='bi bi-cloud-arrow-up icon'></i>
-                                    <h3>Upload Image</h3>
-                                    <p>Foto Bawah</p>
-                                </div>
-                                <button class="select-image">Cari Gambar</button>
-                            </div>
+                            
                         </div>
                         <div class="form-group text-right">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -275,12 +245,13 @@ if (isset($_GET['nis'])) {
                     </form>
                 </div>    
             </div> 
+                                        </div>
     </div>
 
 </div>    
 <!-- Tombol Hapus -->
-<div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="modalHapusSiswa" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
@@ -293,11 +264,150 @@ if (isset($_GET['nis'])) {
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-danger">Hapus</button>
+            <a href="#" id="btnHapusSiswa" type="button" class="btn btn-danger">Hapus</a>
           </div>
         </div>
-      </div>
     </div>
+</div>
+
+<?php if ($showEditModal && !empty($siswanis)): ?>
+        <div class="modal fade" id="modalEditSiswa" tabindex="-1" role="dialog" aria-labelledby="modalEditKelasLabel"
+            >
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditKelasLabel">Edit Data Kelas</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form untuk  edit kelas -->
+                        <form id="formEditSiswa" method="POST" enctype="multipart/form-data" action="?action=update">
+                        <div class="row">
+                            <div class="col-md-5 mt-3">
+                                <label for="nis">NIS</label>
+                                <input type="text" class="form-control" name="edit_nis" id="editnis" value="<?= $siswanis['nis'] ?>" placeholder="Masukkan NIS" required>
+                            </div>
+                            <div class="col-md-5 mt-3">
+                                <label for="namaSiswa">Nama</label>
+                                <input type="text" class="form-control" name="edit_nama" id="neditamaSiswa" placeholder="Masukkan Nama" value="<?= $siswanis['nama'] ?>" required>
+                            </div>
+                            <div class="col-md-2 mt-3">
+                                <label for="kelas">Tahun Masuk</label>
+                                <input type="year" class="form-control yearpicker" name="edit_tahun_akademik" id="edittahunMasuk" value="<?= $siswanis['tahun_akademik'] ?>" placeholder="Pilih tahun">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mt-3">
+                                <label for="jkSiswa">Jenis Kelamin</label>
+                                <select class="form-control" id="editjkSiswa" name="edit_jenis_kelamin" >
+                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="Laki-laki"
+                                            <?= $siswanis['jenis_kelamin'] == 'laki-laki' ? 'selected' : '' ?>>Laki-laki
+                                        </option>
+                                        <option value="Perempuan"
+                                            <?= $siswanis['jenis_kelamin'] == 'perempuan' ? 'selected' : '' ?>>Perempuan
+                                        </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mt-3">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="editpassword" name="edit_password" placeholder="Masukkan Password" value="<?= $siswanis['password'] ?>" required>
+                            </div>
+                            <div class="col-md-4 mt-3">
+                                <label for="tanggal_lahir">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="edittanggal_lahir" name="edit_tanggal_lahir" placeholder="Masukkan Password" value="<?= $siswanis['tanggal_lahir'] ?>" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-3">
+                                <label for="id_kelas">Kelas</label>
+                                <select class="form-control" id="editid_kelas" name="edit_id_kelas">
+                                    <option value="">Pilih Kelas</option>
+                                        <?php if (!empty($datakelas)): ?>
+                                            <?php foreach ($datakelas as $kelas): ?>
+                                                <option value="<?= htmlspecialchars($kelas['id_kelas']) ?>"
+                                                <?= ($kelas['id_kelas'] == $siswanis['id_kelas']) ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($kelas['nama_kelas']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="nik_ortu">Orang Tua</label>
+                                <select class="form-control" id="editnik_ortu" name="edit_nik_ortu">
+                                    <option value="">Pilih Orang Tua</option>
+                                        <?php if (!empty($dataortu)): ?>
+                                            <?php foreach ($dataortu as $ortu): ?>
+                                                <option value="<?= htmlspecialchars($ortu['nik_ortu']) ?>"
+                                                    <?= ($ortu['nik_ortu'] == $siswanis['nik_ortu']) ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($ortu['nama']) ?>
+                                                </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                </select>
+                            </div>
+                        </div>               
+                        <div class="form-group mt-3">
+                            <label for="alamat">Alamat</label>
+                            <textarea class="form-control" id="edit_alamat" name="edit_alamat" placeholder="Masukkan Alamat"  required><?= $siswanis['alamat'] ?></textarea>
+                        </div>                             
+                        <div class="container-upfoto">
+                            <input type="file" id="editfoto" name="edit_foto" accept="image/*" hidden>
+                            <div class="img-area mb-3">
+                                <!-- <img src="<?= str_replace('C:/laragon/www', '',
+                                      $siswanis['foto']); ?>" alt="Foto Siswa" 
+                                      style="max-width: 100%; height: 100%;"> -->
+                                      <img src="<?= $siswa['foto']; ?>" alt="Foto Siswa">
+                                <i class='bi bi-cloud-arrow-up icon'></i>
+                             </div>
+                            <button type="button" class="select-image">Cari Gambar</button>
+                            <input type="hidden" name="foto_lama" value="<?= htmlspecialchars($siswanis['foto']) ?>">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" name="update" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                $(document).ready(function() {
+                $('#modalEditSiswa').modal('show');
+                });
+            </script>
+            <?php endif?>
+        </div>
+            </div>
+            </div>
+
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
+
+
 </body>
 </html>
 <?php include '../template/footerAdmin.php'; ?>

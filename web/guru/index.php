@@ -36,7 +36,7 @@ $statistikSiswa = [
     'hadir' => 36,
     'sakit' => 2,
     'izin' => 1,
-    'alpha' => 1
+    'alpa' => 1
 ];
 $statistikSurat = [
     'total' => $jumlahSurat['statistik_surat'] ?? 0,
@@ -55,7 +55,7 @@ $statistikPresensiHariIni = [
     'hadir' => $jumlahPresensiHariIni['hadir'] ?? 0,
     'sakit' => $jumlahPresensiHariIni['sakit'] ?? 0,
     'izin' => $jumlahPresensiHariIni['izin'] ?? 0,
-    'alpha' => $jumlahPresensiHariIni['alpha'] ?? 0
+    'alpa' => $jumlahPresensiHariIni['alpa'] ?? 0
 ];
 
 ?>
@@ -131,8 +131,7 @@ $statistikPresensiHariIni = [
                                             <h6 class="mb-0" style="font-weight: bold;">Alpha</h6>
                                         </div>
                                         <div class="user-progress">
-                                            <small
-                                                class="fw-semibold"><?= $statistikPresensiHariIni['alpha']; ?></small>
+                                            <small class="fw-semibold"><?= $statistikPresensiHariIni['alpa']; ?></small>
                                         </div>
                                     </div>
                                 </li>

@@ -1,6 +1,5 @@
 <?php 
 
-
 ob_start();
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'kelas';
@@ -11,8 +10,8 @@ $controller = new KelasController();
 $data = $controller->read();
 $kelass = [];
 
-$pegawai = $controller->getpegawai(); 
-$datapegawai = json_decode($pegawai, true);
+$pegawaitambah = $controller->pegawaiTambah(); 
+$datapegawaitambah = json_decode($pegawaitambah, true);
 
 
 if ($data !== false) {
@@ -33,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
+            $_SESSION['message'] = "Data berhasil diperbaharui!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -40,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses tambah data (create)
         $result = $controller->create($_POST);
         if ($result) {
+            $_SESSION['message'] = "Data berhasil ditambahkan!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -49,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_kelas = $_GET['id'];
     $result = $controller->delete($id_kelas);
     if ($result) {
+        $_SESSION['message'] = "Data berhasil dihapus!";
+        $_SESSION['type'] = "success";
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -58,17 +63,18 @@ $kelasid = [];
 if (isset($_GET['id'])) {
     $id_kelas = $_GET['id'];
     $datakelas = $controller->getById($id_kelas);
-    // $pegawaiEdit = $controller->pegawaiEdit($id_kelas); 
+    $pegawaiEdit = $controller->pegawaiEdit($id_kelas); 
 
     if ($datakelas !== false) {
         // Decode JSON as associative array
         $datakelas = json_decode($datakelas, true);
+        $datapegawaiedit = json_decode($pegawaiEdit, true);
         
         if (is_array($datakelas) && (!isset($datakelas['message']) || $datakelas['message'] !== 'Data not found')) {
             $kelasid = $datakelas[0];
             $showEditModal= true;
             // $pegawaiku = $controller->getPegawai($kelasid['nik_pegawai']);
-            var_dump($kelasid); 
+            // var_dump($kelasid); 
         } else {
             echo 'Data not found';
         }
@@ -186,10 +192,10 @@ if (isset($_GET['id'])) {
                             <label for="nik_pegawai">Wali Kelas</label>
                             <select class="form-control" id="nik_pegawai" name="nik_pegawai">
                                 <option value="">Pilih waliKelas</option>
-                                    <?php if (!empty($datapegawai)): ?>
-                                        <?php foreach ($datapegawai as $pegawai): ?>
-                                        <option value="<?= htmlspecialchars($pegawai['nik_pegawai']) ?>">
-                                            <?= htmlspecialchars($pegawai['nama']) ?>
+                                    <?php if (!empty($datapegawaitambah)): ?>
+                                        <?php foreach ($datapegawaitambah as $pegawaitambah): ?>
+                                        <option value="<?= htmlspecialchars($pegawaitambah['nik_pegawai']) ?>">
+                                            <?= htmlspecialchars($pegawaitambah['nama']) ?>
                                         </option>
                                     <?php endforeach; ?>
                                     <?php else: ?>
@@ -232,23 +238,16 @@ if (isset($_GET['id'])) {
                                 <label for="waliKelas">Wali Kelas</label>
                                 <select class="form-control" id="editnik_pegawai" name="editnik_pegawai">
                                     <option value="">Pilih Wali Kelas</option>
-                                    <?php if (!empty($datapegawai)): ?>
-                                        <?php foreach ($datapegawai as $pegawai): ?>
-                                        <option value="<?= htmlspecialchars($pegawai['nik_pegawai']) ?>"
-                                            <?= htmlspecialchars($kelasid['nik_pegawai'] == $pegawai['nik_pegawai']) ? 'selected' : '' ?>
-                                            <?php
-                                            // Mengizinkan pegawai yang sedang diedit untuk tetap muncul di dropdown
-                                             if ($kelasid['nik_pegawai'] != $pegawai['nik_pegawai'] && in_array($pegawai['nik_pegawai'], array_column($datapegawai, 'nik_pegawai'))) {
-                                               echo 'disabled';
-                                                }
-                                             ?>
-                                            >
-                                            <?= htmlspecialchars($pegawai['nama']) ?>
-                                        </option>
+                                        <?php if (!empty($datapegawaiedit)): ?>
+                                            <?php foreach ($datapegawaiedit as $pegawaiEdit): ?>
+                                                <option value="<?= htmlspecialchars($pegawaiEdit['nik_pegawai']) ?>"
+                                                    <?= ($pegawaiEdit['nik_pegawai'] == $kelasid['nik_pegawai']) ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($pegawaiEdit['nama']) ?>
+                                                </option>
                                         <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <option value="">Data tidak tersedia</option>
-                                    <?php endif; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -269,6 +268,25 @@ if (isset($_GET['id'])) {
         </div>
             </div>
             </div>
+
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
+
 </body>
 
 </html>
