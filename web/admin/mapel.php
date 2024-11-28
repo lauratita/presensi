@@ -1,40 +1,40 @@
 <?php 
 ob_start();
 include '../template/headerAdmin.php';
-include_once '../controller/jpgwcontroller.php';
+include_once '../controller/mapelcontroller.php';
 
-$controller = new JPGWController();
-$jpgws = [];
-$jpgwid = [];
-$showEditModal = false;
-
-// Fetch data
+$controller = new MapelController();
 $data = $controller->read();
+$mpls = [];
+$mplkd = null;
+$showEditModal = false; 
+
+// Mendapatkan data semua mata pelajaran
 if ($data !== false) {
     $data = json_decode($data, true);
     if (!isset($data['message']) || $data['message'] !== 'Data not found') {
-        $jpgws = $data;
+        $mpls = $data;
     }
 } else {
     echo "Error fetching data.";
 }
 
-// Handle POST request
+// Menangani request POST untuk create atau update data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_GET['action'] ?? $_POST['action'] ?? null;
-
-    if ($action === 'update') {
+    if (isset($_GET['action']) && $_GET['action'] === 'update') {
+        // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
-            $_SESSION['message'] = "Jenis pegawai berhasil diperbaharui!";
+            $_SESSION['message'] = "Mata pelajaran berhasil diperbaharui!";
             $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
-    } elseif ($action === 'create') {
+    } else {
+        // Proses tambah data
         $result = $controller->create($_POST);
         if ($result) {
-            $_SESSION['message'] = "Jenis pegawai berhasil ditambahkan!";
+            $_SESSION['message'] = "Mata pelajaran berhasil ditambahkan!";
             $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
@@ -42,32 +42,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Handle GET request for delete or edit
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
-        $idJenis = $_GET['id'];
-        $result = $controller->delete($idJenis);
-        if ($result) {
-            $_SESSION['message'] = "Jenis pegawai berhasil dihapus!";
-            $_SESSION['type'] = "success";
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
-        }
-    } elseif (isset($_GET['id'])) {
-        $idJenis = $_GET['id'];
-        $data = $controller->getByIdJenis($idJenis);
+// Menangani request GET untuk delete data
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'delete') {
+    $kode = $_GET['kode'];
+    $result = $controller->delete($kode);
+    if ($result) {
+        $_SESSION['message'] = "Mata pelajaran berhasil dihapus!";
+        $_SESSION['type'] = "success";
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+}
 
-        if ($data !== false) {
-            $data = json_decode($data, true);
-            if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
-                $jpgwid = $data[0];
-                $showEditModal = true;
-            } else {
-                echo 'Data not found.';
-            }
+// Mendapatkan data untuk modal edit jika ada parameter kode
+if (isset($_GET['kode']) && !empty($_GET['kode'])) {
+    $kode = $_GET['kode'];
+    $data = $controller->getByKode($kode);
+
+    if ($data !== false) {
+        $data = json_decode($data, true);
+        if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
+            $mplkd = $data[0];
+            $showEditModal = true;
         } else {
-            echo 'Error fetching data.';
+            echo 'Data not found.';
         }
+    } else {
+        echo 'Error fetching data.';
     }
 }
 ?>
@@ -78,82 +79,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <div class="container-fluid">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h4 mb-0 text-gray-800">Jenis Pegawai</h1>
+            <h1 class="h4 mb-0 text-gray-800">Mata Pelajaran</h1>
         </div>
 
         <!-- Tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <button class="nav-link active" data-toggle="tab" href="#tab-jenisPegawai">Jenis Pegawai</button>
+                <button class="nav-link active" data-toggle="tab" href="#tab-mataPelajaran">Mata Pelajaran</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" data-toggle="tab" href="#tab-tambahJPGW">Tambah Jenis Pegawai</button>
+                <button class="nav-link" data-toggle="tab" href="#tab-detailPelajaran">Tambah Mata Pelajaran</button>
             </li>
         </ul>
         <div class="tab-content">
-            
-            <!-- Tab Data Ortu -->
-            <div class="tab-pane fade show active" id="tab-jenisPegawai" role="tabpanel" aria-labelledby="nav-jenisPegawai-tab">
+
+            <!-- Tab Mata Pelajaran -->
+            <div class="tab-pane fade show active" id="tab-mataPelajaran" role="tabpanel" aria-labelledby="nav-mataPelajaran-tab">
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-secondary">Tabel Orang Tua</h6>
+                        <h6 class="m-0 font-weight-bold text-secondary">Tabel Mata Pelajaran</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTableOrtu" width="100%" cellspacing="0">
                                 <thead>
-                                <tr>
-                                        <th>ID Jenis</th>
-                                        <th>Jenis Pegawai</th> 
+                                    <tr>
+                                        <th>Kode Pelajaran</th>
+                                        <th>Nama Pelajaran</th> 
                                         <th>Aksi</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($jpgws as $jpgw): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($jpgw['id_jenis']) ?></td>
-                                        <td><?= htmlspecialchars($jpgw['nama']) ?></td>
-                                        <td>
-                                            <a href="?id=<?= htmlspecialchars($jpgw['id_jenis']) ?>" class="btn btn-warning btn-circle btn-sm">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-circle btn-sm" 
-                                                data-toggle="modal"
-                                                data-target="#modalHapusJPegawai"
-                                                data-id="<?= htmlspecialchars($jpgw['id_jenis']) ?>">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
+                                <?php foreach ($mpls as $mpl): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($mpl['kd_mapel']) ?></td>
+                                    <td><?= htmlspecialchars($mpl['nama']) ?></td>
+                                    <td>
+                                        <a href="?action=update&kode=<?= htmlspecialchars($mpl['kd_mapel']) ?>" class="btn btn-warning btn-circle btn-sm">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-danger btn-circle btn-sm" 
+                                        data-toggle="modal"
+                                        data-target="#modalHapusMapel"
+                                        data-kode="<?= htmlspecialchars($mpl['kd_mapel']) ?>">  <!-- Perhatikan penulisan data-kode -->
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab Tambah Jenis Pegawai -->
-            <div class="tab-pane fade" id="tab-tambahJPGW">
+            <!-- Tab Detail Pelajaran -->
+            <div class="tab-pane fade" id="tab-detailPelajaran">
             <div class="card shadow mb-4 mt-4">
                 <div class="card-body">
-                    <form action="?action=create" method="POST" id="formTambahJenisPegawai">
+                    <form action="?action=create" method="POST">
                         <div class="form-group">
-                            <label for="TambahJenisPegawai">Tambah Jenis Pegawai</label>
-                            <input type="text" class="form-control" id="TambahJenisPegawai" name="nama" placeholder="Masukkan Jenis Pegawai" required>
+                            <label for="kdmapel">Kode Pelajaran</label>
+                            <input type="text" class="form-control" id="kdmapel" name="kd_mapel" placeholder="Masukkan Kode Pelajaran" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="namamapel">Nama Pelajaran</label>
+                            <input type="text" class="form-control" id="namamapel" name="nama" placeholder="Masukkan Nama Pelajaran" required>
                         </div>
                         <div class="modal-footer">
-                            <!-- Tombol Batal yang hanya menutup modal -->
+                            <!-- Tombol Batal dengan event reset form -->
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
-                </div>    
+                </div>
             </div>
-        </div>
+        </div>    
         
         <!-- Modal Hapus -->
-        <div class="modal fade" id="modalHapusJPegawai" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+        <div class="modal fade" id="modalHapusMapel" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -168,27 +173,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <a id="btnHapusJPegawai" href="#" class="btn btn-danger">Hapus</a>
+                        <a id="btnHapusMapel" href="#" class="btn btn-danger">Hapus</a>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Modal Edit Data -->
-        <?php if ($showEditModal && !empty($jpgwid)): ?>
+        <?php if ($showEditModal && !empty($mplkd)): ?>
         <div class="modal fade show" id="modalEdit" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <form method="POST" action="?action=update">
                         <div class="modal-header">
-                            <h5>Edit Jenis Pegawai</h5>
+                            <h5>Edit Mata Pelajaran</h5>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" name="id_jenis" value="<?= $jpgwid['id_jenis'] ?>">
+                            <input type="hidden" name="kd_mapel" value="<?= $mplkd['kd_mapel'] ?>">
                             <div class="form-group">
-                                <label for="editJPGW">Jenis Pegawai</label>
-                                <input type="text" class="form-control" id="editJPGW" name="editjenisPegawai" value="<?= $jpgwid['nama'] ?>">
+                                <label for="editnama">Nama Pelajaran</label>
+                                <input type="text" class="form-control" id="editnama" name="nama" value="<?= $mplkd['nama'] ?>">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -225,6 +230,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         ?>
     <?php endif; ?>
 
-</body>
+    </body>
 </html>
 <?php include '../template/footerAdmin.php'; ?>

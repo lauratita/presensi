@@ -82,8 +82,10 @@
                             href="kelas.php">Kelas</a>
                         <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal') ? 'active' : ''; ?>"
                             href="jadwal.php">Jadwal</a>
-                        <a class="collapse-item <?php echo ($activeSubmenu == 'other') ? 'active' : ''; ?>"
-                            href="">Other</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'mapel') ? 'active' : ''; ?>"
+                            href="mapel.php">Mata Pelajaran</a>
+                        <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal_mapel') ? 'active' : ''; ?>"
+                            href="detailmapel.php">Detail Mata Pelajaran</a>
                     </div>
                 </div>
             </li>
@@ -121,7 +123,6 @@
                         <a class="collapse-item <?php echo ($activeSubmenu == 'pegawai') ? 'active' : ''; ?>"
                             href="pegawai.php">Pegawai</a>
                         <a class="collapse-item <?php echo ($activeSubmenu == 'jenispegawai') ? 'active' : ''; ?>"
-
                             href="jenisPegawai.php">Jenis Pegawai</a>
 s
                     </div>
