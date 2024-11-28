@@ -9,11 +9,14 @@ class JadwalController{
         $this->jadwalService = new JadwalService($koneksi);
     }
 
-   
     public function read(){
         $jadwals = $this->jadwalService->getAllJadwal();
         return $jadwals;
     }
 
+    public function getByIDKelas($id_kelas){
+        $mapelkelas = $this->jadwalService->getByIdKelas($id_kelas);
+        return $mapelkelas;
+    }
 
 }

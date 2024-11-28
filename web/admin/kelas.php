@@ -1,6 +1,5 @@
 <?php 
 
-
 ob_start();
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'kelas';
@@ -33,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
+            $_SESSION['message'] = "Data berhasil diperbaharui!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -40,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses tambah data (create)
         $result = $controller->create($_POST);
         if ($result) {
+            $_SESSION['message'] = "Data berhasil ditambahkan!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -49,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_kelas = $_GET['id'];
     $result = $controller->delete($id_kelas);
     if ($result) {
+        $_SESSION['message'] = "Data berhasil dihapus!";
+        $_SESSION['type'] = "success";
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -263,6 +268,25 @@ if (isset($_GET['id'])) {
         </div>
             </div>
             </div>
+
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
+
 </body>
 
 </html>

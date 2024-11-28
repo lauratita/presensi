@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses edit data
         $result = $controller->update(array_merge($_POST, $_FILES));
         if ($result) {
+            $_SESSION['message'] = "Data berhasil diperbaharui!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -39,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses tambah data (create)
         $result = $controller->create(array_merge($_POST, $_FILES));
         if ($result) {
+            $_SESSION['message'] = "Data berhasil ditambahkan!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -48,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nis = $_GET['nis'];
     $result = $controller->delete($nis);
     if ($result) {
+        $_SESSION['message'] = "Data berhasil dihapus!";
+        $_SESSION['type'] = "success";
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -383,6 +389,23 @@ if (isset($_GET['nis'])) {
             </div>
             </div>
 
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
 
 
 </body>
