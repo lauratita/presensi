@@ -39,7 +39,7 @@ class SuratIzinModel
                 VALUES (?, ?, ?, ?, ?, ?)";
         try {
             $stmt = $this->koneksi->prepare($sql);
-            $stmt->bind_param("sssssss", $this->keterangan, $this->status, $this->tanggal, $this->foto_surat, $this->nik_ortu, $this->nik_pegawai);
+            $stmt->bind_param("ssssss", $this->keterangan, $this->status, $this->tanggal, $this->foto_surat, $this->nik_ortu, $this->nik_pegawai);
             if ($stmt->execute()) {
                 return ["status" => true, "message" => "Berhasil menambahkan surat izin."];
             } else {

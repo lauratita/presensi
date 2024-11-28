@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/suratIzinModel.php';
 
-class suratIzinView
+class suratIzinService
 {
     private $db;
     private $surat;
@@ -10,9 +10,8 @@ class suratIzinView
         $this->surat = new SuratIzinModel($db);
     }
 
-    public function createSuratIzin($id_surat, $keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)
+    public function createSuratIzin($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)
     {
-        $this->surat->id_surat = $id_surat;
         $this->surat->keterangan = $keterangan;
         $this->surat->status = $status;
         $this->surat->tanggal = $tanggal;
