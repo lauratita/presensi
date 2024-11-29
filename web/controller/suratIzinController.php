@@ -21,11 +21,12 @@ class SuratIzinController
             $keterangan = $request['keterangan'] ?? null;
             $status = $request['status'] ?? null;
             $tanggal = $request['tanggal'] ?? null;
+            $tenggat = $request['tenggat'] ?? null;
             $foto_surat = $request['foto_surat'] ?? null;
             $nik_ortu = $request['nik_ortu'] ?? null;
             $nik_pegawai = $request['nik_pegawai'] ?? null;
             $nis = $request['nis'] ?? null; 
-            if ($this->suratView->createSuratIzin($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai, $nis)) {
+            if ($this->suratView->createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)) {
                 return json_encode(["message" => "Berhasil menambahkan surat izin"]);
             }
             return json_encode(["message" => "Gagal menambah surat izin"]);

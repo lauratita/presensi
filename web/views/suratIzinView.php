@@ -15,11 +15,12 @@ class suratIzinView
         $this->surat = new SuratIzinModel($db);
     }
 
-    public function createSuratIzin($keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai, $nis)
+    public function createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)
     {
         $this->surat->keterangan = $keterangan;
         $this->surat->status = $status;
         $this->surat->tanggal = $tanggal;
+        $this->surat->tenggat = $tenggat;
         $this->surat->foto_surat = $foto_surat;
         $this->surat->nik_ortu = $nik_ortu;
         $this->surat->nik_pegawai = $nik_pegawai;
