@@ -59,6 +59,9 @@ $("#dataTable-disable").DataTable();
 <script src="../assets/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- sweetalert logout -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script>
 document.getElementById('btn-logout').addEventListener('click', function(e) {
     e.preventDefault(); // Mencegah default action dari tombol logout
