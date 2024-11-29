@@ -18,15 +18,16 @@ class SuratIzinController
     public function create($request)
     {
         try {
-            $keterangan = $request['keterangan'] ?? null;
-            $status = $request['status'] ?? null;
-            $tanggal = $request['tanggal'] ?? null;
-            $tenggat = $request['tenggat'] ?? null;
-            $foto_surat = $request['foto_surat'] ?? null;
-            $nik_ortu = $request['nik_ortu'] ?? null;
-            $nik_pegawai = $request['nik_pegawai'] ?? null;
-            $nis = $request['nis'] ?? null; 
-            if ($this->suratView->createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)) {
+            $keterangan = $request['keterangan'];
+            $status = $request['status'];
+            $tanggal = $request['tanggal'];
+            $tenggat = $request['tenggat'];
+            $foto_surat = $request['foto_surat'];
+            $nik_ortu = $request['nik_ortu'];
+            $nik_pegawai = $request['nik_pegawai'];
+            $nis = $request['nis'];
+          
+            if ($this->suratModel->createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)) {
                 return json_encode(["message" => "Berhasil menambahkan surat izin"]);
             }
             return json_encode(["message" => "Gagal menambah surat izin"]);
@@ -37,7 +38,7 @@ class SuratIzinController
 
     public function read()
     {
-        $surats = $this->suratView->getAllSurat();
+        $surats = $this->suratModel->getAllSurat();
         return $surats;
     }
 
