@@ -48,7 +48,48 @@
 <!-- Tab Data Table -->
 <script>
 $("#dataTablepresensi").DataTable();
-$("#dataTablerekap").DataTable();
+$('#dataTablerekap').DataTable({
+            dom: 'Bfrtip', // Buttons placement
+            buttons: [
+                {
+                    extend: 'excel', // Excel export
+                    className: 'btn btn-success',
+                    text: '<i class="fa fa-file-excel-o"></i> Excel',
+                    title: 'Laporan Data'
+                },
+                {
+                    extend: 'csv', // CSV export
+                    className: 'btn btn-info',
+                    text: '<i class="fa fa-file-text-o"></i> CSV',
+                    title: 'Laporan Data'
+                },
+                {
+                    extend: 'pdf', // PDF export
+                    className: 'btn btn-danger',
+                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                    title: 'Laporan Data'
+                },
+                {
+                    extend: 'print', // Print view
+                    className: 'btn btn-primary',
+                    text: '<i class="fa fa-print"></i> Print',
+                    title: 'Laporan Data'
+                }
+            ],
+            language: {
+                // Optional: Indonesian localization
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ data",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Selanjutnya",
+                    previous: "Sebelumnya"
+                }
+            }
+        });
+
 $("#dataTable-verified").DataTable();
 $("#dataTable-unVerified").DataTable();
 $("#dataTable-disable").DataTable();
@@ -58,6 +99,10 @@ $("#dataTable-disable").DataTable();
 <script src="../assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="../assets/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
 <script>
 document.getElementById('btn-logout').addEventListener('click', function(e) {
     e.preventDefault(); // Mencegah default action dari tombol logout
