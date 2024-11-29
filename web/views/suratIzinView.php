@@ -5,20 +5,26 @@ class suratIzinView
 {
     private $db;
     private $surat;
+    public $id_surat;
+    public $status;
+    public $nik_ortu;
+
+
     public function __construct($db)
     {
         $this->surat = new SuratIzinModel($db);
     }
 
-    public function createSuratIzin($id_surat, $keterangan, $status, $tanggal, $foto_surat, $nik_ortu, $nik_pegawai)
+    public function createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)
     {
-        $this->surat->id_surat = $id_surat;
         $this->surat->keterangan = $keterangan;
         $this->surat->status = $status;
         $this->surat->tanggal = $tanggal;
+        $this->surat->tenggat = $tenggat;
         $this->surat->foto_surat = $foto_surat;
         $this->surat->nik_ortu = $nik_ortu;
         $this->surat->nik_pegawai = $nik_pegawai;
+        $this->surat->nis = $nis;
         return $this->surat->create();
     }
     
@@ -34,9 +40,22 @@ class suratIzinView
         return $stmt;
     }
 
-    // public function updateStatusSuratIzin($id_surat, $status)
-    // {
-    //     $this->surat->update($id_surat, $status);
-    //     return $this->surat->update();
-    // }
+    public function getSiswaByNIKOrtu($nik_ortu)
+    {
+        $stmt = $this->surat->getSiswaByNIKOrtu($nik_ortu);
+        return $stmt;
+    }
+
+    public function updateStatusSuratIzin($id_surat, $status)
+    {
+        $this->surat->id_surat = $id_surat;
+        // $this->surat->keterangan = $keterangan;
+        $this->surat->status = $status;
+        // $this->surat->nis = $nis;
+        // $this->surat->tanggal = $tanggal;
+        // $this->surat->foto_surat = $foto_surat;
+        // $this->surat->nik_ortu = $nik_ortu;
+        // $this->surat->nik_pegawai = $nik_pegawai;
+        return $this->surat->update();
+    }
 }

@@ -42,11 +42,16 @@ class SiswaModel{
 
         // Pindahkan file ke folder tujuan
         if (move_uploaded_file($file["tmp_name"], $target_file)) {
-            $app_name = $_SERVER['DOCUMENT_ROOT'] . '/presensi/web'; // Ambil folder aplikasi (contoh: 'presensi')
-            $app_path = "$app_name/$dir$unique_name"; // Gabungkan nama aplikasi ke dalam path
-            return $app_path;
+            // $app_name = 'http://' . $_SERVER['HTTP_HOST'] . '/presensi/web'; // Ambil folder aplikasi (contoh: 'presensi')
+            // $app_path = "$app_name/$dir$unique_name"; // Gabungkan nama aplikasi ke dalam path
+            // return $app_path;
             // var_dump("File uploaded to: " . $target_file); 
             // die();
+            $base_url = 'http://' . $_SERVER['HTTP_HOST'] . '/presensi/web/';
+            $file_url = $base_url . $dir . $unique_name;  // URL lengkap untuk file yang diupload
+
+            // Kembalikan URL yang bisa diakses oleh browser
+            return $file_url;
             
         } else {
             // var_dump();

@@ -21,7 +21,7 @@ switch ($requestMethod) {
 
     case 'GET':
         header('Content-Type: application/json');
-        echo $controller->read();
+        echo json_decode($controller->getallpresensi($_GET['nis']));
         break;
 
     case 'DELETE':

@@ -4,22 +4,23 @@ class PasswordModel {
     public $table_name = 'tb_pegawai';
     public $password;
     public $nik_pegawai;
+    public $newPassword;
+    public $confirmPassword;
 
     public function __construct($db) 
     {
         $this->koneksi = $db;
     }
     
-    public function update($nik_pegawai, $hashedPassword) 
+    public function update() 
     {
-        $query = "UPDATE tb_pegawai SET password = ? WHERE nik_pegawai = ?";
-        $stmt = $this->koneksi->prepare($query);
+        $sql = "UPDATE " . $this->table_name . " SET password = '$this->newPassword' WHERE nik_pegawai = '$this->nik_pegawai'"; // Pastikan menggunakan newPassword
+        $stmt = $this->koneksi->prepare($sql);
 
-        // Bind parameter
-        $stmt->bindParam("ss", $nik_pegawai, $hashedPassword);
-
-        // Eksekusi query dan return hasil
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 
     public function getByNik($nik_pegawai)

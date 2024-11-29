@@ -18,15 +18,15 @@ class PasswordView
     
     public function ubahPassword($nik_pegawai, $newPassword, $confirmPassword) 
     {
-        if ($newPassword !== $confirmPassword) {
-            return false; // Pastikan password cocok
+        // Validasi jika password dan konfirmasi password cocok
+        if (trim($newPassword) !== trim($confirmPassword)) {  // Pastikan spasi dihilangkan
+            return ['success' => false, 'message' => 'Password dan konfirmasi password tidak cocok.'];
         }
 
-        // Hash password baru
-        $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-
-        // Kirim hash ke model untuk update
-        return $this->password->update($nik_pegawai, $hashedPassword);
+        // Mengatur data password
+        $this->password->nik_pegawai = $nik_pegawai;
+        $this->password->newPassword = $newPassword; // Simpan password baru tanpa hashing
+        return $this->password->update() ? ['success' => true, 'message' => 'Password berhasil diperbarui.'] : ['success' => false, 'message' => 'Gagal memperbarui password.'];
     }
     
 }

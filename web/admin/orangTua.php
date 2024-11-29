@@ -26,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
+            $_SESSION['message'] = "Data berhasil diperbaharui!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -33,6 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses tambah data (create)
         $result = $controller->create($_POST);
         if ($result) {
+            $_SESSION['message'] = "Data berhasil ditambahkan!";
+            $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -42,6 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nik = $_GET['nik'];
     $result = $controller->delete($nik);
     if ($result) {
+        $_SESSION['message'] = "Data berhasil dihapus!";
+            $_SESSION['type'] = "success";
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -168,28 +174,21 @@ if (isset($_GET['nik'])) {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label for="email">Email</label>
                                     <input type="text" class="form-control" name="email" id="email"
                                         placeholder="Masukkan Email">
                                 </div>
-                                <div class="col-md-6 mt-3">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" name="password" id="password"
-                                        placeholder="Masukkan Password" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label for="nik">NIK</label>
                                     <input type="text" class="form-control" name="nik" id="nik"
                                         placeholder="Masukkan NIK">
                                 </div>
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label for="nohp">No HP</label>
                                     <input type="text" class="form-control" name="no_hp" id="nohp"
                                         placeholder="Masukkan No HP" required>
-                                </div>
+                                </div> 
                             </div>
                             <div class="row">
                                 <div class="col-12 mt-3">
@@ -311,13 +310,23 @@ if (isset($_GET['nik'])) {
         </div>
 
 
-        <!-- <script>
-        const modalElement = document.querySelector('#modalEdit');
-        if (modalElement) {
-        const modalEdit = new bootstrap.Modal(modalElement);
-        modalEdit.show();
-    }
-    </script> -->
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
 
 </body>
 

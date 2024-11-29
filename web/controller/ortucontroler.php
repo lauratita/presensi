@@ -17,7 +17,7 @@ class OrtuControler{
             $no_hp = $request['no_hp'];
             $jenis_kelamin = $request['jenis_kelamin'];
             $email = $request['email'];
-            $password = $request['password'];
+            $password = $request['nik'];
             if ($this->ortuService->createOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email, $password)) {
                 return json_encode(["message" => "Berhasil tambah data"]);
             }

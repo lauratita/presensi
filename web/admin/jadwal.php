@@ -1,7 +1,27 @@
 <?php 
 $activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
 $activeSubmenu = 'jadwal';
-include '../template/headerAdmin.php'; ?>
+include '../template/headerAdmin.php'; 
+include_once '../controller/jadwalController.php';
+
+$controller = new JadwalController();
+$data = $controller->read();
+$jadwals = [];
+
+if ($data !== false) {
+    $data = json_decode($data, true);
+    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
+        $jadwals = $data;
+        // var_dump($kelass);
+    }
+} else {
+    // Handle errors from getAllOrtu()
+    echo "Error fetching data.";
+}
+
+?>
+
+
 <html>
 <body>
     <div class="container-fluid">
@@ -38,23 +58,22 @@ include '../template/headerAdmin.php'; ?>
                                 <th>Hari</th>
                                 <th>Jam Masuk</th> 
                                 <th>Jam Pulang</th> 
-                                <th>Aksi</th> 
+                                
                             </tr>
                         </thead>
                         <tbody>
+                        <?php foreach ($jadwals as $jadwal) : ?>
                             <tr>
+                                <td><?= htmlspecialchars($jadwal['nama_kelas']) ?></td>
+                                <td><?= htmlspecialchars($jadwal['hari']) ?></td>
+                                <td><?= htmlspecialchars($jadwal['jam_masuk']) ?></td>
+                                <td><?= htmlspecialchars($jadwal['jam_pulang']) ?></td>
                                 
-                                <td><!-- Circle Buttons (Small) -->
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-warning btn-circle btn-sm" data-toggle="modal" data-target="#modalEditKelas">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal" data-target="#modalHapus">
-                                        <i class="fas fa-trash"></i>
-                                    </a></td>
+                                
+                                
+                                
                             </tr>
+                            <?php endforeach;?>
                         </tbody>
                     </table>
                 </div>
