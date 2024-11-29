@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <th>Keterangan</th>
                                         <th>Status</th>
                                         <th>Tanggal</th>
+                                        <th>Tenggat</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -99,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
                                         <td><?= $surat['tanggal'] ?></td>
+                                        <td><?= $surat['tenggat'] ?></td>
                                         <td>
                                             <a href="?verifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
                                                 data-target="#verifiedizin<?= $surat['id_surat'] ?>"
@@ -125,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
                                                     <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
+                                                    <h6>TENGGAT : <?= $surat['tenggat'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
                                                         width="300" height="300" />
@@ -175,6 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <th>Keterangan</th>
                                         <th>Status</th>
                                         <th>Tanggal</th>
+                                        <th>Tenggat</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -187,6 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
                                         <td><?= $surat['tanggal'] ?></td>
+                                        <td><?= $surat['tenggat'] ?></td>
                                         <td>
                                             <a href="?updateverifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
                                                 data-target="#updateverifiedizin<?= $surat['id_surat'] ?>"
@@ -214,6 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
                                                     <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
+                                                    <h6>TENGGAT : <?= $surat['tenggat'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
                                                         width="300" height="300" />
@@ -256,6 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <th>Keterangan</th>
                                         <th>Status</th>
                                         <th>Tanggal</th>
+                                        <th>Tenggat</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -268,6 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
                                         </td>
                                         <td><?= $surat['tanggal'] ?></td>
+                                        <td><?= $surat['tenggat'] ?></td>
                                         <td>
                                             <a href="?updatedisableizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
                                                 data-target="#updatedisableizin<?= $surat['id_surat'] ?>"
@@ -294,6 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <h6>NAMA : <?= $surat['nama_siswa'] ?></h6>
                                                     <h6>KETERANGAN : <?= $surat['keterangan'] ?></h6>
                                                     <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
+                                                    <h6>TENGGAT : <?= $surat['tenggat'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
                                                     <img src="../img/contoh_surat.jpg" class="img-fluid" width="300"
                                                         height="300" />

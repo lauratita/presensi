@@ -26,12 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'update') {
         $result = $controller->update($_POST);
         if ($result) {
+
+            $_SESSION['message'] = "Jenis pegawai berhasil diperbaharui!";
+            $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
     } elseif ($action === 'create') {
         $result = $controller->create($_POST);
         if ($result) {
+
+            $_SESSION['message'] = "Jenis pegawai berhasil ditambahkan!";
+            $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -44,6 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $idJenis = $_GET['id'];
         $result = $controller->delete($idJenis);
         if ($result) {
+
+            $_SESSION['message'] = "Jenis pegawai berhasil dihapus!";
+            $_SESSION['type'] = "success";
+
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
@@ -78,40 +90,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <!-- Tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <button class="nav-link active" data-toggle="tab" href="#tab-tambahJPGW">Tambah Jenis Pegawai</button>
+
+                <button class="nav-link active" data-toggle="tab" href="#tab-jenisPegawai">Jenis Pegawai</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" data-toggle="tab" href="#tab-jenisPegawai">Jenis Pegawai</button>
+                <button class="nav-link" data-toggle="tab" href="#tab-tambahJPGW">Tambah Jenis Pegawai</button>
             </li>
         </ul>
         <div class="tab-content">
-
-            <!-- Tab Tambah Jenis Pegawai -->
-            <div class="tab-pane fade show active" id="tab-tambahJPGW">
+            
+            <!-- Tab Data Ortu -->
+            <div class="tab-pane fade show active" id="tab-jenisPegawai" role="tabpanel" aria-labelledby="nav-jenisPegawai-tab">
                 <div class="card shadow mb-4 mt-4">
-                    <div class="card-body">
-                        <form action="?action=create" method="POST">
-                            <div class="form-group">
-                                <label for="TambahJenisPegawai">Tambah Jenis Pegawai</label>
-                                <input type="text" class="form-control" id="TambahJenisPegawai" name="nama" placeholder="Masukkan Jenis Pegawai" required>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                        </form>
-                    </div>    
-                </div>
-            </div>
-
-            <!-- Tab Jenis Pegawai -->
-            <div class="tab-pane fade" id="tab-jenisPegawai">
-                <div class="card shadow mb-4 mt-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-secondary">Tabel Orang Tua</h6>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTableJPGW">
+                            <table class="table table-bordered" id="dataTableOrtu" width="100%" cellspacing="0">
                                 <thead>
-                                    <tr>
+                                <tr>
                                         <th>ID Jenis</th>
                                         <th>Jenis Pegawai</th> 
                                         <th>Aksi</th> 
@@ -126,7 +124,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                             <a href="?id=<?= htmlspecialchars($jpgw['id_jenis']) ?>" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
-                                            <a href="?action=delete&id=<?= htmlspecialchars($jpgw['id_jenis']) ?>" class="btn btn-danger btn-circle btn-sm">
+
+                                            <a href="#" class="btn btn-danger btn-circle btn-sm" 
+                                                data-toggle="modal"
+                                                data-target="#modalHapusJPegawai"
+                                                data-id="<?= htmlspecialchars($jpgw['id_jenis']) ?>">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </td>
@@ -138,7 +140,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     </div>
                 </div>
             </div>
-        </div>     
+
+            <!-- Tab Tambah Jenis Pegawai -->
+            <div class="tab-pane fade" id="tab-tambahJPGW">
+            <div class="card shadow mb-4 mt-4">
+                <div class="card-body">
+                    <form action="?action=create" method="POST" id="formTambahJenisPegawai">
+                        <div class="form-group">
+                            <label for="TambahJenisPegawai">Tambah Jenis Pegawai</label>
+                            <input type="text" class="form-control" id="TambahJenisPegawai" name="nama" placeholder="Masukkan Jenis Pegawai" required>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- Tombol Batal yang hanya menutup modal -->
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>    
+            </div>
+        </div>
+        
+        <!-- Modal Hapus -->
+        <div class="modal fade" id="modalHapusJPegawai" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus data ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <a id="btnHapusJPegawai" href="#" class="btn btn-danger">Hapus</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Edit Data -->
         <?php if ($showEditModal && !empty($jpgwid)): ?>
@@ -173,6 +215,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <?php endif; ?>
     </div>
 
-    </body>
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
+
+</body>
+
 </html>
 <?php include '../template/footerAdmin.php'; ?>

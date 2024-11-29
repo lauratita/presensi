@@ -98,7 +98,8 @@ if(!isset($_SESSION['nik'])){
                         <a class="collapse-item <?php echo ($activeSubmenu == 'mapel') ? 'active' : ''; ?>"
                             href="mapel.php">Mata Pelajaran</a>
                         <a class="collapse-item <?php echo ($activeSubmenu == 'jadwal_mapel') ? 'active' : ''; ?>"
-                            href="jadwalmapel.php">Jadwal Mata Pelajaran</a>
+
+                            href="detailmapel.php">Detail Mata Pelajaran</a>
                     </div>
                 </div>
             </li>

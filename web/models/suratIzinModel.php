@@ -4,6 +4,7 @@ class SuratIzinModel
     private $koneksi;
     private $view_name = "v_suratizin";
     private $table_name = "tb_suratizin";
+    private $table_siswa = "tb_siswa";
 
     public $nik_pegawai;
     public $nis;
@@ -16,6 +17,7 @@ class SuratIzinModel
     public $nik_ortu;
     public $id_kelas;
     public $id_surat;
+    public $tenggat;
 
     public function __construct($db)
     {
@@ -60,7 +62,7 @@ class SuratIzinModel
         $stmt->bind_param("ss", $nik_pegawai, $status);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
@@ -68,21 +70,32 @@ class SuratIzinModel
         return $data;
         // $stmt->close();
     }
-
-    public function update($status, $id_surat, $nis, $nik_ortu, $nik_pegawai)
+    
+    public function getSiswaByNIKOrtu($nik_ortu) 
     {
-        // UPDATE v_suratizin_ket SET status = 'verified' WHERE v_suratizin_ket.id_surat = '1' AND v_suratizin_ket.nis = 'pplg2303';
-        $sql = "UPDATE " . $this->view_name . " SET status = ? WHERE id_surat = ? AND nis = ? AND nik_ortu AND id_kelas = ? AND nik_pegawai = ?";
-        try {
-            $updateStmt = $this->koneksi->prepare($sql);
-            $updateStmt->bind_param("ssss", $status, $id_surat, $nis, $nik_ortu, $nik_pegawai);
-            if ($updateStmt->execute()) {
-                return ["status" => true, "message" => "Surat Izin Berhasil Verifikasi"];
-            } else {
-                return ["status" => false, "message" => "Gagal Verifikasi Surat Izin"];
-            }
-        } catch (Exception $e) {
-            return ["status" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()];
+        $query = "SELECT * FROM " . $this->table_siswa . " WHERE nik_ortu = ?";
+        $stmt = $this->koneksi->prepare($query);
+        $stmt->bind_param("s", $nik_ortu);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $siswa = [];
+        while ($row = $result->fetch_assoc()) {
+            $siswa[] = $row;
+        }
+        
+        return $siswa;
+    }
+
+    public function update()
+    {
+        // UPDATE tb_suratizin SET status = 'verified' WHERE id_surat = ?';
+        $sql = "UPDATE " . $this->table_name . " SET status = ? WHERE id_surat = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param('si', $this->status, $this->id_surat);
+        if ($stmt->execute()) {
+            return ["message" => "Status surat izin berhasil diperbarui"];
+        } else {
+            return ["message" => "Gagal memperbarui status surat izin"];
         }
     }
 }

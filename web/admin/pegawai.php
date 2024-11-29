@@ -3,67 +3,79 @@ ob_start();
 include '../template/headerAdmin.php';
 include_once '../controller/pgwcontroller.php';
 
+$showEditModal= false;
 $controller = new PegawaiController();
-$pgws = [];
-$pgwnik = [];
-$showEditModal = false;
-
-// Fetch data
 $data = $controller->read();
+$pgws = [];
+
+$jpegawai = $controller->getjpegawai(); 
+$datajpgw = json_decode($jpegawai, true);
+
 if ($data !== false) {
-    $decodedData = json_decode($data, true);
-    if (json_last_error() === JSON_ERROR_NONE && !isset($decodedData['message']) || $decodedData['message'] !== 'Data not found') {
-        $pgws = $decodedData;
+    $data = json_decode($data, true);
+    if (!isset($data['message']) || $data['message'] !== 'Data not found') {
+        $pgws = $data;
     }
 } else {
     echo "Error fetching data.";
 }
 
-// Handle POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? null;
-
-    if ($action === 'update') {
-        $result = $controller->update($_POST);
-        if ($result) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+    if (isset($_GET['action']) && $_GET['action'] === 'update') {
+        // Validasi NIK pada edit
+        if (isset($_POST['editnikp']) && strlen($_POST['editnikp']) !== 16) {
+            echo "<script>alert('NIK harus 16 karakter!');</script>";
+        } else {
+            $result = $controller->update($_POST);
+            if ($result) {
+                $_SESSION['message'] = "Data pegawai berhasil diperbaharui!";
+                $_SESSION['type'] = "success";
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
         }
-    } elseif ($action === 'create') {
-        $result = $controller->create($_POST);
-        if ($result) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+    } else {
+        // Validasi NIK pada create
+        if (isset($_POST['nik_pegawai']) && strlen($_POST['nik_pegawai']) !== 16) {
+            echo "<script>alert('NIK harus 16 karakter!');</script>";
+        } else {
+            $result = $controller->create($_POST);
+            if ($result) {
+                $_SESSION['message'] = "Data pegawai berhasil ditambahkan!";
+                $_SESSION['type'] = "success";
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
         }
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'delete') {
+    $nik_pegawai = $_GET['nik'];
+    $result = $controller->delete($nik_pegawai);
+    if ($result) {
+        $_SESSION['message'] = "Data pegawai berhasil dihapus!";
+        $_SESSION['type'] = "success";
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
 }
+$pgwnik = [];
 
-// Handle GET request for delete or edit
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $action = $_GET['action'] ?? null;
+if (isset($_GET['nik'])) {
+    $nik_pegawai = $_GET['nik'];
+    $data = $controller->getByNik($nik_pegawai); 
 
-    if ($action === 'delete' && isset($_GET['nik'])) {
-        $nik = filter_input(INPUT_GET, 'nik', FILTER_SANITIZE_STRING);
-        $result = $controller->delete($nik);
-        if ($result) {
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
-        }
-    } elseif (isset($_GET['nik'])) {
-        $nik = filter_input(INPUT_GET, 'nik', FILTER_SANITIZE_STRING);
-        $data = $controller->getByNik($nik);
-
-        if ($data !== false) {
-            $decodedData = json_decode($data, true);
-            if (json_last_error() === JSON_ERROR_NONE && isset($decodedData[0])) {
-                $pgwnik = $decodedData[0];
-                $showEditModal = true;
-            } else {
-                echo 'Data not found.';
-            }
+    if ($data !== false) {
+        $data = json_decode($data, true);
+        
+        if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
+            $pgwnik = $data[0];
+            $showEditModal= true;
+            // var_dump($pgwnik); 
         } else {
-            echo 'Error fetching data.';
+            echo 'Data not found';
         }
+    } else {
+        echo 'Error fetching data.';
     }
 }
 ?>
@@ -103,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($pgws)) : ?>
                                 <?php foreach ($pgws as $pgw) : ?>
                                     <tr>
                                         <td><?= htmlspecialchars($pgw['nik_pegawai']) ?></td>
@@ -113,29 +124,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                         <td><?= htmlspecialchars($pgw['no_hp']) ?></td>
                                         <td><?= htmlspecialchars($pgw['id_jenis']) ?></td>
                                         <td>
-                                            <a href="#" class="btn btn-info btn-circle btn-sm"
-                                               data-toggle="modal" data-target="#modalRead"
-                                               data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>">
+
+                                        <a href="#" class="btn btn-info btn-circle btn-sm"
+                                            data-toggle="modal" data-target="#modalRead"
+                                            data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>"
+                                            data-nama="<?= htmlspecialchars($pgw['nama']) ?>"
+                                            data-alamat="<?= htmlspecialchars($pgw['alamat']) ?>"
+                                            data-jenis-kelamin="<?= htmlspecialchars($pgw['jenis_kelamin']) ?>"
+                                            data-password="<?= htmlspecialchars($pgw['password']) ?>"
+                                            data-no-hp="<?= htmlspecialchars($pgw['no_hp']) ?>"
+                                            data-email="<?= htmlspecialchars($pgw['email']) ?>"
+                                            data-id-jenis="<?= htmlspecialchars($pgw['id_jenis']) ?>">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="pegawai.php?nik=<?= htmlspecialchars($pgw['nik_pegawai']) ?>"
-                                               data-toggle="modal" data-target="#modalEdit"
+                                            <a href="?nik=<?= htmlspecialchars($pgw['nik_pegawai']) ?>"
                                                class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </a>
                                             <a href="#" class="btn btn-danger btn-circle btn-sm"
-                                               data-toggle="modal" data-target="#modalHapus"
-                                               data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
+
+                                        data-toggle="modal" data-target="#modalHapusPegawai"
+                                        data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
                                         </td>    
                                     </tr>
                                 <?php endforeach; ?>
-                            <?php else : ?>
-                                <tr>
-                                    <td colspan="7" class="text-center">Data tidak ditemukan.</td>
-                                </tr>
-                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -153,11 +167,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="?action=create">
-                    <div class="modal-body">
+
+                <div class="modal-body">
+                    <form id="formTambahPegawai" method="POST" action="?action=create">
                         <div class="form-group">
-                            <label for="nik">NIK</label>
-                            <input type="text" class="form-control" name="nik" placeholder="Masukkan NIK" required>
+                            <label for="nikp">NIK</label>
+                            <input type="text" class="form-control" id="nikp" name="nik_pegawai" 
+                            placeholder="Masukkan NIK" 
+                            pattern="\d{16}" 
+                            title="NIK harus berisi 16 digit angka" 
+                            maxlength="16" 
+                            required>
                         </div>
                         <div class="form-group">
                             <label for="nama">Nama</label>
@@ -175,6 +195,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="" readonly>
+                        </div>
+                        <div class="form-group">
                             <label for="no_hp">No Handphone</label>
                             <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No Handphone" required>
                         </div>
@@ -184,34 +208,199 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         </div>
                         <div class="form-group">
                             <label for="id_jenis">Jenis Pegawai</label>
-                            <input type="text" class="form-control" name="id_jenis" placeholder="Masukkan Jenis Pegawai" required>
+
+                            <select class="form-control" id="id_jenis" name="id_jenis">
+                                <option value="">Pilih Jenis Pegawai</option>
+                                <?php if (!empty($datajpgw)): ?>
+                                    <?php foreach ($datajpgw as $jpegawai): ?>
+                                    <option value="<?= htmlspecialchars($jpegawai['id_jenis']) ?>">
+                                        <?= htmlspecialchars($jpegawai['nama']) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <option value="">Data tidak tersedia</option>
+                                <?php endif; ?>
+                            </select>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+    document.getElementById('nikp').addEventListener('input', function() {
+        const nikInput = this.value;
+        const passwordField = document.getElementById('password');
+        passwordField.value = nikInput; // Set nilai password dengan NIK yang diinput
+    });
+</script>
+
+<!-- Modal Lihat Data Pegawai -->
+<div class="modal fade" id="modalRead" tabindex="-1" role="dialog" aria-labelledby="modalReadLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalReadLabel">Detail Pegawai</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>NIK:</strong> <span id="detailNIK"></span></p>
+                <p><strong>Nama:</strong> <span id="detailNama"></span></p>
+                <p><strong>Alamat:</strong> <span id="detailAlamat"></span></p>
+                <p><strong>Jenis Kelamin:</strong> <span id="detailJenisKelamin"></span></p>
+                <p><strong>Password:</strong> <span id="detailPassword"></span></p>
+                <p><strong>No HP:</strong> <span id="detailNoHP"></span></p>
+                <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                <p><strong>Jenis Pegawai:</strong> <span id="detailJenisPegawai"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="modalHapusPegawai" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+    aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus item ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <a href="#" id="btnHapusPegawai" class="btn btn-danger">Hapus</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Auto-trigger modal edit jika diperlukan -->
-    <?php if ($showEditModal) : ?>
-        <script>
-            $(document).ready(function() {
-                $('#modalEdit').modal('show');
+        <!-- Modal Edit Data Pegawai -->
+        <?php if ($showEditModal && !empty($pgwnik)): ?>
+        <div class="modal fade" id="modalEditPegawai" tabindex="-1" role="dialog" aria-labelledby="modalEditPegawaiLabel">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditPegawaiLabel">Edit Data Pegawai</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form untuk  edit pegawai -->
+                        <form id="formEditPegawai" method="POST" action="?action=update">
+                            <div class="form-group">
+                                <label for="nikp">NIK</label>
+                                <input type="text" class="form-control" id="editnikp" name="editnikp" 
+                                value="<?= htmlspecialchars($pgwnik['nik_pegawai']) ?>" 
+                                placeholder="Masukkan NIK" 
+                                pattern="\d{16}" 
+                                title="NIK harus berisi 16 digit angka" 
+                                maxlength="16" 
+                                required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama">Nama</label>
+                                <input type="text" class="form-control" id="editnama" name="editnama"
+                                value="<?=$pgwnik['nama']?>" placeholder="Masukkan Nama">
+                            </div>
+                            <div class="form-group">
+                                <label for="alamat">Alamat</label>
+                                <input type="text" class="form-control" id="editalamat" name="editalamat"
+                                value="<?=$pgwnik['alamat']?>" placeholder="Masukkan Alamat">
+                            </div>
+                            <div class="form-group">
+                            <label for="jKelamin">Jenis Kelamin</label>
+                            <select class="form-control" id="editjk" name="editjk">
+                                <option value="Laki-laki" <?= $pgwnik['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
+                                <option value="Perempuan" <?= $pgwnik['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="editpw" name="editpw" 
+                                value="<?=$pgwnik['password']?>" placeholder="Masukkan Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="noHp">No Handphone</label>
+                                <input type="text" class="form-control" id="editnohp" name="editnohp"
+                                value="<?=$pgwnik['no_hp']?>" placeholder="Masukkan No Handphone">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" id="editemail" name="editemail"
+                                value="<?=$pgwnik['email']?>" placeholder="Masukkan Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="jenisPegawai">Jenis Pegawai</label>
+                                <select class="form-control" id="editjpgw" name="editjpgw">
+                                    <option value="">Pilih Jenis Pegawai</option>
+                                        <?php if (!empty($datajpgw)): ?>
+                                            <?php foreach ($datajpgw as $jpegawai): ?>
+                                                <option value="<?= htmlspecialchars($jpegawai['id_jenis']) ?>"
+                                                <?= ($jpegawai['id_jenis'] == $pgwnik['id_jenis']) ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($jpegawai['nama']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" name="update" class="btn btn-primary" >Perbarui</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+                $(document).ready(function() {
+                $('#modalEditPegawai').modal('show');
+                });
+            </script>
+            <?php endif?>
+        </div>
+    </div>
+    </div>
+
+    <?php if (isset($_SESSION['message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                });
             });
         </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
     <?php endif; ?>
 
 </body>
 </html>
 
-<?php 
-if (file_exists('../template/footerAdmin.php')) {
-    include '../template/footerAdmin.php';
-} else {
-    echo "Error: Footer file not found.";
-}
-?>
+<?php include '../template/footerAdmin.php'; ?>
