@@ -122,16 +122,9 @@ if (isset($_GET['id'])) {
                                 <td><?= htmlspecialchars($kelas['nama_wali_kelas']) ?></td>
                                 <td>
                                     <!-- Circle Buttons (Small) -->
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="?id=<?= htmlspecialchars($kelas['id_kelas']) ?>" class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
                                     </a>
-                                    <!-- <a href="<?= $_SERVER['PHP_SELF']; ?>?action=edit&id=<?= $kelas['id_kelas']; ?>" 
-                                        class="btn btn-warning btn-circle btn-sm" >
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a> -->
                                     <a href="#" class="btn btn-danger btn-circle btn-sm" 
                                         data-toggle="modal"
                                         data-target="#modalHapusKelas"

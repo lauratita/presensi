@@ -129,10 +129,6 @@ if (isset($_GET['nik'])) {
                                         <td><?= htmlspecialchars($ortu['no_hp']) ?></td>
                                         <td><?= htmlspecialchars($ortu['alamat']) ?></td>
                                         <td>
-                                            <a href="" class="btn btn-info btn-circle btn-sm"
-                                                data-nik="<?= htmlspecialchars($ortu['nik_ortu']) ?>">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
                                             <a href="?nik=<?= htmlspecialchars($ortu['nik_ortu']) ?>"
                                                 class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
@@ -166,7 +162,7 @@ if (isset($_GET['nik'])) {
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label for="jkOrtu">Jenis Kelamin</label>
-                                    <select class="form-control" id="jkOrtu" name="jenis_kelamin">
+                                    <select class="form-control" id="jkOrtu" name="jenis_kelamin" required>
                                         <option value="">Pilih Jenis Kelamin</option>
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
@@ -177,12 +173,12 @@ if (isset($_GET['nik'])) {
                                 <div class="col-md-4 mt-3">
                                     <label for="email">Email</label>
                                     <input type="text" class="form-control" name="email" id="email"
-                                        placeholder="Masukkan Email">
+                                        placeholder="Masukkan Email" required>
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label for="nik">NIK</label>
                                     <input type="text" class="form-control" name="nik" id="nik"
-                                        placeholder="Masukkan NIK">
+                                        placeholder="Masukkan NIK" required>
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label for="nohp">No HP</label>
@@ -194,7 +190,7 @@ if (isset($_GET['nik'])) {
                                 <div class="col-12 mt-3">
                                     <label for="alamatOrtu">Alamat</label>
                                     <textarea class="form-control" name="alamat" id="alamatOrtu"
-                                        placeholder="Masukkan Alamat"></textarea>
+                                        placeholder="Masukkan Alamat" required></textarea>
                                 </div>
                             </div>
                             <div class="form-group text-right mt-3">

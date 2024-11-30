@@ -72,7 +72,7 @@ if (isset($_GET['nis'])) {
             $siswanis = $datasiswa[0];
             $showEditModal= true;
             // $pegawaiku = $controller->getPegawai($kelasid['nik_pegawai']);
-            var_dump($siswanis); 
+            // var_dump($siswanis); 
         } else {
             echo 'Data not found';
         }
@@ -85,7 +85,9 @@ if (isset($_GET['nis'])) {
 <html lang="en">
 <body>
 <div class="container-fluid">
- <h6 class="m-0 mt-4 mb-4 font-weight-bold text-primary"><span class="text-muted fw-flight">Data Siswa</span></h6>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h4 mb-0 text-gray-800">Daftar Siswa</h1>
+        </div>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
@@ -133,9 +135,6 @@ if (isset($_GET['nis'])) {
                                 
                                 
                                 <td><!-- Circle Buttons (Small) -->
-                                    <a href="#" class="btn btn-info btn-circle btn-sm">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="?nis=<?= htmlspecialchars($siswa['nis']) ?>" class="btn btn-warning btn-circle btn-sm">
                                         <i class="fas fa-pencil-alt"></i>
                                     </a>
@@ -169,7 +168,16 @@ if (isset($_GET['nis'])) {
                             </div>
                             <div class="col-md-2 mt-3">
                                 <label for="kelas">Tahun Masuk</label>
-                                <input type="year" class="form-control yearpicker" name="tahun_akademik" id="tahunMasuk" placeholder="Pilih tahun">
+                                <!-- <input type="year" class="form-control yearpicker" name="tahun_akademik" id="tahunMasuk" placeholder="Pilih tahun"> -->
+                                <select class="form-control" id="tahunMasuk" name="tahun_akademik">
+                                    <?php
+                                        $tahunSekarang = date('Y');
+                                        $tahunMulai = 1900;
+                                        for ($i = $tahunSekarang; $i >= $tahunMulai; $i--) {
+                                            echo "<option value=\"$i\">$i</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
@@ -181,13 +189,9 @@ if (isset($_GET['nis'])) {
                                     <option value="Perempuan">Perempuan</option>
                                 </select>
                             </div>
-                            <!-- <div class="col-md-4 mt-3">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
-                            </div> -->
                             <div class="col-md-6 mt-3">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Masukkan Password" required>
+                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir"   max="<?= date('Y-m-d'); ?>" required>
                             </div>
                         </div>
                         <div class="row">
@@ -295,7 +299,18 @@ if (isset($_GET['nis'])) {
                             </div>
                             <div class="col-md-2 mt-3">
                                 <label for="kelas">Tahun Masuk</label>
-                                <input type="year" class="form-control yearpicker" name="edit_tahun_akademik" id="edittahunMasuk" value="<?= $siswanis['tahun_akademik'] ?>" placeholder="Pilih tahun">
+                                <!-- <input type="year" class="form-control yearpicker" name="edit_tahun_akademik" id="edittahunMasuk" value="<?= $siswanis['tahun_akademik'] ?>" placeholder="Pilih tahun"> -->
+                                <select class="form-control" id="tahunMasuk" name="edit_tahun_akademik">
+                                    <?php
+                                        $tahunTerpilih = htmlspecialchars($siswanis['tahun_akademik'] ?? '');
+                                        $tahunSekarang = date('Y');
+                                        $tahunMulai = 1900;
+                                        for ($i = $tahunSekarang; $i >= $tahunMulai; $i--) {
+                                            $selected = ($i == $tahunTerpilih) ? 'selected' : '';
+                                            echo "<option value=\"$i\" $selected>$i</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                         </div>
                         <div class="row">
@@ -317,7 +332,7 @@ if (isset($_GET['nis'])) {
                             </div>
                             <div class="col-md-4 mt-3">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
-                                <input type="date" class="form-control" id="edittanggal_lahir" name="edit_tanggal_lahir" placeholder="Masukkan Password" value="<?= $siswanis['tanggal_lahir'] ?>" required>
+                                <input type="date" class="form-control" id="edittanggal_lahir" name="edit_tanggal_lahir"  max="<?= date('Y-m-d'); ?>"  value="<?= $siswanis['tanggal_lahir'] ?>" required>
                             </div>
                         </div>
                         <div class="row">
@@ -361,9 +376,6 @@ if (isset($_GET['nis'])) {
                         <div class="container-upfoto">
                             <input type="file" id="editfoto" name="edit_foto" accept="image/*" hidden>
                             <div class="img-area mb-3">
-                                <!-- <img src="<?= str_replace('C:/laragon/www', '',
-                                      $siswanis['foto']); ?>" alt="Foto Siswa" 
-                                      style="max-width: 100%; height: 100%;"> -->
                                       <img src="<?= $siswa['foto']; ?>" alt="Foto Siswa">
                                 <i class='bi bi-cloud-arrow-up icon'></i>
                              </div>
