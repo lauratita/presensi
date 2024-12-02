@@ -5,7 +5,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2021</span>
+            <span>Copyright &copy; presenceplus 2024</span>
         </div>
     </div>
 </footer>
@@ -62,6 +62,8 @@ $("#dataTable-disable").DataTable();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<!-- SweetAlert Logout -->
 <script>
 document.getElementById('btn-logout').addEventListener('click', function(e) {
     e.preventDefault(); // Mencegah default action dari tombol logout
