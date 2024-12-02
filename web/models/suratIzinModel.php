@@ -17,7 +17,6 @@ class SuratIzinModel
     public $nik_ortu;
     public $id_kelas;
     public $id_surat;
-    public $tenggat;
 
     public function __construct($db)
     {

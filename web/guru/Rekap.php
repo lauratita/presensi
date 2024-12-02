@@ -127,11 +127,6 @@
             }
 ?>
 
-    
-    
- ?>
-
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -148,34 +143,27 @@
                             <label for="start_date" class="col-form-label">Filter Tanggal</label>
                         </div>
                         <div class="col-auto">
-                            <input 
-                                class="form-control" 
-                                type="date" 
-                                name="start_date" 
-                                id="start_date" 
-                                value="<?= isset($_GET['start_date']) ? $_GET['start_date'] : '' ?>" 
+                            <input class="form-control" type="date" name="start_date" id="start_date"
+                                value="<?= isset($_GET['start_date']) ? $_GET['start_date'] : '' ?>"
                                 onchange="document.getElementById('filterForm').submit();">
                         </div>
                         <div class="col-auto">
                             <h3>-</h3>
                         </div>
                         <div class="col-auto">
-                            <input 
-                                class="form-control" 
-                                type="date" 
-                                name="end_date" 
-                                id="end_date" 
-                                value="<?= isset($_GET['end_date']) ? $_GET['end_date'] : '' ?>" 
+                            <input class="form-control" type="date" name="end_date" id="end_date"
+                                value="<?= isset($_GET['end_date']) ? $_GET['end_date'] : '' ?>"
                                 onchange="document.getElementById('filterForm').submit();">
                         </div>
                     </div>
                 </form>
 
                 <div class="ml-auto mr-2 ">
-                <!-- <a href="Rekap.php?action=export" class="btn btn-success">Export Excel</a> -->
-                <a href="Rekap.php?action=export&start_date=<?= $_GET['start_date'] ?? '' ?>&end_date=<?= $_GET['end_date'] ?? '' ?>" class="btn btn-success">Export Excel</a>
+                    <!-- <a href="Rekap.php?action=export" class="btn btn-success">Export Excel</a> -->
+                    <a href="Rekap.php?action=export&start_date=<?= $_GET['start_date'] ?? '' ?>&end_date=<?= $_GET['end_date'] ?? '' ?>"
+                        class="btn btn-success">Export Excel</a>
 
-                            </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -193,7 +181,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
+                        <?php
                 // Ambil tanggal dari input filter
                 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
                 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
@@ -231,9 +219,6 @@
                     echo "<tr><td colspan='6'>Tidak ada data ditemukan</td></tr>";
                 }
                 ?>
-                    
-                    
-                    
                 </table>
             </div>
         </div>
