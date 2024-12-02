@@ -20,7 +20,9 @@ if (!isset($_SESSION['nik_pegawai'])) {
 
 $nik_pegawai = $_SESSION['nik_pegawai'];
 $controller = new RekapController($koneksi);
-$rekapByWaliKelas = $controller->rekapGetByWaliKelas($nik_pegawai);
+$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
+$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+$rekapByWaliKelas = $controller->rekapGetByWaliKelas($nik_pegawai, $start_date, $end_date);
 
 // if (isset($_GET['action']) && $_GET['action'] === 'export') {
 //     $controller = new RekapController();
@@ -29,7 +31,7 @@ $rekapByWaliKelas = $controller->rekapGetByWaliKelas($nik_pegawai);
 // }
 
 if (isset($_GET['action']) && $_GET['action'] === 'export') {
-    $controller = new RekapController();
+    $controller = new RekapController($koneksi);
     
     // Ambil parameter filter tanggal
     $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
@@ -207,9 +209,9 @@ function exportToExcel($data) {
                         $result = $koneksi->query($sql);
 
                         // Tampilkan hasil
-                        if ($result && $result->num_rows > 0) {
+                        if (!empty($rekapByWaliKelas)) {
                             $no = 1;
-                            while ($row = $result->fetch_assoc()) {
+                            foreach ($rekapByWaliKelas as $row) {
                                 echo "<tr>";
                                 echo "<td>" . $no++ . "</td>";
                                 echo "<td>" . $row['nis'] . "</td>";
@@ -220,8 +222,6 @@ function exportToExcel($data) {
                                 echo "<td>" . $row['tanggal'] . "</td>";
                                 echo "</tr>";
                             }
-                        } else {
-                            echo "<tr><td colspan='6'>Tidak ada data ditemukan</td></tr>";
                         }
                         ?>
                     </tbody>
