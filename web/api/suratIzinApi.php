@@ -14,7 +14,7 @@ switch ($requestMethod) {
     case 'POST':
         if (isset($_GET['action']) && $_GET['action'] === 'createSuratIzin') {
             // Validasi input
-            $requiredFields = ['keterangan', 'status', 'nis', 'tanggal', 'foto_surat', 'nik_ortu', 'nik_pegawai'];
+            $requiredFields = ['keterangan', 'status', 'tanggal', 'tenggat', 'foto_surat', 'nik_ortu', 'nik_pegawai', 'nis'];
             foreach ($requiredFields as $field) {
                 if (empty($_POST[$field])) {
                     http_response_code(400);

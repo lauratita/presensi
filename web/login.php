@@ -134,10 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group form-group-pass">
                     <input type="password" name="txt_passPegawai"
                         class="form-control form-control-user <?php echo !empty($errorPassword) ? 'is-invalid' : ''; ?>"
-                        id="password" placeholder="Password">
+                        id="password" placeholder="Password"
+                        value="<?php echo isset($password) ? htmlspecialchars($password) : ''; ?>">
                     <img src="./img/eye-close.png" id="eyeIcon">
                     <!-- Tampilkan error password -->
-                    <?php if (!empty($errorPass)): ?>
+                    <?php if (!empty($errorPassword)): ?>
                     <div class=" invalid-feedback">
                         <?php echo $errorPassword; ?>
                     </div>

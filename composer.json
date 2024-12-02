@@ -6,5 +6,8 @@
         "psr-4": {
             "Web\\" : "web/auth"
         }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^3.5"
     }
 }

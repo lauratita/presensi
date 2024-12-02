@@ -22,6 +22,23 @@ class LoginController
             return json_encode(['message' => 'Password wajib diisi', 'status' => 'error']);
         }
         $loginResult = $this->loginService->getLogin($nikPegawai, $password);
+        
+        // Cek apakah NIK ditemukan
+        if (isset($loginResult['error']) && $loginResult['error'] === "NIK Pegawai tidak ditemukan") {
+            return json_encode([
+                'status' => 'error',
+                'message' => 'NIK tidak terdaftar'
+            ]);
+        }
+
+        // Cek apakah password salah
+        if (isset($loginResult['error']) && $loginResult['error'] === "Password salah") {
+            return json_encode([
+                'status' => 'error',
+                'message' => 'Password salah'
+            ]);
+        }
+        
         // var_dump($loginResult);
         if ($loginResult == false) {
             return json_encode(['message' => 'Email Atau Password Tidak Ditemukan', 'status' => 'error']);
