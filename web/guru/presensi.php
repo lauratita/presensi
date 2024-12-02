@@ -8,8 +8,11 @@ if (!isset($_SESSION['nik_pegawai'])) {
 include '../template/headerGuru.php';
 include_once '../controller/presensicontroler.php';
 
-$controller = new PresensiControler();
-$presensis = json_decode($controller->read(), true);
+$nik_pegawai = $_SESSION['nik_pegawai'];
+
+$controller = new PresensiControler($koneksi);
+$presensiHariIni = $controller->getByWaliKelasHariIni($nik_pegawai);
+// $presensis = json_decode($controller->read(), true);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mengecek tindakan berdasarkan nilai action
@@ -57,7 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="col-auto">
                     <!-- <input class="form-control" type="text" value="12/10/2024" aria-label="Disabled input example"
                         disabled readonly> -->
-                        <input class="form-control" type="text" id="tanggal" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="text" id="tanggal" aria-label="Disabled input example" disabled
+                        readonly>
                     <script>
                     // Fungsi untuk format tanggal (contoh: dd/mm/yyyy)
                     function formatTanggal(tanggal) {
@@ -91,12 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tbody>
                         <?php
                     $no = 1;
-                    foreach ($presensis as $presensi) : ?>
+                    foreach ($presensiHariIni as $presensi) : ?>
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= $presensi['tanggal'] ?></td>
                             <td><?= $presensi['nis'] ?></td>
-                            <td><?= $presensi['nama'] ?></td>
+                            <td><?= $presensi['nama_siswa'] ?></td>
                             <td><?= $presensi['keterangan'] ?></td>
                         </tr>
                         <?php endforeach;?>

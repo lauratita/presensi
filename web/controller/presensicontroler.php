@@ -1,14 +1,17 @@
 <?php
-include_once '../config/config.php';
-include_once '../models/presensimodel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/service/presensiservice.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/presensimodel.php';
 
 class PresensiControler{
     private $presensimodel;
+    private $presensiservice;
 
     public function __construct()
     {
         global $koneksi;
         $this->presensimodel = new PresensiModel($koneksi);
+        $this->presensiservice = new PresensiService($koneksi);
     }
 
     public function create($request){
@@ -57,5 +60,11 @@ class PresensiControler{
             return json_encode(["message" => "Berhasil Hapus Presensi"]);
         }
         return json_encode(["message" => "Gagal hapus Presensi"]);
+    }
+
+    public function getByWaliKelasHariIni($nik_pegawai)
+    {
+        $presensinik = $this->presensiservice->getSuratIzinByWaliKelasHariIni($nik_pegawai);
+        return $presensinik;
     }
 }

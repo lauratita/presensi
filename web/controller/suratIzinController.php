@@ -27,7 +27,7 @@ class SuratIzinController
             $nik_pegawai = $request['nik_pegawai'];
             $nis = $request['nis'];
           
-            if ($this->suratModel->createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)) {
+            if ($this->suratView->createSuratIzin($keterangan, $status, $tanggal, $tenggat, $foto_surat, $nik_ortu, $nik_pegawai, $nis)) {
                 return json_encode(["message" => "Berhasil menambahkan surat izin"]);
             }
             return json_encode(["message" => "Gagal menambah surat izin"]);
@@ -38,7 +38,7 @@ class SuratIzinController
 
     public function read()
     {
-        $surats = $this->suratModel->getAllSurat();
+        $surats = $this->suratView->getAllSurat();
         return $surats;
     }
 
