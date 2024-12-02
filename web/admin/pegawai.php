@@ -1,8 +1,9 @@
 <?php 
 ob_start();
+$activeMenu = 'pegawai'; // Tentukan menu 'Siswa' yang aktif
+$activeSubmenu = 'pegawai';
 include '../template/headerAdmin.php';
 include_once '../controller/pgwcontroller.php';
-
 $showEditModal= false;
 $controller = new PegawaiController();
 $data = $controller->read();

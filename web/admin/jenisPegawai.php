@@ -1,8 +1,9 @@
 <?php 
 ob_start();
+$activeMenu = 'pegawai'; // Tentukan menu 'Siswa' yang aktif
+$activeSubmenu = 'jenispegawai';
 include '../template/headerAdmin.php';
 include_once '../controller/jpgwcontroller.php';
-
 $controller = new JPGWController();
 $jpgws = [];
 $jpgwid = [];
