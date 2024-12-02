@@ -1,6 +1,6 @@
 <?php
-include_once '../config/config.php';
-include_once '../models/rekapmodel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/rekapmodel.php';
 
 class RekapController{
     private $rekapmodel;
@@ -36,6 +36,11 @@ class RekapController{
         return $this->runQuery($query, $params);
     }
     
+    public function rekapGetByWaliKelas($nik_pegawai)
+    {
+        $rekapnik = $this->rekapmodel->rekapByWaliKelas($nik_pegawai);
+        return $rekapnik;
+    }
 
 
 

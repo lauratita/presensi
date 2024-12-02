@@ -25,9 +25,24 @@ class RekapModel
         return $data;
     
 
-        }
-        
     }
+
+    public function rekapByWaliKelas($nik_pegawai)
+    {
+        $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_pegawai = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("s", $nik_pegawai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }    
+        
+}
 
 
  
