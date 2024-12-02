@@ -1,14 +1,16 @@
 <?php
-include_once '../config/config.php';
-include_once '../models/rekapmodel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/rekapmodel.php';
 
 class RekapController{
     private $rekapmodel;
+    private $koneksi;
 
-    public function __construct()
+    public function __construct($db)
     {
         global $koneksi;
         $this->rekapmodel = new RekapModel($koneksi);
+        $this->koneksi = $db;
     }
     //menampilkan data rekap
     public function read(){
@@ -36,7 +38,44 @@ class RekapController{
         return $this->runQuery($query, $params);
     }
     
+    // public function rekapGetByWaliKelas($nik_pegawai)
+    // {
+    //     $rekapnik = $this->rekapmodel->rekapByWaliKelas($nik_pegawai);
+    //     return $rekapnik;
+    // }
 
+    public function rekapGetByWaliKelas($nik_pegawai, $start_date = null, $end_date = null)
+    {
+        $sql = "SELECT * FROM v_rekap WHERE nik_pegawai = ?";
+        $params = [$nik_pegawai];
+        $types = "s";
+
+        if (!empty($start_date) && !empty($end_date)) {
+            $sql .= " AND tanggal BETWEEN ? AND ?";
+            $params[] = $start_date;
+            $params[] = $end_date;
+            $types .= "ss";
+        } elseif (!empty($start_date)) {
+            $sql .= " AND tanggal >= ?";
+            $params[] = $start_date;
+            $types .= "s";
+        } elseif (!empty($end_date)) {
+            $sql .= " AND tanggal <= ?";
+            $params[] = $end_date;
+            $types .= "s";
+        }
+
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
 
 
 }

@@ -186,4 +186,20 @@ class PresensiModel
         return false;
     }
 
+    public function getByWaliKelasHariIni($nik_pegawai)
+    {
+        $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_pegawai = ? AND DATE(tanggal) = CURDATE()";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("s", $nik_pegawai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+        // $stmt->close();
+    }
+
 }

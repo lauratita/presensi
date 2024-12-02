@@ -11,12 +11,12 @@ class SuratIzinModel
     public $nama_siswa;
     public $keterangan;
     public $tanggal;
+    public $tenggat;
     public $foto_surat;
     public $status;
     public $nik_ortu;
     public $id_kelas;
     public $id_surat;
-    public $tenggat;
 
     public function __construct($db)
     {
@@ -37,11 +37,13 @@ class SuratIzinModel
 
     public function create()
     {
-        $sql = "INSERT INTO " . $this->table_name . " (`keterangan`, `status`, `tanggal`, `tenggat`, `foto_surat`, `nik_ortu`, `nik_pegawai`, `nis`)
+        $sql = "INSERT INTO " . $this->table_name . 
+        " (`keterangan`, `status`, `tanggal`, `tenggat`, `foto_surat`, `nik_ortu`, `nik_pegawai`, `nis`)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             $stmt = $this->koneksi->prepare($sql);
-            $stmt->bind_param("sssssss", $this->keterangan, $this->status, $this->tanggal, $this->tenggat, $this->foto_surat, $this->nik_ortu, $this->nik_pegawai, $this->nis);
+            $stmt->bind_param("ssssssss",
+             $this->keterangan, $this->status, $this->tanggal, $this->tenggat, $this->foto_surat, $this->nik_ortu, $this->nik_pegawai, $this->nis);
             if ($stmt->execute()) {
                 return ["status" => true, "message" => "Berhasil menambahkan surat izin."];
             } else {

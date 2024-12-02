@@ -12,22 +12,30 @@ class LoginService {
 
     public function getLogin($nikPegawai, $password) {
         $user = $this->login->login($nikPegawai);
-        
-        if ($user) {
-            $storedPassword = $user['password'];
-            if($this->isPlainTextPassword($storedPassword)){
-                $hash = password_hash($storedPassword, PASSWORD_DEFAULT);
-                $this->updatePasswordHash($nikPegawai, $hash);
-                $storedPassword = $hash;
-            }
-            if(password_verify($password, $storedPassword)){
-                return $user;
-            } else {
-                return false;
-            }
-        }else {
-            return false;
+
+        // Jika NIK tidak ditemukan
+        if (!$user) {
+            return ['error' => 'NIK Pegawai tidak ditemukan'];
         }
+
+        
+        $storedPassword = $user['password'];
+
+        // Jika password disimpan dalam plaintext, hash dan perbarui
+        if ($this->isPlainTextPassword($storedPassword)) {
+            $hashedPassword = password_hash($storedPassword, PASSWORD_DEFAULT);
+            if (!$this->updatePasswordHash($nikPegawai, $hashedPassword)) {
+                return ['error' => 'Gagal memperbarui password hash'];
+            }
+            $storedPassword = $hashedPassword;
+        }
+
+        // Verifikasi password
+        if (!password_verify($password, $storedPassword)) {
+            return ['error' => 'Password salah'];
+        }
+
+        return $user;
 
     }
 

@@ -26,7 +26,7 @@ class PasswordView
         // Mengatur data password
         $this->password->nik_pegawai = $nik_pegawai;
         $this->password->newPassword = $newPassword; // Simpan password baru tanpa hashing
-        return $this->password->update() ? ['success' => true, 'message' => 'Password berhasil diperbarui.'] : ['success' => false, 'message' => 'Gagal memperbarui password.'];
+        return $this->password->update() ? ['success' => true, 'message' => 'Password kamu sudah berubah'] : ['success' => false, 'message' => 'Gagal memperbarui password.'];
     }
     
 }

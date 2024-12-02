@@ -203,18 +203,18 @@ if (isset($_GET['nik_pegawai'])) {
                                         <?php if (!empty($message)): ?>
                                         <div class="alert alert-info"><?= htmlspecialchars($message); ?></div>
                                         <?php endif; ?>
-
+                                        <div id="alertContainer"></div> <!-- Kontainer untuk alert -->
                                         <input type="hidden" name="nik_pegawai" id="nikPegawai"
                                             value="<?php echo $_SESSION['nik_pegawai']; ?>">
                                         <div class="form-group">
                                             <label for="newPassword">Password Baru</label>
                                             <input type="password" class="form-control" id="newPassword"
-                                                name="newPassword" required>
+                                                name="newPassword">
                                         </div>
                                         <div class="form-group">
                                             <label for="confirmPassword">Konfirmasi Password Baru</label>
                                             <input type="password" class="form-control" id="confirmPassword"
-                                                name="confirmPassword" required>
+                                                name="confirmPassword">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"

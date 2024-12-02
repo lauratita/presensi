@@ -1,5 +1,5 @@
 <?php
-include_once '../model/presensimodel.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/presensimodel.php';
 use PresensiModel as Presensi;
 
 class PresensiService{
@@ -59,5 +59,11 @@ class PresensiService{
     public function deletedPresensi($id_presensi) {
         $this->presensi->id_presensi = $id_presensi;
         return $this->presensi->delete();
+    }
+
+    public function getSuratIzinByWaliKelasHariIni($nik_pegawai)
+    {
+        $stmt = $this->presensi->getByWaliKelasHariIni($nik_pegawai);
+        return $stmt;
     }
 }
