@@ -3,7 +3,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/dmapelView.php';
 
 class DMapelController{
-    private $Service;
+    private $DMapelService;
     public function __construct(){
         global $koneksi;
         $this->DMapelService = new dmapelService($koneksi);
@@ -37,21 +37,17 @@ class DMapelController{
     }
 
     public function update($request){
+        $id_jadwal_mapel = $request['editid_jadwal'];
         $hari = $request['edithari'];
         $jam_awal = $request['editjamawal'];
         $jam_akhir = $request['editjamakhir'];
         $id_kelas = $request['editkelas'];
         $kd_mapel = $request['editmapel'];
         $nik_pegawai = $request['editguru'];
-        
-        // Ambil id_jadwal_mapel dari URL atau form sebelumnya
-        $id_jadwal_mapel = $_GET['id']; // Atau cara lain untuk mendapatkan ID
-    
         $data = $this->DMapelService->updateDMPL($id_jadwal_mapel, $hari, $jam_awal, $jam_akhir, $id_kelas, $kd_mapel, $nik_pegawai);
-        
         if ($data) {
             return json_encode(["message" => "Berhasil perbarui data"]);
-        } else {
+        }else{
             return json_encode(["message" => "Gagal perbarui data"]);
         }
     }

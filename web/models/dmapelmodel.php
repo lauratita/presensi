@@ -43,7 +43,7 @@ class dmapelModel{
     }
     
     public function read(){
-        $sql = "SELECT * FROM " . $this->table_view;
+        $sql = "SELECT * FROM " .$this->table_view;
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);
@@ -54,9 +54,8 @@ class dmapelModel{
         }
     }
 
-    public function update($id_jadwal_mapel) {
-        $sql = "UPDATE " . $this->table_name . " 
-                SET hari = ?, jam_awal = ?, jam_akhir = ?, id_kelas = ?, kd_mapel = ?, nik_pegawai = ?
+    public function update() {
+        $sql = "UPDATE " . $this->table_name . " SET hari = ?, jam_awal = ?, jam_akhir = ?, id_kelas = ?, kd_mapel = ?, nik_pegawai = ?
                 WHERE id_jadwal_mapel = ?";
         try {
             $stmt = $this->koneksi->prepare($sql);
@@ -68,38 +67,35 @@ class dmapelModel{
                 $this->id_kelas,
                 $this->kd_mapel,
                 $this->nik_pegawai,
-                $id_jadwal_mapel
+                $this->id_jadwal_mapel 
             );
             return $stmt->execute();
         } catch (Exception $e) {
             return false;
         }
     }
-
-    public function delete($id_jadwal_mapel){
-        $sql = "DELETE FROM " . $this->table_name . " WHERE id_jadwal_mapel = ?";
-        $stmt = $this->koneksi->prepare($sql);
     
-        $stmt->bind_param("s", $id_jadwal_mapel);
+    public function delete(){
+        $sql = "DELETE FROM " .$this->table_name . " WHERE id_jadwal_mapel = ?";
+        $stmt = $this->koneksi->prepare($sql);
+
+
+        // $stmt->bindValue(1, $this->nik, PDO::PARAM_STR);
+        $stmt->bind_param("s", $this->id_jadwal_mapel);
         if ($stmt->execute()) {
             return true;
         }
         return false;
     }
 
-    public function getByID($id_jadwal_mapel){
-        $sql = "SELECT * FROM " . $this->table_name . " WHERE id_jadwal_mapel = ?";
+    public function getByID($id_jadwal_mapel) {
+        $sql = "SELECT * FROM detail_jadwal_mapel WHERE id_jadwal_mapel = ?";
         $stmt = $this->koneksi->prepare($sql);
         $stmt->bind_param("s", $id_jadwal_mapel);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            return json_encode($data); 
-        } else {
-            echo json_encode(["message" => "Data not found for given ID"]);
-        }
-        $stmt->close();
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+        return json_encode($data); // Mengembalikan JSON
     }
 
     public function getkelas(){
@@ -127,7 +123,7 @@ class dmapelModel{
     }
 
     public function getguru(){
-        $sql = "SELECT nik_pegawai, nama FROM " . $this->table_guru;
+        $sql = "SELECT nik_pegawai, nama FROM " . $this->table_guru . " WHERE id_jenis = '2'";
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);

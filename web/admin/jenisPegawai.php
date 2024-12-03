@@ -99,11 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </ul>
         <div class="tab-content">
             
-            <!-- Tab Data Ortu -->
-            <div class="tab-pane fade show active" id="tab-jenisPegawai" role="tabpanel" aria-labelledby="nav-jenisPegawai-tab">
+           <!-- Tab Data Ortu -->
+           <div class="tab-pane fade show active" id="tab-jenisPegawai" role="tabpanel" aria-labelledby="nav-jenisPegawai-tab">
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-secondary">Tabel Orang Tua</h6>
+                        <h6 class="m-0 font-weight-bold text-secondary">Tabel Jenis Pegawai</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

@@ -62,15 +62,13 @@ $dmplid = [];
 
 if (isset($_GET['id'])) {
     $id_jadwal_mapel = $_GET['id'];
-    $data = $controller->getByID($id_jadwal_mapel); 
+    $data = $controller->getByID($id_jadwal_mapel);
 
     if ($data !== false) {
-        $data = json_decode($data, true);
-        
+        $data = json_decode($data, true); // Tetap diperlukan
         if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
             $dmplid = $data[0];
-            $showEditModal= true;
-            // var_dump($dmplid); 
+            $showEditModal = true;
         } else {
             echo 'Data not found';
         }
@@ -129,10 +127,11 @@ if (isset($_GET['id'])) {
                                             class="btn btn-warning btn-circle btn-sm">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-                                        <a href="?id=<?= htmlspecialchars($dmpl['id_jadwal_mapel']) ?>"
-                                            data-toggle="modal" data-target="#modalHapusDetail"
-                                            class="btn btn-danger btn-circle btn-sm">
-                                            <i class="fas fa-trash"></i>
+                                        <a href="#" class="btn btn-danger btn-circle btn-sm" 
+                                        data-toggle="modal"
+                                        data-target="#modalHapusDetail"
+                                        data-id="<?= htmlspecialchars($dmpl['id_jadwal_mapel']) ?>">
+                                        <i class="fas fa-trash"></i>
                                         </a>
                                         </td>
                                         </button>
@@ -146,117 +145,118 @@ if (isset($_GET['id'])) {
         </div>
     </div>
 
-<!-- Logout Modal-->
-<div class="modal fade" id="modalHapusDetail" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
-    aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus item ini?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <a href="#" id="btnHapusDetail" class="btn btn-danger">Hapus</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Tambah Jadwal Mapel -->
-    <div class="modal fade" id="modalTambahMapel" tabindex="-1" role="dialog" aria-labelledby="modalTambahMapelLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTambahMapelLabel">Tambah Data Mata Pelajaran</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form untuk tambah data mapel -->
-                    <form id="formTambahPegawai" method="POST" action="?action=create">
-                    <div class="form-group">
-                            <label for="hari">Hari</label>
-                            <select class="form-control" name="hari" required>
-                                <option value="Senin">Senin</option>
-                                <option value="Selasa">Selasa</option>
-                                <option value="Rabu">Rabu</option>
-                                <option value="Kamis">Kamis</option>
-                                <option value="Jumat">Jumat</option>
-                                <option value="Sabtu">Sabtu</option>
-                            </select>
-                        </div>
-                    <div class="form-group">
-                        <label for="jam_awal">Jam Awal</label>
-                        <input type="time" class="form-control" name="jam_awal" required>
+        <!-- Modal Tambah Jadwal Mapel -->
+        <div class="modal fade" id="modalTambahMapel" tabindex="-1" role="dialog" aria-labelledby="modalTambahMapelLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTambahMapelLabel">Tambah Data Mata Pelajaran</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="jam_akhir">Jam Akhir</label>
-                        <input type="time" class="form-control" name="jam_akhir" required>
-                    </div>
-                    <div class="form-group">
-                            <label for="id_kelas">Kelas</label>
-                            <select class="form-control" id="id_kelas" name="id_kelas">
-                                <option value="">Pilih Kelas</option>
-                                    <?php if (!empty($datakelas)): ?>
-                                        <?php foreach ($datakelas as $kelas): ?>
-                                        <option value="<?= htmlspecialchars($kelas['id_kelas']) ?>">
-                                            <?= htmlspecialchars($kelas['nama_kelas']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                    <?php else: ?>
-                                    <option value="">Data tidak tersedia</option>
-                                    <?php endif; ?>
-                            </select>
+                    <div class="modal-body">
+                        <!-- Form untuk tambah data mapel -->
+                        <form id="formTambahPegawai" method="POST" action="?action=create">
+                        <div class="form-group">
+                                <label for="hari">Hari</label>
+                                <select class="form-control" name="hari" required>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                </select>
+                            </div>
+                        <div class="form-group">
+                            <label for="jam_awal">Jam Awal</label>
+                            <input type="time" class="form-control" name="jam_awal" required>
                         </div>
-                    <div class="form-group">
-                            <label for="kd_mapel">Mata Pelajaran</label>
-                            <select class="form-control" id="kd_mapel" name="kd_mapel">
-                                <option value="">Pilih Mata Pelajaran</option>
-                                    <?php if (!empty($datamapel)): ?>
-                                        <?php foreach ($datamapel as $mapel): ?>
-                                        <option value="<?= htmlspecialchars($mapel['kd_mapel']) ?>">
-                                            <?= htmlspecialchars($mapel['nama']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                    <?php else: ?>
-                                    <option value="">Data tidak tersedia</option>
-                                    <?php endif; ?>
-                            </select>
+                        <div class="form-group">
+                            <label for="jam_akhir">Jam Akhir</label>
+                            <input type="time" class="form-control" name="jam_akhir" required>
                         </div>
-                    <div class="form-group">
-                            <label for="nik_pegawai">Guru</label>
-                            <select class="form-control" id="nik_pegawai" name="nik_pegawai">
+                        <div class="form-group">
+                                <label for="id_kelas">Kelas</label>
+                                <select class="form-control" id="id_kelas" name="id_kelas">
+                                    <option value="">Pilih Kelas</option>
+                                        <?php if (!empty($datakelas)): ?>
+                                            <?php foreach ($datakelas as $kelas): ?>
+                                            <option value="<?= htmlspecialchars($kelas['id_kelas']) ?>">
+                                                <?= htmlspecialchars($kelas['nama_kelas']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                </select>
+                            </div>
+                        <div class="form-group">
+                                <label for="kd_mapel">Mata Pelajaran</label>
+                                <select class="form-control" id="kd_mapel" name="kd_mapel">
+                                    <option value="">Pilih Mata Pelajaran</option>
+                                        <?php if (!empty($datamapel)): ?>
+                                            <?php foreach ($datamapel as $mapel): ?>
+                                            <option value="<?= htmlspecialchars($mapel['kd_mapel']) ?>">
+                                                <?= htmlspecialchars($mapel['nama']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                </select>
+                            </div>
+                        <div class="form-group">
+                                <label for="nik_pegawai">Guru</label>
+                                <select class="form-control" id="nik_pegawai" name="nik_pegawai">
                                 <option value="">Pilih Guru</option>
-                                    <?php if (!empty($dataguru)): ?>
-                                        <?php foreach ($dataguru as $guru): ?>
+                                <?php if (!empty($dataguru)): ?>
+                                    <?php foreach ($dataguru as $guru): ?>
                                         <option value="<?= htmlspecialchars($guru['nik_pegawai']) ?>">
                                             <?= htmlspecialchars($guru['nama']) ?>
                                         </option>
                                     <?php endforeach; ?>
-                                    <?php else: ?>
+                                <?php else: ?>
                                     <option value="">Data tidak tersedia</option>
-                                    <?php endif; ?>
+                                <?php endif; ?>
                             </select>
-                        </div>        
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
+                            </div>        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Edit Data Mata Pelajaran -->
-    <?php if ($showEditModal && !empty($dmplid)): ?>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="modalHapusDetail" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+        aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus item ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <a href="#" id="btnHapusDetail" class="btn btn-danger">Hapus</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit Data -->
+        <?php if ($showEditModal && !empty($dmplid)): ?>
         <div class="modal fade" id="modalEditDetail" tabindex="-1" role="dialog" aria-labelledby="modalEditDetailLabel">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -267,10 +267,11 @@ if (isset($_GET['id'])) {
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Form untuk edit detail mapel -->
+                        <!-- Form untuk edit mapel -->
                         <form id="formEditDetail" method="POST" action="?action=update">
-                        <div class="form-group">
-                            <label for="edithari">Hari</label>
+                        <input type="hidden" name="editid_jadwal" value="<?= $dmplid['id_jadwal_mapel'] ?>">
+                            <div class="form-group">
+                                <label for="edithari">Hari</label>
                                 <select class="form-control" id="edithari" name="edithari" required>
                                     <option value="Senin" <?= $dmplid['hari'] == 'Senin' ? 'selected' : '' ?>>Senin</option>
                                     <option value="Selasa" <?= $dmplid['hari'] == 'Selasa' ? 'selected' : '' ?>>Selasa</option>
@@ -278,67 +279,67 @@ if (isset($_GET['id'])) {
                                     <option value="Kamis" <?= $dmplid['hari'] == 'Kamis' ? 'selected' : '' ?>>Kamis</option>
                                     <option value="Jumat" <?= $dmplid['hari'] == 'Jumat' ? 'selected' : '' ?>>Jumat</option>
                                     <option value="Sabtu" <?= $dmplid['hari'] == 'Sabtu' ? 'selected' : '' ?>>Sabtu</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editjamawal">Jam Awal</label>
-                                        <input type="time" class="form-control" id="editjamawal" name="editjamawal" 
-                                            value="<?= $dmplid['jam_awal'] ?>" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editjamakhir">Jam Akhir</label>
-                                        <input type="time" class="form-control" id="editjamakhir" name="editjamakhir" 
-                                            value="<?= $dmplid['jam_akhir'] ?>" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editkelas">Kelas</label>
-                                        <select class="form-control" id="editkelas" name="editkelas" required>
-                                            <?php foreach ($datakelas as $kelas): ?>
-                                                <option value="<?= htmlspecialchars($kelas['id_kelas']) ?>"
-                                                    <?= $dmplid['id_kelas'] == $kelas['id_kelas'] ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($kelas['nama_kelas']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editmapel">Mata Pelajaran</label>
-                                        <select class="form-control" id="editmapel" name="editmapel" required>
-                                            <?php foreach ($datamapel as $mapel): ?>
-                                                <option value="<?= htmlspecialchars($mapel['kd_mapel']) ?>"
-                                                    <?= $dmplid['kd_mapel'] == $mapel['kd_mapel'] ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($mapel['nama']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="editguru">Guru</label>
-                                        <select class="form-control" id="editguru" name="editguru" required>
-                                            <?php foreach ($dataguru as $guru): ?>
-                                                <option value="<?= htmlspecialchars($guru['nik_pegawai']) ?>"
-                                                    <?= $dmplid['nik_pegawai'] == $guru['nik_pegawai'] ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($guru['nama']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="submit" name="update" class="btn btn-primary" >Perbarui</button>
+                                </select>
                             </div>
-                        </form>
+                            <div class="form-group">
+                                <label for="editjamawal">Jam Awal</label>
+                                <input type="time" class="form-control" id="editjamawal" name="editjamawal" 
+                                    value="<?= $dmplid['jam_awal'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editjamakhir">Jam Akhir</label>
+                                <input type="time" class="form-control" id="editjamakhir" name="editjamakhir" 
+                                    value="<?= $dmplid['jam_akhir'] ?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editkelas">Kelas</label>
+                                <select class="form-control" id="editkelas" name="editkelas" required>
+                                    <?php foreach ($datakelas as $kelas): ?>
+                                        <option value="<?= htmlspecialchars($kelas['id_kelas']) ?>" 
+                                                <?= $dmplid['id_kelas'] == $kelas['id_kelas'] ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($kelas['nama_kelas']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editmapel">Mata Pelajaran</label>
+                                <select class="form-control" id="editmapel" name="editmapel" required>
+                                    <?php foreach ($datamapel as $mapel): ?>
+                                        <option value="<?= htmlspecialchars($mapel['kd_mapel']) ?>" 
+                                                <?= $dmplid['kd_mapel'] == $mapel['kd_mapel'] ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($mapel['nama']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editguru">Guru</label>
+                                <select class="form-control" id="editguru" name="editguru" required>
+                                    <?php foreach ($dataguru as $guru): ?>
+                                        <option value="<?= htmlspecialchars($guru['nik_pegawai']) ?>" 
+                                                <?= $dmplid['nik_pegawai'] == $guru['nik_pegawai'] ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($guru['nama']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <input type="hidden" name="id_jadwal_mapel" value="<?= $dmplid['id_jadwal_mapel'] ?>">
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                        </form>
                 </div>
             </div>
-            
-            <script>
-                $(document).ready(function() {
+        </div>
+        <script>
+            $(document).ready(function () {
                 $('#modalEditDetail').modal('show');
-                });
-            </script>
-            <?php endif?>
+            });
+        </script>
+        <?php endif; ?>
         </div>
     </div>
     </div>
