@@ -40,6 +40,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['nik_pegawai']) && strlen($_POST['nik_pegawai']) !== 16) {
             echo "<script>alert('NIK harus 16 karakter!');</script>";
         } else {
+            // Cek duplikasi NIK
+            $isDuplicateNIK = false;
+            foreach ($pgws as $pgw) {
+                if ($pgw['nik_pegawai'] === $_POST['nik_pegawai']) {
+                    $isDuplicateNIK = true;
+                    break;
+                }
+            }
+
+            // Cek duplikasi No HP
+            $isDuplicateNoHP = false;
+            foreach ($pgws as $pgw) {
+                if ($pgw['no_hp'] === $_POST['no_hp']) {
+                    $isDuplicateNoHP = true;
+                    break;
+                }
+            }
+
+            // Cek duplikasi Email
+            $isDuplicateEmail = false;
+            foreach ($pgws as $pgw) {
+                if ($pgw['email'] === $_POST['email']) {
+                    $isDuplicateEmail = true;
+                    break;
+                }
+            }
+
+            // Tampilkan pesan error jika ada duplikasi
+            if ($isDuplicateNIK || $isDuplicateNoHP || $isDuplicateEmail) {
+                $errorMessages = [];
+                if ($isDuplicateNIK) {
+                    $errorMessages[] = "NIK sudah terdaftar!";
+                }
+                if ($isDuplicateNoHP) {
+                    $errorMessages[] = "Nomor Handphone sudah digunakan!";
+                }
+                if ($isDuplicateEmail) {
+                    $errorMessages[] = "Email sudah terdaftar!";
+                }
+                
+                $_SESSION['message'] = implode(" ", $errorMessages);
+                $_SESSION['type'] = "error";
+                
+                // Redirect untuk mencegah submit ulang
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+
             $result = $controller->create($_POST);
             if ($result) {
                 $_SESSION['message'] = "Data pegawai berhasil ditambahkan!";
@@ -59,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+
 $pgwnik = [];
 
 if (isset($_GET['nik'])) {
@@ -71,7 +120,6 @@ if (isset($_GET['nik'])) {
         if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
             $pgwnik = $data[0];
             $showEditModal= true;
-            // var_dump($pgwnik); 
         } else {
             echo 'Data not found';
         }
@@ -108,9 +156,6 @@ if (isset($_GET['nik'])) {
                             <tr>
                                 <th>NIK</th>
                                 <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>Jenis Kelamin</th>
-                                <th>No Handphone</th>
                                 <th>Jenis Pegawai</th>
                                 <th>Aksi</th> 
                             </tr>
@@ -119,25 +164,20 @@ if (isset($_GET['nik'])) {
                                 <?php foreach ($pgws as $pgw) : ?>
                                     <tr>
                                         <td><?= htmlspecialchars($pgw['nik_pegawai']) ?></td>
-                                        <td><?= htmlspecialchars($pgw['nama']) ?></td>
-                                        <td><?= htmlspecialchars($pgw['alamat']) ?></td>
-                                        <td><?= htmlspecialchars($pgw['jenis_kelamin']) ?></td>
-                                        <td><?= htmlspecialchars($pgw['no_hp']) ?></td>
-                                        <td><?= htmlspecialchars($pgw['id_jenis']) ?></td>
+                                        <td><?= htmlspecialchars($pgw['nama_pegawai']) ?></td>
+                                        <td><?= htmlspecialchars($pgw['jenis_pegawai']) ?></td>
                                         <td>
-
-                                        <a href="#" class="btn btn-info btn-circle btn-sm"
+                                        <!-- <a href="#" class="btn btn-info btn-circle btn-sm"
                                             data-toggle="modal" data-target="#modalRead"
                                             data-nik="<?= htmlspecialchars($pgw['nik_pegawai']) ?>"
-                                            data-nama="<?= htmlspecialchars($pgw['nama']) ?>"
+                                            data-nama="<?= htmlspecialchars($pgw['nama_pegawai']) ?>"
                                             data-alamat="<?= htmlspecialchars($pgw['alamat']) ?>"
                                             data-jenis-kelamin="<?= htmlspecialchars($pgw['jenis_kelamin']) ?>"
-                                            data-password="<?= htmlspecialchars($pgw['password']) ?>"
                                             data-no-hp="<?= htmlspecialchars($pgw['no_hp']) ?>"
                                             data-email="<?= htmlspecialchars($pgw['email']) ?>"
-                                            data-id-jenis="<?= htmlspecialchars($pgw['id_jenis']) ?>">
+                                            data-id-jenis="<?= htmlspecialchars($pgw['jenis_pegawai']) ?>">
                                                 <i class="fas fa-eye"></i>
-                                            </a>
+                                            </a> -->
                                             <a href="?nik=<?= htmlspecialchars($pgw['nik_pegawai']) ?>"
                                                class="btn btn-warning btn-circle btn-sm">
                                                 <i class="fas fa-pencil-alt"></i>
@@ -201,7 +241,9 @@ if (isset($_GET['nik'])) {
                         </div>
                         <div class="form-group">
                             <label for="no_hp">No Handphone</label>
-                            <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No Handphone" required>
+                            <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No Handphone" 
+                                pattern="\d{10,13}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka" 
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -209,7 +251,6 @@ if (isset($_GET['nik'])) {
                         </div>
                         <div class="form-group">
                             <label for="id_jenis">Jenis Pegawai</label>
-
                             <select class="form-control" id="id_jenis" name="id_jenis">
                                 <option value="">Pilih Jenis Pegawai</option>
                                 <?php if (!empty($datajpgw)): ?>
@@ -234,7 +275,6 @@ if (isset($_GET['nik'])) {
     </div>
 </body>
 
-
 <script>
     document.getElementById('nikp').addEventListener('input', function() {
         const nikInput = this.value;
@@ -243,7 +283,7 @@ if (isset($_GET['nik'])) {
     });
 </script>
 
-<!-- Modal Lihat Data Pegawai -->
+<!-- Modal Lihat Data Pegawai
 <div class="modal fade" id="modalRead" tabindex="-1" role="dialog" aria-labelledby="modalReadLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -268,7 +308,7 @@ if (isset($_GET['nik'])) {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
     <!-- Logout Modal-->
     <div class="modal fade" id="modalHapusPegawai" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
@@ -314,7 +354,7 @@ if (isset($_GET['nik'])) {
                                 pattern="\d{16}" 
                                 title="NIK harus berisi 16 digit angka" 
                                 maxlength="16" 
-                                required>
+                                readonly>
                             </div>
                             <div class="form-group">
                                 <label for="nama">Nama</label>
@@ -331,22 +371,23 @@ if (isset($_GET['nik'])) {
                             <select class="form-control" id="editjk" name="editjk">
                                 <option value="Laki-laki" <?= $pgwnik['jenis_kelamin'] == 'Laki-laki' ? 'selected' : '' ?>>Laki-laki</option>
                                 <option value="Perempuan" <?= $pgwnik['jenis_kelamin'] == 'Perempuan' ? 'selected' : '' ?>>Perempuan</option>
-                            </select>
+                            </select> 
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="editpw" name="editpw" 
-                                value="<?=$pgwnik['password']?>" placeholder="Masukkan Password">
+                                    value="<?=$pgwnik['password']?>" placeholder="Masukkan Password" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="noHp">No Handphone</label>
                                 <input type="text" class="form-control" id="editnohp" name="editnohp"
-                                value="<?=$pgwnik['no_hp']?>" placeholder="Masukkan No Handphone">
+                                    value="<?=$pgwnik['no_hp']?>" placeholder="Masukkan No Handphone"
+                                    pattern="\d{10,13}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" id="editemail" name="editemail"
-                                value="<?=$pgwnik['email']?>" placeholder="Masukkan Email">
+                                <input type="email" class="form-control" id="editemail" name="editemail"
+                                    value="<?=$pgwnik['email']?>" placeholder="Masukkan Email" required>
                             </div>
                             <div class="form-group">
                                 <label for="jenisPegawai">Jenis Pegawai</label>
@@ -366,7 +407,7 @@ if (isset($_GET['nik'])) {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="submit" name="update" class="btn btn-primary" >Perbarui</button>
+                                <button type="submit" name="update" class="btn btn-primary" >Simpan</button>
                             </div>
                         </form>
                     </div>
