@@ -31,14 +31,14 @@ class OrtuService{
         return $stmt;
     }
 
-    public function updateOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email, $password){
+    public function updateOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email){
         $this->ortu->nik = $nik;
         $this->ortu->nama = $nama;
         $this->ortu->alamat = $alamat;
         $this->ortu->no_hp = $no_hp;
         $this->ortu->jenis_kelamin = $jenis_kelamin;
         $this->ortu->email = $email;
-        $this->ortu->password = $password;
+        
         return $this->ortu->update();
     }
 

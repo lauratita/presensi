@@ -97,8 +97,7 @@ class SiswaModel{
 
     public function update(){
         $sql = "UPDATE " .$this->table_name . " SET nama = '$this->nama', 
-        tanggal_lahir = '$this->tanggal_lahir', tahun_akademik = '$this->tahun_akademik',
-         password = '$this->password', jenis_kelamin = '$this->jenis_kelamin', alamat = '$this->alamat',
+        tanggal_lahir = '$this->tanggal_lahir', tahun_akademik = '$this->tahun_akademik', jenis_kelamin = '$this->jenis_kelamin', alamat = '$this->alamat',
           foto = '$this->foto', id_kelas = '$this->id_kelas' , nik_ortu = '$this->nik_ortu' WHERE nis = '$this->nis'";
         $stmt = $this->koneksi->prepare($sql);
         if ($stmt->execute()) {
