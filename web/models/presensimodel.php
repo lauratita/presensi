@@ -11,7 +11,8 @@ class PresensiModel
     public   $jam_pulang;
     public   $nis;
     public   $id_surat;  
-    public   $keterangan;  
+    public   $keterangan; 
+    public   $is_late; 
 
     public function __construct($db)
     {
@@ -47,6 +48,22 @@ class PresensiModel
             return json_encode(["message" => "Data not found"]);
         }
     }
+
+    public function getByWaliKelas($nik_pegawai, $status)
+    {
+        $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_pegawai = ? AND status = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("ss", $nik_pegawai, $status);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+        // $stmt->close();
+    }
     
     public function create($tanggal, $jam_datang, $jam_pulang, $nis, $id_surat, $keterangan, $id_kelas) {
         $hariIni = date('l');
@@ -61,7 +78,7 @@ class PresensiModel
         ];
         $hari = $hariMapping[$hariIni]; 
     
-        $jadwalSql = "SELECT * FROM `v_detail_jadwal_mapel`
+        $jadwalSql = "SELECT * FROM v_detail_jadwal_mapel_new
                     WHERE id_kelas = ? AND hari = ?";
         $jadwalStmt = $this->koneksi->prepare($jadwalSql);
         $jadwalStmt->bind_param("ss", $id_kelas, $hari);
@@ -72,15 +89,16 @@ class PresensiModel
             return ["status" => false, "message" => "Jadwal masuk untuk hari ini tidak ditemukan."];
         }
     
-        // Hitung batas keterlambatan (jam_masuk + 5 menit)
         $jamMasuk = $jadwal['jam_masuk'];
-        $batasTerlambat = date('H:i:s', strtotime($jamMasuk . ' +5 minutes'));
-        // Validasi keterlambatan
+        $batasTerlambat = date('H:i:s', strtotime($jamMasuk . ' +30 minutes'));
+
+        // Validasi jika sudah melewati batas terlambat
         if ($jam_datang > $batasTerlambat) {
             return ["status" => false, "message" => "Anda terlambat, absen masuk hanya berlaku hingga $batasTerlambat."];
         }
     
-        // Validasi jika data sudah ada
+        $is_late = ($jam_datang > $jamMasuk && $jam_datang <= $batasTerlambat) ? 1 : 0;
+    
         $checkSql = "SELECT COUNT(*) as count FROM " . $this->table_name . " WHERE tanggal = ? AND nis = ?";
         $checkStmt = $this->koneksi->prepare($checkSql);
         $checkStmt->bind_param("ss", $tanggal, $nis);
@@ -93,15 +111,15 @@ class PresensiModel
         }
     
         // Proses insert data
-        $sql = "INSERT INTO " . $this->table_name . " (`tanggal`, `jam_datang`, `jam_pulang`, `nis`, `id_surat`, `keterangan`, `id_kelas`)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO " . $this->table_name . " (tanggal, jam_datang, jam_pulang, nis, id_surat, keterangan, id_kelas, is_late)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             $stmt = $this->koneksi->prepare($sql);
-            $stmt->bind_param("sssssss", $tanggal, $jam_datang, $jam_pulang, $nis, $id_surat, $keterangan, $id_kelas);
+            $stmt->bind_param("sssssssi", $tanggal, $jam_datang, $jam_pulang, $nis, $id_surat, $keterangan, $id_kelas, $is_late);
             if ($stmt->execute()) {
                 return ["status" => true, "message" => "Berhasil melakukan absen."];
             } else {
-                return ["status" => false, "message" => "Gagal menambahkan data."];
+                return ["status" => false, "message" => "Gagal melakukan absen."];
             }
         } catch (Exception $e) {
             return ["status" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()];
@@ -139,7 +157,7 @@ class PresensiModel
         ];
         $hari = $hariMapping[$hariIni];
     
-        $jadwalSql = "SELECT jam_pulang FROM `v_detail_jadwal_mapel`
+        $jadwalSql = "SELECT jam_pulang FROM v_detail_jadwal_mapel_new
                     WHERE id_kelas = ? AND hari = ?";
         $jadwalStmt = $this->koneksi->prepare($jadwalSql);
         $jadwalStmt->bind_param("ss", $id_kelas, $hari);
@@ -151,14 +169,12 @@ class PresensiModel
             return ["status" => false, "message" => "Jadwal pulang untuk hari ini tidak ditemukan."];
         }
     
-        // Hitung batas keterlambatan (jam_pulang + 30 menit)
         $jamPulangJadwal = $jadwal['jam_pulang'];
-        $batasTerlambat = date('H:i:s', strtotime($jamPulangJadwal . ' +5 minutes'));
-    
-        // Validasi jika melewati batas keterlambatan
-        if ($jam_pulang > $batasTerlambat) {
-            return ["status" => false, "message" => "Anda terlambat, absen pulang hanya berlaku hingga $batasTerlambat."];
+
+        if (strtotime($jam_pulang) < strtotime($jamPulangJadwal)) {
+            return ["status" => false, "message" => "Anda tidak dapat melakukan absen pulang sebelum jam pulang: $jamPulangJadwal."];
         }
+        
     
         // Lakukan update jam_pulang
         $updateSql = "UPDATE " . $this->table_name . " SET jam_pulang = ? WHERE tanggal = ? AND nis = ? AND id_kelas = ?";
@@ -172,8 +188,7 @@ class PresensiModel
             }
         } catch (Exception $e) {
             return ["status" => false, "message" => "Terjadi kesalahan: " . $e->getMessage()];
-        }
-    }
+}}
     public function delete(){
         $sql = "DELETE FROM " .$this->view_name . " WHERE id_presensi = ?";
         $stmt = $this->koneksi->prepare($sql);
