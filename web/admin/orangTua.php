@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }else{
             $isDuplicateEmail = false;
             foreach ($ortus as $ortu) {
-                if ($ortu['email'] === $_POST['editemail']) {
+                if ($ortu['email'] === $_POST['editemail'] && $ortu['nik_ortu'] !== $_POST['editnik']) {
                     $isDuplicateEmail = true;
                     break;
                 }
