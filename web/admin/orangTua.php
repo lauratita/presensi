@@ -23,22 +23,88 @@ if ($data !== false) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mengecek tindakan berdasarkan nilai action
     if (isset($_GET['action']) && $_GET['action'] === 'update') {
-        // Proses edit data
-        $result = $controller->update($_POST);
-        if ($result) {
-            $_SESSION['message'] = "Data berhasil diperbaharui!";
-            $_SESSION['type'] = "success";
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+        if (isset($_POST['editNik']) && strlen($_POST['editNik']) !== 16) {
+            echo "<script>alert('NIK harus 16 karakter!');</script>";
+        }else{
+            $isDuplicateEmail = false;
+            foreach ($ortus as $ortu) {
+                if ($ortu['email'] === $_POST['editemail']) {
+                    $isDuplicateEmail = true;
+                    break;
+                }
+            }
+
+            if ($isDuplicateEmail) {
+                $errorMessages = [];
+                
+                if ($isDuplicateEmail) {
+                    $errorMessages[] = "Email sudah terdaftar!";
+                }
+                
+                $_SESSION['message'] = implode(" ", $errorMessages);
+                $_SESSION['type'] = "error";
+                
+                // Redirect untuk mencegah submit ulang
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+            // Proses edit data
+            $result = $controller->update($_POST);
+            if ($result) {
+                $_SESSION['message'] = "Data berhasil diperbaharui!";
+                $_SESSION['type'] = "success";
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
         }
     } else {
-        // Proses tambah data (create)
-        $result = $controller->create($_POST);
-        if ($result) {
-            $_SESSION['message'] = "Data berhasil ditambahkan!";
-            $_SESSION['type'] = "success";
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+        if (isset($_POST['nik']) && strlen($_POST['nik']) !== 16) {
+            echo "<script>alert('NIK harus 16 karakter!');</script>";
+        }else {
+            // Cek duplikasi NIK
+            $isDuplicateNIK = false;
+            foreach ($ortus as $ortu) {
+                if ($ortu['nik_ortu'] === $_POST['nik']) {
+                    $isDuplicateNIK = true;
+                    break;
+                }
+            }
+
+            // Cek duplikasi Email
+            $isDuplicateEmail = false;
+            foreach ($ortus as $ortu) {
+                if ($ortu['email'] === $_POST['email']) {
+                    $isDuplicateEmail = true;
+                    break;
+                }
+            }
+
+              // Tampilkan pesan error jika ada duplikasi
+              if ($isDuplicateNIK || $isDuplicateEmail) {
+                $errorMessages = [];
+                if ($isDuplicateNIK) {
+                    $errorMessages[] = "Orang Tua sudah terdaftar!";
+                }
+                if ($isDuplicateEmail) {
+                    $errorMessages[] = "Email sudah terdaftar!";
+                }
+                
+                $_SESSION['message'] = implode(" ", $errorMessages);
+                $_SESSION['type'] = "error";
+                
+                // Redirect untuk mencegah submit ulang
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+
+            // Proses tambah data (create)
+            $result = $controller->create($_POST);
+            if ($result) {
+                $_SESSION['message'] = "Data berhasil ditambahkan!";
+                $_SESSION['type'] = "success";
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
         }
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'delete') {
@@ -153,7 +219,7 @@ if (isset($_GET['nik'])) {
             <div class="tab-pane fade" id="tab-tambahOrtu" role="tabpanel" aria-labelledby="nav-tambahOrtu-tab">
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-body">
-                        <form id="formTambahOrtu" method="POST" action="?action=create" onsubmit="return validateForm()">
+                        <form id="formTambahOrtu" method="POST" action="?action=create">
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="namaOrtu">Nama</label>
@@ -179,13 +245,17 @@ if (isset($_GET['nik'])) {
                                 <div class="col-md-4 mt-3">
                                     <label for="nik">NIK</label>
                                     <input type="text" class="form-control" name="nik" id="nik"
-                                        placeholder="Masukkan NIK" required maxlength="16">
+                                        placeholder="Masukkan NIK" pattern="\d{16}" 
+                                        title="NIK harus berisi 16 digit angka" 
+                                        maxlength="16" 
+                                        required>
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label for="nohp">No HP</label>
-                                    <input type="number" class="form-control" name="no_hp" id="nohp"
-                                        placeholder="Masukkan No HP" required>
-                                    <small>*Ex: 083223456321 atau 6282337967878 </small>
+                                    <input type="text" class="form-control" name="no_hp" id="nohp"
+                                        placeholder="Masukkan No HP" pattern="62\d{8,11}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka dan berawal 62" 
+                                        required>
+                                    <small>*Ex: 6282337967878 </small>
                                 </div> 
                             </div>
                             <div class="row">
@@ -246,7 +316,10 @@ if (isset($_GET['nik'])) {
                                 <div class="col-md-4 mt-3">
                                     <label for="editNikOrtu">NIK</label>
                                     <input type="text" class="form-control" name="editnik" id="editNik"
-                                        value="<?= $ortunik['nik_ortu']?>" required>
+                                        value="<?= $ortunik['nik_ortu']?>" pattern="\d{16}" 
+                                        title="NIK harus berisi 16 digit angka" 
+                                        maxlength="16" 
+                                        required readonly>
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label for="editNamaOrtu">Nama</label>
@@ -270,13 +343,17 @@ if (isset($_GET['nik'])) {
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="editEmail">Email</label>
-                                    <input type="text" class="form-control" name="editemail" id="editEmail"
+                                    <input type="email" class="form-control" name="editemail" id="editEmail"
                                         value="<?= $ortunik['email'] ?>" required>
+                                        <small>username123@gmail.com</small>
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <label for="editNoHp">No HP</label>
                                     <input type="text" class="form-control" name="editno_hp" id="editNoHp"
-                                        value="<?= $ortunik['no_hp'] ?>" required>
+                                        value="<?= $ortunik['no_hp'] ?>" placeholder="Masukkan No HP" pattern="62\d{8,11}" 
+                                        title="No Handphone harus terdiri dari 10 hingga 13 digit angka dan berawal 62" 
+                                        required>
+                                    <small>*Ex: 6282337967878 </small>
                                 </div>
                             </div>
                             <div class="col-md-12 mt-3">

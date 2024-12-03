@@ -29,15 +29,46 @@ if ($data !== false) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mengecek tindakan berdasarkan nilai action
     if (isset($_GET['action']) && $_GET['action'] === 'update') {
-        // Proses edit data
-        $result = $controller->update(array_merge($_POST, $_FILES));
-        if ($result) {
-            $_SESSION['message'] = "Data berhasil diperbaharui!";
-            $_SESSION['type'] = "success";
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+        if (isset($_POST['editnis']) && strlen($_POST['editnis']) !== 10) {
+            echo "<script>alert('NIK harus 10 karakter!');</script>";
+        }else{
+            // Proses edit data
+            $result = $controller->update(array_merge($_POST, $_FILES));
+            if ($result) {
+                $_SESSION['message'] = "Data berhasil diperbaharui!";
+                $_SESSION['type'] = "success";
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
         }
     } else {
+        if (isset($_POST['nis']) && strlen($_POST['nis']) !== 10) {
+            echo "<script>alert('NIK harus 10 karakter!');</script>";
+        }else{
+             // Cek duplikasi NIK
+             $isDuplicateNIS = false;
+             foreach ($siswas as $siswa) {
+                 if ($siswa['nis'] === $_POST['nis']) {
+                     $isDuplicateNIS = true;
+                     break;
+                 }
+             }
+
+                // Tampilkan pesan error jika ada duplikasi
+            if ($isDuplicateNIS) {
+                $errorMessages = [];
+                if ($isDuplicateNIS) {
+                    $errorMessages[] = "Data Siswa sudah ada!";
+                }
+            
+                $_SESSION['message'] = implode(" ", $errorMessages);
+                $_SESSION['type'] = "error";
+                
+                // Redirect untuk mencegah submit ulang
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+ 
         // Proses tambah data (create)
         $result = $controller->create(array_merge($_POST, $_FILES));
         if ($result) {
@@ -45,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
+            }
         }
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'delete') {
@@ -160,10 +192,11 @@ if (isset($_GET['nis'])) {
                         <div class="row">
                             <div class="col-md-5 mt-3">
                                 <label for="nis">NIS</label>
-                                <input type="text" class="form-control" name="nis" id="nis" placeholder="Masukkan NIS" required maxlength="10">
-                                <div class="invalid-feedback">
-                                    NIK harus terdiri dari 10 digit angka.
-                                </div>
+                                <input type="text" class="form-control" name="nis" id="nis" placeholder="Masukkan NIS" pattern="\d{10}" 
+                            title="NIK harus berisi 10 digit angka" 
+                            maxlength="10" 
+                            required>
+                                
                             </div>
                             <div class="col-md-5 mt-3">
                                 <label for="namaSiswa">Nama</label>
@@ -294,10 +327,11 @@ if (isset($_GET['nis'])) {
                         <div class="row">
                             <div class="col-md-5 mt-3">
                                 <label for="nis">NIS</label>
-                                <input type="text" class="form-control" name="edit_nis" id="editnis" value="<?= $siswanis['nis'] ?>" placeholder="Masukkan NIS" required maxlength="10">
-                                <div class="invalid-feedback">
-                                            NIK harus terdiri dari 10 digit angka.
-                                        </div>
+                                <input type="text" class="form-control" name="edit_nis" id="editnis" value="<?= $siswanis['nis'] ?>" placeholder="Masukkan NIS" pattern="\d{10}" 
+                            title="NIK harus berisi 10 digit angka" 
+                            maxlength="10" 
+                            required readonly>
+                                
                             </div>
                             <div class="col-md-5 mt-3">
                                 <label for="namaSiswa">Nama</label>

@@ -170,28 +170,3 @@ selectImages.forEach((button, index) => {
     })
 })
 
-function validateForm() {
-    const nik = document.getElementById("nik").value;
-    const nohp = document.getElementById("nohp").value;
-    const email = document.getElementById("email").value;
-
-    // Validasi NIK: Harus 16 digit
-    if (!/^\d{16}$/.test(nik)) {
-        alert("NIK harus berisi 16 angka.");
-        return false;
-    }
-
-    // Validasi No HP: Harus diawali 08 atau 62 dan maksimal 15 digit
-    if (!/^(08|62)\d{7,13}$/.test(nohp)) {
-        alert("No HP harus dimulai dengan 08 atau 62 dan maksimal 15 digit.");
-        return false;
-    }
-
-    // Validasi Email: Harus ada karakter @
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert("Masukkan email yang valid.");
-        return false;
-    }
-
-    return true; // Jika semua validasi lolos, form akan dikirim
-}
