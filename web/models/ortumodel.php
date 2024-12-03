@@ -44,7 +44,7 @@ class OrtuModel{
     }
 
     public function update(){
-        $sql = "UPDATE " .$this->table_name . " SET nama = '$this->nama', alamat = '$this->alamat', no_hp = '$this->no_hp', jenis_kelamin = '$this->jenis_kelamin', email = '$this->email', password = '$this->password' WHERE nik_ortu = '$this->nik'";
+        $sql = "UPDATE " .$this->table_name . " SET nama = '$this->nama', alamat = '$this->alamat', no_hp = '$this->no_hp', jenis_kelamin = '$this->jenis_kelamin', email = '$this->email' WHERE nik_ortu = '$this->nik'";
         $stmt = $this->koneksi->prepare($sql);
         if ($stmt->execute()) {
             return true;

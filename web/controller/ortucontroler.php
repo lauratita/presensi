@@ -44,8 +44,8 @@ class OrtuControler{
         $no_hp = $request['editno_hp'];
         $jenis_kelamin = $request['editjenis_kelamin'];
         $email = $request['editemail'];
-        $password = $request['editpassword'];
-        $data = $this->ortuService->updateOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email, $password);
+        
+        $data = $this->ortuService->updateOrtu($nik, $nama, $alamat, $no_hp, $jenis_kelamin, $email,);
         if ($data) {
             return json_encode(["message" => "Berhasil Perbarui Ortu"]);
         }else{

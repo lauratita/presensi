@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><?= $surat['nis'] ?></td>
                                         <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
-                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        <td><span class="badge bg-warning"><?= $surat['status'] ?></span>
                                         </td>
                                         <td><?= $surat['tanggal'] ?></td>
                                         <td><?= $surat['tenggat'] ?></td>
@@ -134,6 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <!-- Form untuk perubahan status -->
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
                                                     <form action="suratIzin.php" method="POST">
                                                         <input type="hidden" name="id_surat"
                                                             value="<?= $surat['id_surat'] ?>" />
@@ -145,8 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                             value="<?= $surat['id_surat'] ?>" />
                                                         <input type="hidden" name="status" value="disable" />
                                                         <button type="submit" class="btn btn-danger">Disable</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close</button>
                                                     </form>
 
                                                 </div>
@@ -188,15 +188,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><?= $surat['nis'] ?></td>
                                         <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
-                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        <td><span class="badge bg-primary text-white"><?= $surat['status'] ?></span>
                                         </td>
                                         <td><?= $surat['tanggal'] ?></td>
                                         <td><?= $surat['tenggat'] ?></td>
                                         <td>
                                             <a href="?updateverifiedizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
                                                 data-target="#updateverifiedizin<?= $surat['id_surat'] ?>"
-                                                class="btn btn-sm btn-warning">
-                                                Change
+                                                class="btn btn-sm btn-danger">
+                                                Disable
                                             </a>
                                     </tr>
                                     <!-- Modal verified -->
@@ -226,12 +226,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </div>
                                                 <div class="modal-footer">
                                                     <form action="suratIzin.php" method="POST" style="display:inline;">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
                                                         <input type="hidden" name="id_surat"
                                                             value="<?= $surat['id_surat'] ?>" />
                                                         <input type="hidden" name="status" value="disable" />
                                                         <button type="submit" class="btn btn-danger">Disable</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -272,15 +272,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><?= $surat['nis'] ?></td>
                                         <td><?= $surat['nama_siswa'] ?></td>
                                         <td><?= $surat['keterangan'] ?></td>
-                                        <td><span class="badge bg-label-warning me-1"><?= $surat['status'] ?></span>
+                                        <td><span class="badge bg-secondary text-white"><?= $surat['status'] ?></span>
                                         </td>
                                         <td><?= $surat['tanggal'] ?></td>
                                         <td><?= $surat['tenggat'] ?></td>
                                         <td>
                                             <a href="?updatedisableizin=<?= $surat['id_surat'] ?>" data-toggle="modal"
                                                 data-target="#updatedisableizin<?= $surat['id_surat'] ?>"
-                                                class="btn btn-sm btn-warning">
-                                                Change
+                                                class="btn btn-sm btn-success">
+                                                Verified
                                             </a>
                                     </tr>
                                     <!-- modal disable -->
@@ -304,17 +304,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <h6>TANGGAL : <?= $surat['tanggal'] ?></h6>
                                                     <h6>TENGGAT : <?= $surat['tenggat'] ?></h6>
                                                     <h6>FOTO SURAT : </h6>
-                                                    <img src="../img/contoh_surat.jpg" class="img-fluid" width="300"
-                                                        height="300" />
+                                                    <img src="../img/<?= $surat['foto_surat'] ?>" class="img-fluid"
+                                                        width="300" height="300" />
                                                 </div>
                                                 <div class="modal-footer">
                                                     <form action="suratIzin.php" method="POST" style="display:inline;">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
                                                         <input type="hidden" name="id_surat"
                                                             value="<?= $surat['id_surat'] ?>" />
                                                         <input type="hidden" name="status" value="verified" />
                                                         <button type="submit" class="btn btn-success">Verified</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close</button>
                                                     </form>
                                                 </div>
                                             </div>

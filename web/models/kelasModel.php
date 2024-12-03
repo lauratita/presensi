@@ -104,9 +104,13 @@ class KelasModel{
     // }
 
     public function getPegawaiUntukTambah() {
-        $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " 
-                WHERE id_jenis = 2 
-                AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . ")";
+        // $sql = "SELECT nik_pegawai, nama FROM " . $this->table_pegawai . " 
+        //         WHERE id_jenis = 2 
+        //         AND nik_pegawai NOT IN (SELECT nik_pegawai FROM " . $this->table_name . ")";
+        $sql = "SELECT p.nama, p.nik_pegawai 
+        FROM " . $this->table_pegawai . " p
+        LEFT JOIN " . $this->table_name . " k ON p.nik_pegawai = k.nik_pegawai
+        WHERE p.id_jenis = 2 AND k.id_kelas IS NULL";
         $result = $this->koneksi->query($sql);
         
         if ($result->num_rows > 0) {

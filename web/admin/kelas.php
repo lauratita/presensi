@@ -6,12 +6,11 @@ $activeSubmenu = 'kelas';
 include '../template/headerAdmin.php';
 include_once '../controller/kelasController.php';
 $showEditModal= false;
+$showTambahModal= false;
 $controller = new KelasController();
 $data = $controller->read();
 $kelass = [];
 
-$pegawaitambah = $controller->pegawaiTambah(); 
-$datapegawaitambah = json_decode($pegawaitambah, true);
 
 
 if ($data !== false) {
@@ -40,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Proses tambah data (create)
         $result = $controller->create($_POST);
+        
         if ($result) {
             $_SESSION['message'] = "Data berhasil ditambahkan!";
             $_SESSION['type'] = "success";
@@ -58,6 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
+
+
+
 $kelasid = [];
 
 if (isset($_GET['id'])) {
@@ -82,6 +85,28 @@ if (isset($_GET['id'])) {
         echo 'Error fetching data.';
     }
 }
+$datapegawaitambah = [];
+if (isset($_GET['action']) && $_GET['action'] === 'tambah') {
+    $pegawaitambah = $controller->pegawaiTambah(); 
+    
+
+    if ($pegawaitambah !== false) {
+        // Decode JSON as associative array
+        $pegawaitambah = json_decode($pegawaitambah, true);
+        if (is_array($pegawaitambah) && (!isset($pegawaitambah['message']) || $pegawaitambah['message'] !== 'Data not found')) {
+            $datapegawaitambah = $pegawaitambah;
+            $showTambahModal= true;
+        } else {
+            $_SESSION['other_message'] = "Tidak dapat menambah data. Semua guru telah menjadi wali kelas!";
+            $_SESSION['type'] = "error";
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit;
+        }
+        
+    } else {
+        echo 'Error fetching data.';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,10 +123,9 @@ if (isset($_GET['id'])) {
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
                 <h6 class="m-0 font-weight-bold text-secondary">Tabel Kelas</h6>
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                    data-target="#modalTambahKelas">
+                <a href="?action=tambah" class="btn btn-primary btn-sm" >
                     <i class="fas fa-plus"></i> Tambah Kelas
-                </button>
+                </a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -164,8 +188,9 @@ if (isset($_GET['id'])) {
     </div>
 
     <!-- Modal Tambah Data Kelas -->
+    <?php if ($showTambahModal && !empty($datapegawaitambah)): ?>
     <div class="modal fade" id="modalTambahKelas" tabindex="-1" role="dialog" aria-labelledby="modalTambahKelasLabel"
-        aria-hidden="true">
+        >
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -179,11 +204,11 @@ if (isset($_GET['id'])) {
                     <form id="formTambahKelas" method="POST" action="?action=create">
                         <div class="form-group">
                             <label for="namaKelas">Nama Kelas</label>
-                            <input type="text" class="form-control" name="nama_kelas" id="namaKelas" placeholder="Masukkan Nama Kelas">
+                            <input type="text" class="form-control" name="nama_kelas" id="namaKelas" placeholder="Masukkan Nama Kelas" required>
                         </div>
                         <div class="form-group">
                             <label for="nik_pegawai">Wali Kelas</label>
-                            <select class="form-control" id="nik_pegawai" name="nik_pegawai">
+                            <select class="form-control" id="nik_pegawai" name="nik_pegawai" required>
                                 <option value="">Pilih waliKelas</option>
                                     <?php if (!empty($datapegawaitambah)): ?>
                                         <?php foreach ($datapegawaitambah as $pegawaitambah): ?>
@@ -205,6 +230,12 @@ if (isset($_GET['id'])) {
             </div>
         </div>
     </div>
+                <script>
+                $(document).ready(function() {
+                $('#modalTambahKelas').modal('show');
+                });
+            </script>
+            <?php endif?>
 
         <!-- Modal Edit Data Kelas -->
         <?php if ($showEditModal && !empty($kelasid)): ?>
@@ -245,7 +276,7 @@ if (isset($_GET['id'])) {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                <button type="submit" name="update" class="btn btn-primary" >Perbarui</button>
+                                <button type="submit" name="update" class="btn btn-primary" >Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -276,6 +307,34 @@ if (isset($_GET['id'])) {
         <?php
         // Clear session messages after displaying
         unset($_SESSION['message']);
+        unset($_SESSION['type']);
+        ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['other_message'])): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                    title: 'Informasi',
+                    text: '<?= $_SESSION['other_message']; ?>',
+                    icon: '<?= $_SESSION['type']; ?>',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Tampilkan alert kedua
+                        Swal.fire({
+                            title: 'Perhatian!',
+                            text: 'Silakan menambah data guru terlebih dahulu.',
+                            icon: 'info',
+                            confirmButtonText: 'Mengerti'
+                        });
+                    }
+                });
+        });
+        </script>
+        <?php
+        // Clear session messages after displaying
+        unset($_SESSION['other_message']);
         unset($_SESSION['type']);
         ?>
     <?php endif; ?>

@@ -160,7 +160,10 @@ if (isset($_GET['nis'])) {
                         <div class="row">
                             <div class="col-md-5 mt-3">
                                 <label for="nis">NIS</label>
-                                <input type="text" class="form-control" name="nis" id="nis" placeholder="Masukkan NIS" required>
+                                <input type="text" class="form-control" name="nis" id="nis" placeholder="Masukkan NIS" required maxlength="10">
+                                <div class="invalid-feedback">
+                                    NIK harus terdiri dari 10 digit angka.
+                                </div>
                             </div>
                             <div class="col-md-5 mt-3">
                                 <label for="namaSiswa">Nama</label>
@@ -291,7 +294,10 @@ if (isset($_GET['nis'])) {
                         <div class="row">
                             <div class="col-md-5 mt-3">
                                 <label for="nis">NIS</label>
-                                <input type="text" class="form-control" name="edit_nis" id="editnis" value="<?= $siswanis['nis'] ?>" placeholder="Masukkan NIS" required>
+                                <input type="text" class="form-control" name="edit_nis" id="editnis" value="<?= $siswanis['nis'] ?>" placeholder="Masukkan NIS" required maxlength="10">
+                                <div class="invalid-feedback">
+                                            NIK harus terdiri dari 10 digit angka.
+                                        </div>
                             </div>
                             <div class="col-md-5 mt-3">
                                 <label for="namaSiswa">Nama</label>
@@ -314,7 +320,7 @@ if (isset($_GET['nis'])) {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-6 mt-3">
                                 <label for="jkSiswa">Jenis Kelamin</label>
                                 <select class="form-control" id="editjkSiswa" name="edit_jenis_kelamin" >
                                     <option value="">Pilih Jenis Kelamin</option>
@@ -326,11 +332,8 @@ if (isset($_GET['nis'])) {
                                         </option>
                                 </select>
                             </div>
-                            <div class="col-md-4 mt-3">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="editpassword" name="edit_password" placeholder="Masukkan Password" value="<?= $siswanis['password'] ?>" required>
-                            </div>
-                            <div class="col-md-4 mt-3">
+                            
+                            <div class="col-md-6 mt-3">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
                                 <input type="date" class="form-control" id="edittanggal_lahir" name="edit_tanggal_lahir"  max="<?= date('Y-m-d'); ?>"  value="<?= $siswanis['tanggal_lahir'] ?>" required>
                             </div>

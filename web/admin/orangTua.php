@@ -153,7 +153,7 @@ if (isset($_GET['nik'])) {
             <div class="tab-pane fade" id="tab-tambahOrtu" role="tabpanel" aria-labelledby="nav-tambahOrtu-tab">
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-body">
-                        <form id="formTambahOrtu" method="POST" action="?action=create">
+                        <form id="formTambahOrtu" method="POST" action="?action=create" onsubmit="return validateForm()">
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="namaOrtu">Nama</label>
@@ -172,18 +172,20 @@ if (isset($_GET['nik'])) {
                             <div class="row">
                                 <div class="col-md-4 mt-3">
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" name="email" id="email"
+                                    <input type="email" class="form-control" name="email" id="email"
                                         placeholder="Masukkan Email" required>
+                                    <small>*Ex: username123@gmail.com</small>
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label for="nik">NIK</label>
                                     <input type="text" class="form-control" name="nik" id="nik"
-                                        placeholder="Masukkan NIK" required>
+                                        placeholder="Masukkan NIK" required maxlength="16">
                                 </div>
                                 <div class="col-md-4 mt-3">
                                     <label for="nohp">No HP</label>
-                                    <input type="text" class="form-control" name="no_hp" id="nohp"
+                                    <input type="number" class="form-control" name="no_hp" id="nohp"
                                         placeholder="Masukkan No HP" required>
+                                    <small>*Ex: 083223456321 atau 6282337967878 </small>
                                 </div> 
                             </div>
                             <div class="row">
@@ -241,19 +243,17 @@ if (isset($_GET['nik'])) {
                         <div class="modal-body">
 
                             <div class="row">
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label for="editNikOrtu">NIK</label>
                                     <input type="text" class="form-control" name="editnik" id="editNik"
-                                        value="<?= $ortunik['nik_ortu']?>">
+                                        value="<?= $ortunik['nik_ortu']?>" required>
                                 </div>
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label for="editNamaOrtu">Nama</label>
                                     <input type="text" class="form-control" name="editnama" id="editNamaOrtu"
-                                        value="<?=$ortunik['nama']?>" required>
+                                    value="<?=$ortunik['nama']?>" required>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mt-3">
+                                <div class="col-md-4 mt-3">
                                     <label for="editJkOrtu">Jenis Kelamin</label>
                                     <select class="form-control" name="editjenis_kelamin" id="editJkOrtu">
                                         <option value="Laki-laki"
@@ -264,12 +264,9 @@ if (isset($_GET['nik'])) {
                                         </option>
                                     </select>
                                 </div>
-                                <div class="col-md-6 mt-3">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" name="editpassword" id="editPassword"
-                                        value="<?= $ortunik['password'] ?>" placeholder="Masukkan Password" required>
-                                </div>
+
                             </div>
+                            
                             <div class="row">
                                 <div class="col-md-6 mt-3">
                                     <label for="editEmail">Email</label>
@@ -282,7 +279,7 @@ if (isset($_GET['nik'])) {
                                         value="<?= $ortunik['no_hp'] ?>" required>
                                 </div>
                             </div>
-                            <div class="col-12 mt-3">
+                            <div class="col-md-12 mt-3">
                                 <label for="editAlamatOrtu">Alamat</label>
                                 <textarea class="form-control" name="editalamat"
                                     id="editAlamatOrtu"><?= $ortunik['alamat'] ?></textarea>
