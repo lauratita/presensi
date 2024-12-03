@@ -241,8 +241,8 @@ if (isset($_GET['nik'])) {
                         </div>
                         <div class="form-group">
                             <label for="no_hp">No Handphone</label>
-                            <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No Handphone" 
-                                pattern="\d{10,13}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka" 
+                            <input type="text" class="form-control" name="no_hp" placeholder="Masukkan No Handphone"
+                                pattern="62\d{10,13}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka dan berawal 62" 
                                 required>
                         </div>
                         <div class="form-group">
@@ -382,7 +382,7 @@ if (isset($_GET['nik'])) {
                                 <label for="noHp">No Handphone</label>
                                 <input type="text" class="form-control" id="editnohp" name="editnohp"
                                     value="<?=$pgwnik['no_hp']?>" placeholder="Masukkan No Handphone"
-                                    pattern="\d{10,13}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka">
+                                    pattern="62\d{10,13}" title="No Handphone harus terdiri dari 10 hingga 13 digit angka dan berawal 62">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>

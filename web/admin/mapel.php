@@ -34,9 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         // Proses tambah data
-        $isDuplicate = false;
+        $kodeBaru = strtoupper($_POST['kd_mapel']);
         foreach ($mpls as $mpl) {
-            if ($mpl['kd_mapel'] === $_POST['kd_mapel']) {
+            if (strtoupper($mpl['kd_mapel']) === $kodeBaru) {
                 $isDuplicate = true;
                 break;
             }
