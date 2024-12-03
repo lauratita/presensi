@@ -90,6 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>NIS</th>
                             <th>Nama</th>
                             <th>Keterangan</th>
+                            <th>Poin Telat</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -102,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td><?= $presensi['nis'] ?></td>
                             <td><?= $presensi['nama_siswa'] ?></td>
                             <td><?= $presensi['keterangan'] ?></td>
+                            <td><?= $presensi['is_late'] ?></td>
                         </tr>
                         <?php endforeach;?>
                     </tbody>

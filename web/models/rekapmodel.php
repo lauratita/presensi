@@ -12,6 +12,7 @@ class RekapModel
     public $jam_datang;
     public $jam_pulang;
     public $tanggal;
+    public $is_late;
 
     public function __construct($db)
     {
