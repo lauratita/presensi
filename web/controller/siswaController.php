@@ -47,13 +47,12 @@ class SiswaController{
         $nama = $request['edit_nama'];
         $tanggal_lahir = $request['edit_tanggal_lahir'];
         $tahun_akademik = $request['edit_tahun_akademik'];
-        $password = $request['edit_password'];
         $jenis_kelamin = $request['edit_jenis_kelamin'];
         $alamat = $request['edit_alamat'];
         $foto = $_FILES['edit_foto'];
         $id_kelas = $request['edit_id_kelas'];
         $nik_ortu = $request['edit_nik_ortu'];
-        $data = $this->siswaService->updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu);
+        $data = $this->siswaService->updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu);
         if ($data) {
             // var_dump($data);
             return json_encode(["message" => "Berhasil Perbarui Siswa"]);

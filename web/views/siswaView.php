@@ -37,14 +37,14 @@ class SiswaService{
         return $stmt;
     }
 
-    public function updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu){
-        var_dump($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu);
+    public function updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu){
+        var_dump($nis, $nama, $tanggal_lahir, $tahun_akademik, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu);
 
         $this->siswa->nis = $nis;
         $this->siswa->nama = $nama;
         $this->siswa->tanggal_lahir = $tanggal_lahir;
         $this->siswa->tahun_akademik = $tahun_akademik;
-        $this->siswa->password = $password;
+       
         $this->siswa->jenis_kelamin = $jenis_kelamin;
         $this->siswa->alamat = $alamat;
         if (!empty($foto['name'])) {

@@ -1,5 +1,7 @@
 <?php 
 ob_start(); 
+$activeMenu = 'siswa'; // Tentukan menu 'Siswa' yang aktif
+$activeSubmenu = 'siswa';
 include '../template/headerAdmin.php';
 include_once '../controller/dmapelcontroller.php';
 
