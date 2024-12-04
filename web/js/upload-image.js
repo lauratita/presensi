@@ -83,33 +83,28 @@ $('#modalHapusMapel').on('show.bs.modal', function (event) {
     modal.find('#btnHapusMapel').attr('href', hrefDelete); // Set href tombol hapus
 });
 
-$('#modalHapusDMPL').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); 
-    var id = button.data('id'); 
+$('#modalHapusDetail').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Tombol yang men-trigger modal
+    var id = button.data('id'); // Ambil data NIK dari tombol
 
-    console.log("ID:", id); // Periksa apakah id benar
-    
     var modal = $(this);
-    var hrefDelete = "?action=delete&id=" + id; 
-    console.log("Hapus URL:", hrefDelete); // Periksa URL yang terbentuk
-    
-    modal.find('#btnHapusDMPL').attr('href', hrefDelete); // Set href tombol hapus
+    var hrefDelete = "?action=delete&id=" + id; // Buat URL hapus
+    modal.find('#btnHapusDetail').attr('href', hrefDelete); // Set href tombol hapus
 });
 
-$('#modalRead').on('show.bs.modal', function(event) {
-    var button = $(event.relatedTarget); // Tombol yang memicu modal
-    var modal = $(this);
+// $('#modalRead').on('show.bs.modal', function(event) {
+//     var button = $(event.relatedTarget); // Tombol yang memicu modal
+//     var modal = $(this);
 
-    // Ambil data dari atribut tombol
-    modal.find('#detailNIK').text(button.data('nik'));
-    modal.find('#detailNama').text(button.data('nama'));
-    modal.find('#detailAlamat').text(button.data('alamat'));
-    modal.find('#detailJenisKelamin').text(button.data('jenis-kelamin'));
-    modal.find('#detailPassword').text(button.data('password'));
-    modal.find('#detailNoHP').text(button.data('no-hp'));
-    modal.find('#detailEmail').text(button.data('email'));
-    modal.find('#detailJenisPegawai').text(button.data('id-jenis'));
-});
+//     // Ambil data dari atribut tombol
+//     modal.find('#detailNIK').text(button.data('nik'));
+//     modal.find('#detailNama').text(button.data('nama'));
+//     modal.find('#detailAlamat').text(button.data('alamat'));
+//     modal.find('#detailJenisKelamin').text(button.data('jenis-kelamin'));
+//     modal.find('#detailNoHP').text(button.data('no-hp'));
+//     modal.find('#detailEmail').text(button.data('email'));
+//     modal.find('#detailJenisPegawai').text(button.data('id-jenis'));
+// });
 
 $('#modalHapusOrtu').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget); // Tombol yang men-trigger modal
@@ -170,28 +165,3 @@ selectImages.forEach((button, index) => {
     })
 })
 
-function validateForm() {
-    const nik = document.getElementById("nik").value;
-    const nohp = document.getElementById("nohp").value;
-    const email = document.getElementById("email").value;
-
-    // Validasi NIK: Harus 16 digit
-    if (!/^\d{16}$/.test(nik)) {
-        alert("NIK harus berisi 16 angka.");
-        return false;
-    }
-
-    // Validasi No HP: Harus diawali 08 atau 62 dan maksimal 15 digit
-    if (!/^(08|62)\d{7,13}$/.test(nohp)) {
-        alert("No HP harus dimulai dengan 08 atau 62 dan maksimal 15 digit.");
-        return false;
-    }
-
-    // Validasi Email: Harus ada karakter @
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert("Masukkan email yang valid.");
-        return false;
-    }
-
-    return true; // Jika semua validasi lolos, form akan dikirim
-}

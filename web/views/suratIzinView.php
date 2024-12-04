@@ -46,6 +46,12 @@ class suratIzinView
         return $stmt;
     }
 
+    public function getSuratIzinByOrtu($nik_ortu)
+    {
+        $stmt = $this->surat->getSuratIzinByOrtu($nik_ortu);
+        return $stmt;
+    }
+
     public function updateStatusSuratIzin($id_surat, $status)
     {
         $this->surat->id_surat = $id_surat;

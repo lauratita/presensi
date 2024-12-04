@@ -3,6 +3,7 @@ class PegawaiModel{
     private $koneksi;
     private $table_name ="tb_pegawai";
     private $table_jpegawai = "tb_jenispegawai";
+    private $table_view = "v_pegawai_detail";
     public $nik_pegawai;
     public $nama;
     public $alamat;
@@ -44,7 +45,7 @@ class PegawaiModel{
     }    
 
     public function read(){
-        $sql = "SELECT * FROM " .$this->table_name;
+        $sql = "SELECT * FROM " .$this->table_view;
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);
@@ -54,7 +55,6 @@ class PegawaiModel{
             return json_encode(["message" => "Data not found"]);
         }
     }
-
 
     public function update() {
         $sql = "UPDATE " . $this->table_name . " SET nama = ?, alamat = ?, jenis_kelamin = ?, password = ?, no_hp = ?, email = ?, id_jenis = ?
