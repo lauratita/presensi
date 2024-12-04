@@ -52,6 +52,12 @@ class SuratIzinController
         return $this->suratModel->getSiswaByNIKOrtu($nik_ortu);
     }
 
+    public function getSuratIzinByOrtu($nik_ortu)
+    {
+        $suratnik = $this->suratView->getSuratIzinByOrtu($nik_ortu);
+        return $suratnik;
+    }
+
     public function updateStatusSuratIzin($request)
     {
         $id_surat = $request['id_surat'] ?? null;
