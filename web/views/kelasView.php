@@ -12,8 +12,10 @@ class KelasService{
         // $this->pegawai = new KelasModel($db);
     }
 
-    public function createKelas($nama_kelas, $nik_pegawai){
-        $this->kelas->nama_kelas = $nama_kelas;
+    public function createKelas( $idjenis, $jurusan, $nik_pegawai){
+        // $this->kelas->nama_kelas = $nama_kelas;
+        $this->kelas->idjenis = $idjenis;
+        $this->kelas->jurusan = $jurusan;
         $this->kelas->nik_pegawai = $nik_pegawai;
         return $this->kelas->create();
     }
@@ -23,14 +25,21 @@ class KelasService{
         return $stmt;
     }
 
+    public function getAll(){
+        $stmt = $this->kelas->getAll();
+        return $stmt;
+    }
+
     public function getKelasById($id_kelas){
         $stmt = $this->kelas->getById($id_kelas);
         return $stmt;
     }
 
-    public function updateKelas($id_kelas, $nama_kelas, $nik_pegawai){
+    public function updateKelas($id_kelas, $jenis_kelas, $jurusan, $nik_pegawai){
         $this->kelas->id_kelas = $id_kelas;
-        $this->kelas->nama_kelas = $nama_kelas;
+        // $this->kelas->nama_kelas = $nama_kelas;
+        $this->kelas->jenis_kelas = $jenis_kelas;
+        $this->kelas->jurusan = $jurusan;
         $this->kelas->nik_pegawai = $nik_pegawai;
         return $this->kelas->update();
     }
@@ -53,5 +62,15 @@ class KelasService{
 
     public function getPegawaiUntukEdit($id_kelas) {
         return $this->kelas->getPegawaiUntukEdit($id_kelas);
+    }
+
+    public function getidjenis(){
+        $stmt = $this->kelas->getjeniskelas();
+        return $stmt;
+    }
+
+    public function getjurusan(){
+        $stmt = $this->kelas->getjurusan();
+        return $stmt;
     }
 }

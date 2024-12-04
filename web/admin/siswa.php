@@ -15,6 +15,8 @@ $dataortu = json_decode($ortu, true);
 $kelas = $controller->getkelas(); 
 $datakelas = json_decode($kelas, true);
 
+// $naikkelas = $controller->naikKelas();
+
 if ($data !== false) {
     $data = json_decode($data, true);
     if (!isset($data['message']) || $data['message'] !== 'Data not found') {
@@ -35,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Proses edit data
             $result = $controller->update(array_merge($_POST, $_FILES));
             if ($result) {
+                $naikkelas = $controller->naikKelas();
                 $_SESSION['message'] = "Data berhasil diperbaharui!";
                 $_SESSION['type'] = "success";
                 header("Location: " . $_SERVER['PHP_SELF']);
@@ -72,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses tambah data (create)
         $result = $controller->create(array_merge($_POST, $_FILES));
         if ($result) {
+            $naikkelas = $controller->naikKelas();
             $_SESSION['message'] = "Data berhasil ditambahkan!";
             $_SESSION['type'] = "success";
             header("Location: " . $_SERVER['PHP_SELF']);
@@ -266,6 +270,17 @@ if (isset($_GET['nis'])) {
                                     </select>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-3">
+                                <label for="tanggal_masuk">Tanggal Masuk</label>
+                                <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk"   max="<?= date('Y-m-d'); ?>" required>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="tanggal_berakhir">Tanggal Berakhir</label>
+                                <input type="date" class="form-control" id="tanggal_berakhir" name="tanggal_berakhir" required>
+                            </div>
+                        </div>
                             <div class="form-group mt-3">
                                 <label for="alamat">Alamat</label>
                                 <textarea class="form-control" id="alamat" name="alamat" placeholder="Masukkan Alamat"
@@ -412,6 +427,16 @@ if (isset($_GET['nis'])) {
                                 </select>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-3">
+                                <label for="tanggal_masuk">Tanggal Masuk</label>
+                                <input type="date" class="form-control" id="tanggal_masuk" name="edttanggal_masuk"   max="<?= date('Y-m-d'); ?>" value="<?= $siswanis['tanggal_masuk'] ?>"required>
+                            </div>
+                            <div class="col-md-6 mt-3">
+                                <label for="tanggal_berakhir">Tanggal Berakhir</label>
+                                <input type="date" class="form-control" id="tanggal_berakhir" name="edttanggal_berakhir" value="<?= $siswanis['tanggal_berakhir'] ?>" required>
+                            </div>
+                        </div>               
                         <div class="form-group mt-3">
                             <label for="alamat">Alamat</label>
                             <textarea class="form-control" id="edit_alamat" name="edit_alamat"

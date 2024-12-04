@@ -12,7 +12,7 @@ class SiswaService{
         
     }
 
-    public function createSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu){
+    public function createSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $password, $jenis_kelamin, $alamat, $foto, $tanggal_masuk, $tanggal_akhir, $id_kelas, $nik_ortu){
         $this->siswa->nis = $nis;
         $this->siswa->nama = $nama;
         $this->siswa->tanggal_lahir = $tanggal_lahir;
@@ -22,9 +22,16 @@ class SiswaService{
         $this->siswa->alamat = $alamat;
         $foto_path = $this->siswa->uploadImage($foto);
         $this->siswa->foto = $foto_path;
+        $this->siswa->tanggal_masuk = $tanggal_masuk;
+        $this->siswa->tanggal_akhir = $tanggal_akhir;
         $this->siswa->id_kelas = $id_kelas;
         $this->siswa->nik_ortu = $nik_ortu;
         return $this->siswa->create();
+    }
+
+    public function naikKelas() {
+        // Panggil method naikKelas() dari SiswaModel untuk memproses naik kelas
+        return $this->siswa->naikKelas();
     }
 
     public function getAllSiswa(){
@@ -37,7 +44,7 @@ class SiswaService{
         return $stmt;
     }
 
-    public function updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu){
+    public function updateSiswa($nis, $nama, $tanggal_lahir, $tahun_akademik, $jenis_kelamin, $alamat, $foto, $tanggal_masuk, $tanggal_akhir, $id_kelas, $nik_ortu){
         var_dump($nis, $nama, $tanggal_lahir, $tahun_akademik, $jenis_kelamin, $alamat, $foto, $id_kelas, $nik_ortu);
 
         $this->siswa->nis = $nis;
@@ -53,6 +60,8 @@ class SiswaService{
         } else {
             $this->siswa->foto = $this->getFotoLama($nis); 
         }
+        $this->siswa->tanggal_masuk = $tanggal_masuk;
+        $this->siswa->tanggal_akhir = $tanggal_akhir;
         $this->siswa->id_kelas = $id_kelas;
         $this->siswa->nik_ortu = $nik_ortu;
         return $this->siswa->update();

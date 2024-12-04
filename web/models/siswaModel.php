@@ -16,6 +16,9 @@ class SiswaModel{
     public $foto;
     public $nik_ortu;
     public $id_kelas;
+    public $tanggal_masuk;
+
+    public $tanggal_akhir;
 
     public function __construct($db){
         $this->koneksi = $db;
@@ -62,11 +65,11 @@ class SiswaModel{
 
     public function create(){
 
-        $sql = "INSERT INTO " . $this->table_name . " (`nis`, `nama`, `tanggal_lahir`, `tahun_akademik`, `password`, `jenis_kelamin`, `alamat`, `foto`, `id_kelas`, `nik_ortu`)
-                                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO " . $this->table_name . " (`nis`, `nama`, `tanggal_lahir`, `tahun_akademik`, `password`, `jenis_kelamin`, `alamat`, `foto`, `tanggal_masuk`, `tanggal_berakhir`, `id_kelas`, `nik_ortu`)
+                                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             $stmt = $this->koneksi->prepare($sql);
-            $stmt->bind_param("ssssssssss", $this->nis, $this->nama, $this->tanggal_lahir, $this->tahun_akademik, $this->password, $this->jenis_kelamin, $this->alamat, $this->foto, $this->id_kelas, $this->nik_ortu);
+            $stmt->bind_param("ssssssssssss", $this->nis, $this->nama, $this->tanggal_lahir, $this->tahun_akademik, $this->password, $this->jenis_kelamin, $this->alamat, $this->foto, $this->tanggal_masuk, $this->tanggal_akhir, $this->id_kelas, $this->nik_ortu);
             if ($stmt->execute()) {
                 var_dump("Data berhasil disimpan!");
                 // die();
@@ -74,7 +77,6 @@ class SiswaModel{
             }else{
                 var_dump("Data ggl disimpan!");
                 var_dump($stmt->error); // Debug error
-                
                 // return false;
             }
         } catch (Exception $e) {
@@ -98,7 +100,7 @@ class SiswaModel{
     public function update(){
         $sql = "UPDATE " .$this->table_name . " SET nama = '$this->nama', 
         tanggal_lahir = '$this->tanggal_lahir', tahun_akademik = '$this->tahun_akademik', jenis_kelamin = '$this->jenis_kelamin', alamat = '$this->alamat',
-          foto = '$this->foto', id_kelas = '$this->id_kelas' , nik_ortu = '$this->nik_ortu' WHERE nis = '$this->nis'";
+          foto = '$this->foto', tanggal_masuk = '$this->tanggal_masuk', tanggal_berakhir = '$this->tanggal_akhir', id_kelas = '$this->id_kelas' , nik_ortu = '$this->nik_ortu' WHERE nis = '$this->nis'";
         $stmt = $this->koneksi->prepare($sql);
         if ($stmt->execute()) {
             // var_dump();
@@ -142,75 +144,7 @@ class SiswaModel{
         return false;
     }
 
-    // public function getByNIS($nis) {
-    //     // Query dengan filter berdasarkan NIS
-    //     $sql = "
-    //         SELECT 
-    //             s.nis,
-    //             s.nama,
-    //             s.tanggal_lahir,
-    //             s.tahun_akademik,
-    //             s.password,
-    //             s.jenis_kelamin,
-    //             s.alamat,
-    //             s.id_kelas,
-    //             s.nik_ortu,
-    //             f.foto_depan,
-    //             f.foto_kanan,
-    //             f.foto_kiri,
-    //             f.foto_atas,
-    //             f.foto_bawah
-    //         FROM {$this->table_name} s
-    //         LEFT JOIN {$this->table_foto} f ON s.nis = f.nis
-    //         WHERE s.nis = ?
-    //     ";
     
-    //     // Persiapkan statement
-    //     $stmt = $this->koneksi->prepare($sql);
-    
-    //     // Bind parameter
-    //     $stmt->bind_param('s', $nis);
-    
-    //     // Jalankan query
-    //     $stmt->execute();
-    
-    //     // Ambil hasil query
-    //     $result = $stmt->get_result();
-    
-    //     // Periksa apakah ada data
-    //     if ($result->num_rows > 0) {
-    //         // Ambil data siswa
-    //         $row = $result->fetch_assoc();
-    
-    //         // Format data ke dalam struktur JSON yang diinginkan
-    //         $formattedData = [
-    //             'nis' => $row['nis'],
-    //             'nama' => $row['nama'],
-    //             'tanggal_lahir' => $row['tanggal_lahir'],
-    //             'tahun_akademik' => $row['tahun_akademik'],
-    //             'password' => $row['password'],
-    //             'jenis_kelamin' => $row['jenis_kelamin'],
-    //             'alamat' => $row['alamat'],
-    //             'id_kelas' => $row['id_kelas'],
-    //             'nik_ortu' => $row['nik_ortu'],
-    //             'foto_siswa' => [
-    //                 'foto_depan' => $row['foto_depan'] ,
-    //                 'foto_kanan' => $row['foto_kanan'] ,
-    //                 'foto_kiri' => $row['foto_kiri'] ,
-    //                 'foto_atas' => $row['foto_atas'] ,
-    //                 'foto_bawah' => $row['foto_bawah'] ,
-    //             ]
-    //         ];
-    
-    //         // Kembalikan hasil dalam JSON
-    //         return json_encode($formattedData);
-    //     } else {
-    //         // Tidak ada data ditemukan
-    //         http_response_code(404);
-    //         return json_encode(["message" => "Data not found for NIS {$nis}"]);
-    //     }
-    // }
-
     public function getByNis($nis){
         $sql = "SELECT * FROM " . $this->table_name . " WHERE nis = ?";
         $stmt = $this->koneksi->prepare($sql);
@@ -254,4 +188,61 @@ class SiswaModel{
         }
     }
 
+    public function naikKelas() {
+        // Ambil tanggal sekarang
+        $today = date("Y-m-d");
+    
+        // Cari siswa dengan `tanggal_berakhir` sudah lewat
+        $sql = "SELECT nis, id_kelas FROM " . $this->table_name . " WHERE tanggal_berakhir <= ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("s", $today);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        while ($row = $result->fetch_assoc()) {
+            $nis = $row['nis'];
+            $currentKelas = $row['id_kelas'];
+    
+            // Cari kelas berikutnya untuk siswa ini
+            $nextKelas = $this->getNextKelas($currentKelas);
+    
+            if ($nextKelas) {
+                // Update ID kelas siswa ke kelas baru
+                $updateSql = "UPDATE " . $this->table_name . " SET id_kelas = ? WHERE nis = ?";
+                $updateStmt = $this->koneksi->prepare($updateSql);
+                $updateStmt->bind_param("ss", $nextKelas, $nis);
+                $updateStmt->execute();
+            }
+        }
+    }
+    
+
+    public function getNextKelas($currentKelasId) {
+        // Cari data kelas saat ini
+        $sql = "SELECT id_jeniskelas, id_jurusan FROM " . $this->table_kelas . " WHERE id_kelas = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("i", $currentKelasId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $idJenis = $row['id_jeniskelas'] + 1; // Naik kelas
+            $idJurusan = $row['id_jurusan'];
+    
+            // Cari kelas baru dengan `id_jenis` yang meningkat, tetapi `id_jurusan` sama
+            $nextKelasSql = "SELECT id_kelas FROM " . $this->table_kelas . " WHERE id_jeniskelas = ? AND id_jurusan = ? LIMIT 1";
+            $nextStmt = $this->koneksi->prepare($nextKelasSql);
+            $nextStmt->bind_param("ii", $idJenis, $idJurusan);
+            $nextStmt->execute();
+            $nextResult = $nextStmt->get_result();
+    
+            if ($nextResult->num_rows > 0) {
+                $nextRow = $nextResult->fetch_assoc();
+                return $nextRow['id_kelas']; // Mengembalikan ID kelas baru
+            }
+        }
+    
+        return null; // Jika tidak ada kelas baru
+    }
 }

@@ -11,7 +11,13 @@ $controller = new KelasController();
 $data = $controller->read();
 $kelass = [];
 
+ 
 
+$jenis = $controller->getjenis();
+$idjenis = json_decode($jenis, true);
+
+$jurusan = $controller->getjurusan();
+$datajurusan = json_decode($jurusan, true);
 
 if ($data !== false) {
     $data = json_decode($data, true);
@@ -28,6 +34,22 @@ if ($data !== false) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mengecek tindakan berdasarkan nilai action
     if (isset($_GET['action']) && $_GET['action'] === 'update') {
+        $allClasses = $controller->getAll();
+        $allClasses = json_decode($allClasses, true);
+        $isDuplicate = false;
+        foreach ($allClasses as $class) {
+            if ($class['id_jeniskelas'] === $_POST['editkelas'] && $class['id_jurusan'] === $_POST['editjurusan']) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+    
+        if ($isDuplicate) {
+            $_SESSION['message'] = "Tidak dapat memperbaharui kelas, Kelas sudah ada!";
+            $_SESSION['type'] = "error";
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
         // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
@@ -37,9 +59,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
     } else {
+        $allClasses = $controller->getAll();
+        $allClasses = json_decode($allClasses, true);
+        $isDuplicate = false;
+        foreach ($allClasses as $class) {
+            if ($class['id_jeniskelas'] === $_POST['kelas'] && $class['id_jurusan'] === $_POST['jurusan']) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+    
+        if ($isDuplicate) {
+            $_SESSION['message'] = "Tidak dapat menambah kelas, Kelas sudah ada!";
+            $_SESSION['type'] = "error";
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit();
+        }
         // Proses tambah data (create)
         $result = $controller->create($_POST);
-        
         if ($result) {
             $_SESSION['message'] = "Data berhasil ditambahkan!";
             $_SESSION['type'] = "success";
@@ -202,11 +239,43 @@ if (isset($_GET['action']) && $_GET['action'] === 'tambah') {
                 <div class="modal-body">
                     <!-- Form untuk tambah data kelas -->
                     <form id="formTambahKelas" method="POST" action="?action=create">
-                        <div class="form-group">
+                        <div class="row">
+                                <div class="col-md-6">
+                                    <label for="kelas">Kelas</label>
+                                    <select class="form-control" name="kelas" id="jeniskelas">
+                                    <option value="">Pilih Kelas</option>
+                                        <?php if (!empty($idjenis)): ?>
+                                            <?php foreach ($idjenis as $jenis): ?>
+                                            <option value="<?= htmlspecialchars($jenis['id_jeniskelas']) ?>">
+                                                <?= htmlspecialchars($jenis['kelas']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="jurusan">Jurusan</label>
+                                    <select class="form-control" name="jurusan" id="jurusan">
+                                    <option value="">Pilih Jurusan</option>
+                                        <?php if (!empty($datajurusan)): ?>
+                                            <?php foreach ($datajurusan as $jurusan): ?>
+                                            <option value="<?= htmlspecialchars($jurusan['id_jurusan']) ?>">
+                                                <?= htmlspecialchars($jurusan['nama_jurusan']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        <!-- <div class="form-group mt-3">
                             <label for="namaKelas">Nama Kelas</label>
                             <input type="text" class="form-control" name="nama_kelas" id="namaKelas" placeholder="Masukkan Nama Kelas" required>
-                        </div>
-                        <div class="form-group">
+                        </div> -->
+                        <div class="form-group mt-3">
                             <label for="nik_pegawai">Wali Kelas</label>
                             <select class="form-control" id="nik_pegawai" name="nik_pegawai" required>
                                 <option value="">Pilih waliKelas</option>
@@ -253,10 +322,44 @@ if (isset($_GET['action']) && $_GET['action'] === 'tambah') {
                         <!-- Form untuk  edit kelas -->
                         <form id="formEditKelas" method="POST" action="?action=update">
                             <input type="hidden" name="id_kelas" value="<?= $kelasid['id_kelas'] ?>">
-                            <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="kelas">Kelas</label>
+                                    <select class="form-control" name="editkelas" id="jeniskelas">
+                                    <option value="">Pilih Kelas</option>
+                                        <?php if (!empty($idjenis)): ?>
+                                            <?php foreach ($idjenis as $jenis): ?>
+                                            <option value="<?= htmlspecialchars($jenis['id_jeniskelas']) ?>"
+                                            <?= ($jenis['id_jeniskelas'] == $kelasid['id_jeniskelas']) ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($jenis['kelas']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="jurusan">Jurusan</label>
+                                    <select class="form-control" name="editjurusan" id="jurusan">
+                                    <option value="">Pilih Jurusan</option>
+                                        <?php if (!empty($datajurusan)): ?>
+                                            <?php foreach ($datajurusan as $jurusan): ?>
+                                            <option value="<?= htmlspecialchars($jurusan['id_jurusan']) ?>"
+                                            <?= ($jurusan['id_jurusan'] == $kelasid['id_jurusan']) ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($jurusan['nama_jurusan']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <option value="">Data tidak tersedia</option>
+                                        <?php endif; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
                                 <label for="namaKelas">Nama Kelas</label>
                                 <input type="text" class="form-control" id="editnama_kelas" name="editnama_kelas"
-                                value="<?=$kelasid['nama_kelas']?>" placeholder="Masukkan Nama Kelas">
+                                value="<?=$kelasid['nama_kelas']?>" placeholder="Masukkan Nama Kelas" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="waliKelas">Wali Kelas</label>
