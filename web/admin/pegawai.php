@@ -24,8 +24,8 @@ if ($data !== false) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['action']) && $_GET['action'] === 'update') {
         // Validasi NIK pada edit
-        if (isset($_POST['editnikp']) && strlen($_POST['editnikp']) !== 16) {
-            echo "<script>alert('NIK harus 16 karakter!');</script>";
+        if (isset($_POST['nik_pegawai']) && strlen($_POST['nik_pegawai']) < 10) {
+            echo "<script>alert('NIK harus minimal 10 digit!');</script>";
         } else {
             $result = $controller->update($_POST);
             if ($result) {
@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         // Validasi NIK pada create
-        if (isset($_POST['nik_pegawai']) && strlen($_POST['nik_pegawai']) !== 16) {
-            echo "<script>alert('NIK harus 16 karakter!');</script>";
+        if (isset($_POST['nik_pegawai']) && strlen($_POST['nik_pegawai']) < 10) {
+            echo "<script>alert('NIK harus minimal 10 digit!');</script>";
         } else {
             // Cek duplikasi NIK
             $isDuplicateNIK = false;
@@ -215,9 +215,8 @@ if (isset($_GET['nik'])) {
                             <label for="nikp">NIK</label>
                             <input type="text" class="form-control" id="nikp" name="nik_pegawai" 
                             placeholder="Masukkan NIK" 
-                            pattern="\d{16}" 
-                            title="NIK harus berisi 16 digit angka" 
-                            maxlength="16" 
+                            pattern="\d{10,}" 
+                            title="NIK harus minimal 10 digit angka" 
                             required>
                         </div>
                         <div class="form-group">
@@ -351,9 +350,8 @@ if (isset($_GET['nik'])) {
                                 <input type="text" class="form-control" id="editnikp" name="editnikp" 
                                 value="<?= htmlspecialchars($pgwnik['nik_pegawai']) ?>" 
                                 placeholder="Masukkan NIK" 
-                                pattern="\d{16}" 
-                                title="NIK harus berisi 16 digit angka" 
-                                maxlength="16" 
+                                pattern="\d{10,}" 
+                                title="NIK harus minimal 10 digit angka" 
                                 readonly>
                             </div>
                             <div class="form-group">
