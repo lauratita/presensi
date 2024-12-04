@@ -3,40 +3,44 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/rekapmodel.php';
 
 class RekapController{
-    private $rekapmodel;
-    private $koneksi;
 
-    public function __construct($db)
-    {
+    private $rekapmodel; // Model untuk rekapitulasi data
+    private $koneksi; 
+    
+        // Konstruktor untuk menginisialisasi koneksi dan model
+    public function __construct() {
         global $koneksi;
-        $this->rekapmodel = new RekapModel($koneksi);
-        $this->koneksi = $db;
-    }
-    //menampilkan data rekap
-    public function read(){
-        $rekaps = $this->rekapmodel->readvrekap();
-        return json_encode($rekaps);
+        $this->koneksi = $koneksi;
+        $this->rekapmodel = new RekapModel($koneksi); // Inisialisasi model dengan koneksi
     }
     
-    public function readFiltered($start_date, $end_date) {
-        $query = "SELECT * FROM v_rekap";
+        // Fungsi untuk membaca data rekap
+    public function read() {
+        $rekaps = $this->rekapmodel->readvrekap(); // Ambil data rekap dari model
+        return json_encode($rekaps); // Kembalikan dalam format JSON
+    }
+    
+    
+    
+    // public function readFiltered($start_date, $end_date) {
+    //     $query = "SELECT * FROM v_rekap";
         
-        if (!empty($start_date) && !empty($end_date)) {
-            $query .= " WHERE tanggal BETWEEN ? AND ?";
-            $params = [$start_date, $end_date];
-        } elseif (!empty($start_date)) {
-            $query .= " WHERE tanggal >= ?";
-            $params = [$start_date];
-        } elseif (!empty($end_date)) {
-            $query .= " WHERE tanggal <= ?";
-            $params = [$end_date];
-        } else {
-            $params = [];
-        }
+    //     if (!empty($start_date) && !empty($end_date)) {
+    //         $query .= " WHERE tanggal BETWEEN ? AND ?";
+    //         $params = [$start_date, $end_date];
+    //     } elseif (!empty($start_date)) {
+    //         $query .= " WHERE tanggal >= ?";
+    //         $params = [$start_date];
+    //     } elseif (!empty($end_date)) {
+    //         $query .= " WHERE tanggal <= ?";
+    //         $params = [$end_date];
+    //     } else {
+    //         $params = [];
+    //     }
     
-        // Jalankan query dengan parameter
-        return $this->runQuery($query, $params);
-    }
+    //     // Jalankan query dengan parameter
+    //     return $this->runQuery($query, $params);
+    // }
     
     // public function rekapGetByWaliKelas($nik_pegawai)
     // {

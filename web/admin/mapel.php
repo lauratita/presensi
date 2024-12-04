@@ -27,24 +27,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Proses edit data
         $result = $controller->update($_POST);
         if ($result) {
-
             $_SESSION['message'] = "Mata pelajaran berhasil diperbaharui!";
             $_SESSION['type'] = "success";
-
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
     } else {
         // Proses tambah data
-        $result = $controller->create($_POST);
-        if ($result) {
-
-            $_SESSION['message'] = "Mata pelajaran berhasil ditambahkan!";
-            $_SESSION['type'] = "success";
-
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+        $kodeBaru = strtoupper($_POST['kd_mapel']);
+        foreach ($mpls as $mpl) {
+            if (strtoupper($mpl['kd_mapel']) === $kodeBaru) {
+                $isDuplicate = true;
+                break;
+            }
         }
+
+        if ($isDuplicate) {
+            $_SESSION['message'] = "Kode pelajaran sudah ada!";
+            $_SESSION['type'] = "error";
+        } else {
+            $result = $controller->create($_POST);
+            if ($result) {
+                $_SESSION['message'] = "Mata pelajaran berhasil ditambahkan!";
+                $_SESSION['type'] = "success";
+            } else {
+                $_SESSION['message'] = "Gagal menambahkan mata pelajaran!";
+                $_SESSION['type'] = "error";
+            }
+        }
+
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
     }
 }
 
@@ -53,10 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $kode = $_GET['kode'];
     $result = $controller->delete($kode);
     if ($result) {
-
         $_SESSION['message'] = "Mata pelajaran berhasil dihapus!";
         $_SESSION['type'] = "success";
-
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
@@ -66,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 if (isset($_GET['kode']) && !empty($_GET['kode'])) {
     $kode = $_GET['kode'];
     $data = $controller->getByKode($kode);
-
     if ($data !== false) {
         $data = json_decode($data, true);
         if (is_array($data) && (!isset($data['message']) || $data['message'] !== 'Data not found')) {
@@ -102,7 +112,6 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
         <div class="tab-content">
 
             <!-- Tab Mata Pelajaran -->
-
             <div class="tab-pane fade show active" id="tab-mataPelajaran" role="tabpanel" aria-labelledby="nav-mataPelajaran-tab">
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -127,13 +136,12 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
                                         <a href="?action=update&kode=<?= htmlspecialchars($mpl['kd_mapel']) ?>" class="btn btn-warning btn-circle btn-sm">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
-
                                         <a href="#" class="btn btn-danger btn-circle btn-sm" 
-                                        data-toggle="modal"
-                                        data-target="#modalHapusMapel"
-                                        data-kode="<?= htmlspecialchars($mpl['kd_mapel']) ?>">  <!-- Perhatikan penulisan data-kode -->
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                           data-toggle="modal"
+                                           data-target="#modalHapusMapel"
+                                           data-kode="<?= htmlspecialchars($mpl['kd_mapel']) ?>">
+                                           <i class="fas fa-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -146,27 +154,27 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
 
             <!-- Tab Detail Pelajaran -->
             <div class="tab-pane fade" id="tab-detailPelajaran">
-            <div class="card shadow mb-4 mt-4">
-                <div class="card-body">
-                    <form action="?action=create" method="POST">
-                        <div class="form-group">
-                            <label for="kdmapel">Kode Pelajaran</label>
-                            <input type="text" class="form-control" id="kdmapel" name="kd_mapel" placeholder="Masukkan Kode Pelajaran" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="namamapel">Nama Pelajaran</label>
-                            <input type="text" class="form-control" id="namamapel" name="nama" placeholder="Masukkan Nama Pelajaran" required>
-                        </div>
-                        <div class="modal-footer">
-                            <!-- Tombol Batal dengan event reset form -->
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
+                <div class="card shadow mb-4 mt-4">
+                    <div class="card-body">
+                        <form action="?action=create" method="POST">
+                            <div class="form-group">
+                                <label for="kdmapel">Kode Pelajaran</label>
+                                <input type="text" class="form-control" id="kdmapel" name="kd_mapel" placeholder="Masukkan Kode Pelajaran" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="namamapel">Nama Pelajaran</label>
+                                <input type="text" class="form-control" id="namamapel" name="nama" placeholder="Masukkan Nama Pelajaran" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>    
-        
+
         <!-- Modal Hapus -->
         <div class="modal fade" id="modalHapusMapel" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
             aria-hidden="true">
@@ -222,25 +230,23 @@ if (isset($_GET['kode']) && !empty($_GET['kode'])) {
         <?php endif; ?>
     </div>
 
-
     <?php if (isset($_SESSION['message'])): ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
-                    title: 'Informasi',
-                    text: '<?= $_SESSION['message']; ?>',
-                    icon: '<?= $_SESSION['type']; ?>',
-                    confirmButtonText: 'OK'
-                });
+                title: 'Informasi',
+                text: '<?= $_SESSION['message']; ?>',
+                icon: '<?= $_SESSION['type']; ?>',
+                confirmButtonText: 'OK'
             });
-        </script>
-        <?php
-        // Clear session messages after displaying
-        unset($_SESSION['message']);
-        unset($_SESSION['type']);
-        ?>
+        });
+    </script>
+    <?php
+    unset($_SESSION['message']);
+    unset($_SESSION['type']);
+    ?>
     <?php endif; ?>
 
-    </body>
+</body>
 </html>
 <?php include '../template/footerAdmin.php'; ?>
