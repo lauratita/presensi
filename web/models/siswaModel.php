@@ -5,6 +5,7 @@ class SiswaModel{
     private $table_kelas = "tb_kelas";
     private $table_ortu = "tb_orangtua";
     // private $table_foto = "tb_foto";
+    private $table_view = "v_siswa_ortu_kelas";
 
     public $nis;
     public $nama;
@@ -86,6 +87,18 @@ class SiswaModel{
 
     public function read(){
         $sql = "SELECT * FROM " .$this->table_name;
+        $result = $this->koneksi->query($sql);
+        if ($result->num_rows > 0) {
+            $data = $result->fetch_all(MYSQLI_ASSOC);
+            return json_encode($data? $data : ["message" => "Data not found for given NIK"]);
+        } else {
+            http_response_code(404);
+            return json_encode(["message" => "Data not found"]);
+        }
+    }
+
+    public function view(){
+        $sql = "SELECT * FROM " .$this->table_view;
         $result = $this->koneksi->query($sql);
         if ($result->num_rows > 0) {
             $data = $result->fetch_all(MYSQLI_ASSOC);

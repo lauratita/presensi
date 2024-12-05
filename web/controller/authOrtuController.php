@@ -1,31 +1,38 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/authortuView.php';
+class LoginOrtuController {
+    private $service;
 
-
-class LoginOrtuController
-{
-    private $loginmodel;
-
-    public function __construct()
-    {
-        global $koneksi;
-        $this->loginmodel = new LoginOrtuModel($koneksi);
+    public function __construct($db) {
+        $this->service = new LoginOrtuService($db);
     }
 
-    public function login($request)
-    {
-        $nikortu = $request['nik_ortu'];
-        $password = $request['password'];
-        if (empty($password)) {
-            return json_encode(['message' => 'Password wajib diisi', 'status' => 'error']);
+    public function login($nikOrtu, $password) {
+        // Validasi NIK
+        if (strlen($nikOrtu) != 16 || !ctype_digit($nikOrtu)) {
+            return json_encode(['status' => 'error', 'message' => 'NIK harus 16 digit angka']);
         }
-        $loginResult = $this->loginmodel->login($nikortu, $password);
-        // var_dump($loginResult);
-        if ($loginResult == false) {
-            return json_encode(['message' => 'Email Atau Password Tidak Ditemukan', 'status' => 'error']);
-        }else{
-            return json_encode(['message' => 'login Berhasil','data'=> $loginResult, 'status' => 'success']);
+
+        // Validasi password
+        if (empty($password)) {
+            return json_encode(['status' => 'error', 'message' => 'Password wajib diisi']);
+        }
+
+        // Proses login
+        $loginResult = $this->service->getLogin($nikOrtu, $password);
+
+        if ($loginResult === false) {
+            return json_encode([
+                'status' => 'error', 
+                'message' => 'NIK atau Password tidak valid'
+            ]);
+        } else {
+            return json_encode([
+                'status' => 'success',
+                'message' => 'Login berhasil',
+                'data' => $loginResult
+            ]);
         }
     }
 }

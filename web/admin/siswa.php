@@ -9,6 +9,9 @@ $controller = new SiswaController();
 $data = $controller->read();
 $siswas = [];
 
+$view = $controller->view();
+$tabel_siswa = [];
+
 $ortu = $controller->getortu(); 
 $dataortu = json_decode($ortu, true);
 
@@ -16,6 +19,16 @@ $kelas = $controller->getkelas();
 $datakelas = json_decode($kelas, true);
 
 // $naikkelas = $controller->naikKelas();
+if ($view !== false) {
+    $view = json_decode($view, true);
+    if (!isset($view['message']) || $view['message'] !== 'Data not found') {
+        $tabel_siswa = $view;
+        // var_dump($kelass);
+    }
+} else {
+    // Handle errors from getAllOrtu()
+    echo "Error fetching data.";
+}
 
 if ($data !== false) {
     $data = json_decode($data, true);
@@ -119,7 +132,6 @@ if (isset($_GET['nis'])) {
 ?>
 
 <html lang="en">
-
 <body>
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -162,14 +174,14 @@ if (isset($_GET['nis'])) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($siswas as $siswa) : ?>
+                                    <?php foreach ($tabel_siswa as $siswa) : ?>
                                     <tr>
                                         <td><?= htmlspecialchars($siswa['nis']) ?></td>
-                                        <td><?= htmlspecialchars($siswa['nama']) ?></td>
+                                        <td><?= htmlspecialchars($siswa['nama_siswa']) ?></td>
                                         <td><?= htmlspecialchars($siswa['tanggal_lahir']) ?></td>
                                         <td><?= htmlspecialchars($siswa['tahun_akademik']) ?></td>
-                                        <td><?= htmlspecialchars($siswa['alamat']) ?></td>
-                                        <td><?= htmlspecialchars($siswa['id_kelas']) ?></td>
+                                        <td><?= htmlspecialchars($siswa['alamat_siswa']) ?></td>
+                                        <td><?= htmlspecialchars($siswa['nama_kelas']) ?></td>
 
 
                                         <td>
@@ -201,7 +213,7 @@ if (isset($_GET['nis'])) {
                                     <label for="nis">NIS</label>
                                     <input type="text" class="form-control" name="nis" id="nis"
                                         placeholder="Masukkan NIS" pattern="[A-Za-z0-9]{10}"
-                                        title="NIK harus berisi 10 digit angka" maxlength="10" required>
+                                        title="NIK harus berisi 10 digit" maxlength="10" required>
 
                                 </div>
                                 <div class="col-md-5 mt-3">
@@ -270,7 +282,7 @@ if (isset($_GET['nis'])) {
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        
                         <div class="row">
                             <div class="col-md-6 mt-3">
                                 <label for="tanggal_masuk">Tanggal Masuk</label>
@@ -336,7 +348,7 @@ if (isset($_GET['nis'])) {
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditKelasLabel">Edit Data Kelas</h5>
+                    <h5 class="modal-title" id="modalEditKelasLabel">Edit Data Siswa</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -445,7 +457,7 @@ if (isset($_GET['nis'])) {
                         <div class="container-upfoto">
                             <input type="file" id="editfoto" name="edit_foto" accept="image/*" hidden>
                             <div class="img-area mb-3">
-                                <img src="<?= $siswa['foto']; ?>" alt="Foto Siswa">
+                                <img src="<?= $siswanis['foto']; ?>" alt="Foto Siswa">
                                 <i class='bi bi-cloud-arrow-up icon'></i>
                             </div>
                             <button type="button" class="select-image">Cari Gambar</button>

@@ -2,40 +2,34 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/models/authortuModel.php';
 
 class LoginOrtuService {
+    private $model;
     private $koneksi;
-    private $login;
 
     public function __construct($db) {
+        $this->model = new LoginOrtuModel($db);
         $this->koneksi = $db;
-        $this->login = new LoginOrtuModel($db);
     }
 
     public function getLogin($nikOrtu, $password) {
-        $user = $this->login->login($nikOrtu, $password);
-        
+        $user = $this->model->verifyLogin($nikOrtu, $password);
+
         if ($user) {
+            // Hanya perbarui hash jika password masih plain text
             $storedPassword = $user['password'];
-            if($this->isPlainTextPassword($storedPassword)){
-                $hash = password_hash($storedPassword, PASSWORD_DEFAULT);
+            if (strlen($storedPassword) < 60) {
+                $hash = password_hash($password, PASSWORD_DEFAULT);
                 $this->updatePasswordHash($nikOrtu, $hash);
-                $storedPassword = $hash;
+                $user['password'] = $hash;
             }
-            if(password_verify($password, $storedPassword)){
-                return $user;
-            } else {
-                return false;
-            }
-        }else {
-            return false;
+
+            $dataSiswa = $this->model->getSiswaByNikOrtu($nikOrtu);
+            return ['ortu' => $user, 'siswa' => $dataSiswa];
         }
-
+        
+        return false;
     }
 
-    private function isPlainTextPassword($password){
-        return strlen($password) < 60;
-    }
-
-    private function updatePasswordHash($nikOrtu, $hash){
+    private function updatePasswordHash($nikOrtu, $hash) {
         $sql = "UPDATE tb_orangtua SET password = ? WHERE nik_ortu = ?";
         $stmt = $this->koneksi->prepare($sql);
         $stmt->bind_param("ss", $hash, $nikOrtu);

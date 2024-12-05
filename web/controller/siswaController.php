@@ -48,6 +48,11 @@ class SiswaController{
         return $siswas;
     }
 
+    public function view(){
+        $siswas = $this->siswaService->getview();
+        return $siswas;
+    }
+
     public function getByNis($nis){
         $siswanis = $this->siswaService->getSiswaByNis($nis);
         return $siswanis;
