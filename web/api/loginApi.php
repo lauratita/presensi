@@ -25,10 +25,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
-    // Verifikasi password
-    if (!password_verify($password, $loginResult['password'])) {
-        echo json_encode(['status' => 'error', 'message' => 'Password salah']);
-        exit();
+    $storedPassword = $loginResult['password'];
+
+    // Periksa apakah password belum dalam bentuk hash (plaintext)
+    $isPlainText = strlen($storedPassword) < 60; // Panjang hash bcrypt biasanya 60 karakter
+
+    if ($isPlainText) {
+        // Bandingkan password plaintext langsung
+        if ($password === $storedPassword) {
+            // Hash password dan perbarui di database
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $updateSql = "UPDATE tb_pegawai SET password = ? WHERE nik_pegawai = ?";
+            $stmt = $koneksi->prepare($updateSql);
+            $stmt->bind_param("ss", $hashedPassword, $nikPegawai);
+            if (!$stmt->execute()) {
+                echo json_encode(['status' => 'error', 'message' => 'Gagal memperbarui password hash']);
+                exit();
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Password salah']);
+            exit();
+        }
+    } else {
+        // Password sudah di-hash, lakukan verifikasi dengan password_verify
+        if (!password_verify($password, $storedPassword)) {
+            echo json_encode(['status' => 'error', 'message' => 'Password salah']);
+            exit();
+        }
     }
 
     // Berhasil login, kirim data
