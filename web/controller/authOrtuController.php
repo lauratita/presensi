@@ -1,38 +1,33 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/config/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/presensi/web/views/authortuView.php';
-class LoginOrtuController {
-    private $service;
-
-    public function __construct($db) {
-        $this->service = new LoginOrtuService($db);
+class LoginOrtuController
+{
+    private $loginService;
+    public function __construct()
+    {
+        global $koneksi;
+        $this->loginService = new LoginOrtuService($koneksi);
     }
 
-    public function login($nikOrtu, $password) {
-        // Validasi NIK
-        if (strlen($nikOrtu) != 16 || !ctype_digit($nikOrtu)) {
-            return json_encode(['status' => 'error', 'message' => 'NIK harus 16 digit angka']);
-        }
+    public function login($request)
+    {
+        $nikortu = $request['nik_ortu'];
+        $password = $request['password'];
 
-        // Validasi password
         if (empty($password)) {
-            return json_encode(['status' => 'error', 'message' => 'Password wajib diisi']);
+            return json_encode(['message' => 'Password wajib diisi', 'status' => 'error']);
         }
 
-        // Proses login
-        $loginResult = $this->service->getLogin($nikOrtu, $password);
-
-        if ($loginResult === false) {
-            return json_encode([
-                'status' => 'error', 
-                'message' => 'NIK atau Password tidak valid'
-            ]);
-        } else {
-            return json_encode([
-                'status' => 'success',
-                'message' => 'Login berhasil',
-                'data' => $loginResult
-            ]);
+        $loginResult = $this->loginService->getLogin($nikortu, $password);            // var_dump($loginResult);
+            if ($loginResult == false) {
+                return json_encode(['message' => 'Email Atau Password Tidak Ditemukan', 'status' => 'error']);
+            }else{
+                $dataSiswa = $this->loginService->getSiswaByOrtu($nikortu);
+                return json_encode(['message' => 'login Berhasil',
+                'data'=> $loginResult, 
+                'siswa' => $dataSiswa, 
+                'status' => 'success']);
+            }
         }
     }
-}
