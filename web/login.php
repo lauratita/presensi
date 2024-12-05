@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" name="txt_nikPegawai"
                         class="form-control form-control-user <?php echo !empty($errorNik) ? 'is-invalid' : ''; ?>"
                         id="nikPegawai" aria-describedby="" placeholder="Nomor Induk Karyawan (NIK)"
-                        value="<?php echo isset($nik) ? htmlspecialchars($nik) : ''; ?>">
+                        value="<?php echo isset($nikPegawai) ? htmlspecialchars($nikPegawai) : ''; ?>">
                     <!-- Tampilkan error NIK -->
                     <?php if (!empty($errorNik)): ?>
                     <div class="invalid-feedback">

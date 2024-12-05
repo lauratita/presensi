@@ -58,6 +58,14 @@ switch ($requestMethod) {
             header('Content-Type: application/json');
             $response = $controller->getByWaliKelas($_GET['nik_pegawai'], $_GET['status']);
             echo json_encode($response);
+        } elseif (isset($_GET['action']) && $_GET['action'] === 'getSuratIzinByOrtu') {
+            if (empty($_GET['nik_ortu'])) {
+                http_response_code(400);
+                echo json_encode(['message' => "Field 'nik_ortu' is required"]);
+                exit;
+            }
+            header('Content-Type: application/json');
+            echo json_encode($controller->getSuratIzinByOrtu($_GET['nik_ortu']));
         } else {
             header('Content-Type: application/json');
             echo json_encode(['message' => 'Action not supported']);

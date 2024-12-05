@@ -20,33 +20,6 @@ class RekapController{
         return json_encode($rekaps); // Kembalikan dalam format JSON
     }
     
-    
-    
-    // public function readFiltered($start_date, $end_date) {
-    //     $query = "SELECT * FROM v_rekap";
-        
-    //     if (!empty($start_date) && !empty($end_date)) {
-    //         $query .= " WHERE tanggal BETWEEN ? AND ?";
-    //         $params = [$start_date, $end_date];
-    //     } elseif (!empty($start_date)) {
-    //         $query .= " WHERE tanggal >= ?";
-    //         $params = [$start_date];
-    //     } elseif (!empty($end_date)) {
-    //         $query .= " WHERE tanggal <= ?";
-    //         $params = [$end_date];
-    //     } else {
-    //         $params = [];
-    //     }
-    
-    //     // Jalankan query dengan parameter
-    //     return $this->runQuery($query, $params);
-    // }
-    
-    // public function rekapGetByWaliKelas($nik_pegawai)
-    // {
-    //     $rekapnik = $this->rekapmodel->rekapByWaliKelas($nik_pegawai);
-    //     return $rekapnik;
-    // }
 
     public function rekapGetByWaliKelas($nik_pegawai, $start_date = null, $end_date = null)
     {

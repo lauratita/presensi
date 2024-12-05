@@ -72,7 +72,27 @@ class SuratIzinModel
     
     public function getSiswaByNIKOrtu($nik_ortu) 
     {
-        $query = "SELECT * FROM " . $this->table_siswa . " WHERE nik_ortu = ?";
+       /* SELECT 
+            s.nis,
+            s.nama AS nama_siswa,
+            s.tanggal_lahir,
+            s.tahun_akademik,
+            s.jenis_kelamin,
+            s.alamat,
+            s.foto,
+            s.nik_ortu,
+            k.nama_kelas,
+            k.nik_pegawai
+        FROM 
+            tb_siswa s
+        LEFT JOIN 
+            tb_kelas k
+        ON 
+            s.id_kelas = k.id_kelas
+        WHERE 
+            s.nik_ortu = '1237646';*/
+        $query = "SELECT nis, nama AS nama_siswa, nik_ortu, nama_kelas, nik_pegawai FROM tb_siswa
+                    JOIN tb_kelas ON tb_siswa.id_kelas = tb_kelas.id_kelas WHERE nik_ortu = ?";
         $stmt = $this->koneksi->prepare($query);
         $stmt->bind_param("s", $nik_ortu);
         $stmt->execute();
@@ -83,6 +103,21 @@ class SuratIzinModel
         }
         
         return $siswa;
+    }
+
+    public function getSuratIzinByOrtu($nik_ortu)
+    {
+        $sql = "SELECT * FROM " . $this->view_name . " WHERE nik_ortu = ?";
+        $stmt = $this->koneksi->prepare($sql);
+        $stmt->bind_param("s", $nik_ortu);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
     }
 
     public function update()
