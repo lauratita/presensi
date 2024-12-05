@@ -39,6 +39,11 @@ class SiswaService{
         return $stmt;
     }
 
+    public function getview(){
+        $stmt = $this->siswa->view();
+        return $stmt;
+    }
+
     public function getSiswaByNis($nis){
         $stmt = $this->siswa->getByNis($nis);
         return $stmt;
